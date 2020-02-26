@@ -1,10 +1,13 @@
-import 'dart:async';
+part of wonderpush_flutter_plugin;
 
-import 'package:flutter/services.dart';
 
 class WonderpushFlutterPlugin {
   static const MethodChannel _channel =
-      const MethodChannel('wonderpush_flutter_plugin');
+  const MethodChannel('wonderpush_flutter_plugin');
+  static const EventChannel stream = const EventChannel('wonderpush_data_stream');
+
+  String _clientId;
+  String _clientSecret;
 
   static Future<String> get platformVersion async {
     final String version = await _channel.invokeMethod('getPlatformVersion');
@@ -15,7 +18,19 @@ class WonderpushFlutterPlugin {
     return Future.value("FlutterWonderPush");
   }
 
-  static Future<bool> init() async {
+  static Future<bool> init({@required String clientId, @required String clientSecret}) async {
+
+    if (clientId == null) {
+      throw ArgumentError.notNull('clientId');
+    }
+
+    if (clientSecret == null) {
+      throw ArgumentError.notNull('clientSecret');
+    }
+    //print("clientId and clientSecret are $clientId $clientSecret");
+
+    await _channel.invokeMethod('init',{"clientId":clientId,"clientSecret":clientSecret});
+
     return Future.value(true);
   }
 
@@ -73,7 +88,9 @@ class WonderpushFlutterPlugin {
     // code to set wonderpush userid
   }
 
-  static set trackEvent(String type) {
+  static Future<dynamic> trackEvent(String type) async{
+
+    return await _channel.invokeMethod('trackEvent',{"eventType":type});
     // code to set wonderpush userid
   }
 }
