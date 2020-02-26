@@ -2,7 +2,13 @@
 
 A new flutter plugin project.
 
+## Rename config file 
+
+rename example/lib/config/constants.sample.dart  to example/lib/config/constants.dart and put Client ID and Client Secret.
+
 ## Getting Started
+
+
 
 This project is a starting point for a Flutter
 [plug-in package](https://flutter.dev/developing-packages/),
