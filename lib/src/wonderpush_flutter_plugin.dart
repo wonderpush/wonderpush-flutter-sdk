@@ -18,7 +18,7 @@ class WonderpushFlutterPlugin {
     return Future.value("FlutterWonderPush");
   }
 
-  static Future<bool> init({@required String clientId, @required String clientSecret}) async {
+  static Future<bool> init({@required String clientId, @required String clientSecret,String senderId}) async {
 
     if (clientId == null) {
       throw ArgumentError.notNull('clientId');
@@ -27,9 +27,11 @@ class WonderpushFlutterPlugin {
     if (clientSecret == null) {
       throw ArgumentError.notNull('clientSecret');
     }
-    //print("clientId and clientSecret are $clientId $clientSecret");
-
     await _channel.invokeMethod('init',{"clientId":clientId,"clientSecret":clientSecret});
+
+    if(senderId!=null && senderId.trim().isNotEmpty){
+      _channel.invokeMethod('setUserId',{"userId":senderId});
+    }
 
     return Future.value(true);
   }
@@ -81,6 +83,9 @@ class WonderpushFlutterPlugin {
   }
 
   static set logging(bool shouldLog) {
+
+    _channel.invokeMethod('setLogging',{"enabled":shouldLog});
+    
     // code to set logging for wonderpush
   }
 

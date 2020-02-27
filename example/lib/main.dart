@@ -22,14 +22,13 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-
     streamSubscription = WonderpushFlutterPlugin.stream
         .receiveBroadcastStream()
         .listen((data) async {
-      print(data);
+      print("inside flutter stream $data");
       if (data == true) {
         //It means plugin setup is complete
-        bool initialIzed = await init(clientId, clientSecret);
+        bool initialIzed = await init(clientId, clientSecret,senderId);
         if (initialIzed) {
           this.setState(() {
             isLoading = false;
@@ -39,9 +38,10 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<bool> init(String clientId, String clientSecret) async {
+  Future<bool> init(String clientId, String clientSecret,String senderId) async {
     await WonderpushFlutterPlugin.init(
-        clientId: clientId, clientSecret: clientSecret);
+        clientId: clientId, clientSecret: clientSecret,senderId:senderId);
+    WonderpushFlutterPlugin.logging=true;
     return Future.value(true);
   }
 

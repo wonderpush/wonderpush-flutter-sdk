@@ -9,7 +9,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.5.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -36,6 +36,7 @@ android {
 //        buildConfigField 'String', 'WONDERPUSH_CLIENT_ID', '"7b61b48bdaf2bc40da311b96812e3a833c9ee48d"'
 //        buildConfigField 'String', 'WONDERPUSH_CLIENT_SECRET', '"08fd5728caa4df728e2deff50bf01466224326f7015c26c7df7ce917523eb305"'
 //        buildConfigField 'String', 'WONDERPUSH_SENDER_ID', '"791178465740"'
+         // buildConfigField 'boolean', 'WONDERPUSH_LOGGING', true
     }
     lintOptions {
         disable 'InvalidPackage'
