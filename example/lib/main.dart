@@ -77,7 +77,7 @@ class _MyAppState extends State<MyApp> {
     String result = await WonderpushFlutterPlugin.trackEvent(eventText);
     final snackBar = SnackBar(content: Text("$result"));
     if (_scaffoldKey.currentState != null)
-    _scaffoldKey.currentState .showSnackBar(snackBar);
+      _scaffoldKey.currentState.showSnackBar(snackBar);
   }
 
   @override
