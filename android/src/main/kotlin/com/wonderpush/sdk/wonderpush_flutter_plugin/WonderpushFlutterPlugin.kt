@@ -2,17 +2,14 @@ package com.wonderpush.sdk.wonderpush_flutter_plugin
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin
-import io.flutter.plugin.common.MethodCall
-import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry.Registrar
-import io.flutter.plugin.common.BinaryMessenger
 import android.content.Context
 import com.wonderpush.sdk.wonderpush_flutter_plugin.config.Constants
 import com.wonderpush.sdk.wonderpush_flutter_plugin.handlers.DataStreamHandler
 import com.wonderpush.sdk.wonderpush_flutter_plugin.handlers.MethodHandler
-import io.flutter.plugin.common.EventChannel
+import io.flutter.plugin.common.*
 
 /** WonderpushFlutterPlugin */
 public class WonderpushFlutterPlugin: FlutterPlugin {
@@ -50,10 +47,13 @@ public class WonderpushFlutterPlugin: FlutterPlugin {
 
     @JvmStatic
     fun registerWith(registrar: Registrar) {
+
       WonderpushFlutterPlugin().onAttachedToEngineMethod(registrar.context(), registrar.messenger())
     }
   }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
   }
+
+
 }

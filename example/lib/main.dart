@@ -39,8 +39,8 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<bool> init(String clientId, String clientSecret,String senderId) async {
-    await WonderpushFlutterPlugin.init(
-        clientId: clientId, clientSecret: clientSecret,senderId:senderId);
+    await WonderpushFlutterPlugin.initialize(
+       clientId,  clientSecret,senderId);
     WonderpushFlutterPlugin.logging=true;
     return Future.value(true);
   }

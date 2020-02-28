@@ -1,6 +1,38 @@
 part of wonderpush_flutter_plugin;
 
 
+ void _wpSetupBackgroundChannel(String clientId, String clientSecret,String senderId) async{
+
+  const MethodChannel backgroundChannel =
+  const MethodChannel('wonderpush_flutter_plugin_background');
+  // Setup Flutter state needed for MethodChannels.
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // This is where the magic happens and we handle background events from the
+  // native portion of the plugin.
+  backgroundChannel.setMethodCallHandler((MethodCall call) async {
+    if (call.method == 'handleBackgroundMessage') {
+      final CallbackHandle handle =
+          CallbackHandle.fromRawHandle(call.arguments['handle']);
+      final Function handlerFunction =
+          PluginUtilities.getCallbackFromHandle(handle);
+      try {
+        await handlerFunction(
+            Map<String, dynamic>.from(call.arguments['message']));
+      } catch (e) {
+        print('Unable to handle incoming background message.');
+        print(e);
+      }
+      return Future<void>.value();
+    }
+  });
+  // Once we've finished initializing, let the native portion of the plugin
+  // know that it can start scheduling handling messages.
+  backgroundChannel.invokeMethod('init',{"clientId":clientId,"clientSecret":clientSecret});
+}
+
+typedef CallbackHandle _GetCallbackHandle(Function(String,String,String) callback);
+
 class WonderpushFlutterPlugin {
   static const MethodChannel _channel =
   const MethodChannel('wonderpush_flutter_plugin');
@@ -8,6 +40,23 @@ class WonderpushFlutterPlugin {
 
   String _clientId;
   String _clientSecret;
+
+
+   static _GetCallbackHandle _getCallbackHandle =
+      (Function(String,String,String) callback) => PluginUtilities.getCallbackHandle(callback);
+
+  static Future<bool> initialize(final String clientId, final String clientSecret, final String senderId) async {
+    final CallbackHandle handle =
+        _getCallbackHandle(_wpSetupBackgroundChannel(clientId,clientSecret,senderId)
+        );
+    if (handle == null) {
+      return false;
+    }
+    final bool r = await _channel.invokeMethod<bool>(
+        'AlarmService.start', <dynamic>[handle.toRawHandle()]);
+    return r ?? false;
+  }
+
 
   static Future<String> get platformVersion async {
     final String version = await _channel.invokeMethod('getPlatformVersion');

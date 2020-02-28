@@ -1,4 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.wonderpush.sdk.wonderpush_flutter_plugin_example">
 
       <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
