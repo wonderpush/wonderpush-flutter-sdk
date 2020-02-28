@@ -28,7 +28,7 @@ class _MyAppState extends State<MyApp> {
       print("inside flutter stream $data");
       if (data == true) {
         //It means plugin setup is complete
-        bool initialIzed = await init(clientId, clientSecret,senderId);
+        bool initialIzed = await init(clientId, clientSecret, senderId);
         if (initialIzed) {
           this.setState(() {
             isLoading = false;
@@ -38,10 +38,11 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
-  Future<bool> init(String clientId, String clientSecret,String senderId) async {
-    await WonderpushFlutterPlugin.initialize(
-       clientId,  clientSecret,senderId);
-    WonderpushFlutterPlugin.logging=true;
+  Future<bool> init(
+      String clientId, String clientSecret, String senderId) async {
+    await WonderpushFlutterPlugin.init(
+        clientId: clientId, clientSecret: clientSecret, senderId: senderId);
+    WonderpushFlutterPlugin.logging = true;
     return Future.value(true);
   }
 
