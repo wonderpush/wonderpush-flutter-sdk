@@ -24,10 +24,17 @@ class WonderpushFlutterPlugin {
   }
 
   static Future<bool> initBG() async {
-    final SharedPreferences prefs = await _prefs;
-    String clientId = prefs.getString('clientId');
-    String clientSecret = prefs.getString('clientSecret');
-    String senderId = prefs.getString('userId');
+    // final SharedPreferences prefs = await _prefs;
+    // String clientId = prefs.getString('clientId');
+    // String clientSecret = prefs.getString('clientSecret');
+    // String senderId = prefs.getString('userId');
+
+    const String clientId =
+        "7b61b48bdaf2bc40da311b96812e3a833c9ee48d"; //set your client id here
+    const String clientSecret =
+        "08fd5728caa4df728e2deff50bf01466224326f7015c26c7df7ce917523eb305";
+
+    const String senderId = "";
     await init(
         clientId: clientId, clientSecret: clientSecret, senderId: senderId);
   }
@@ -47,7 +54,8 @@ class WonderpushFlutterPlugin {
     _channel.invokeMethod<bool>(
       'handleFunction',
       <String, dynamic>{
-        'handle': handle.toRawHandle(),
+        'setupHandle': handle.toRawHandle(),
+        'backgroundHandle': handle.toRawHandle()
       },
     );
 

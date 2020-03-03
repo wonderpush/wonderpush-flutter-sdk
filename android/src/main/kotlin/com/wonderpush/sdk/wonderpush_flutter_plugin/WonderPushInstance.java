@@ -38,14 +38,18 @@ public class WonderPushInstance {
        context=ctx;
        WonderPush.initialize(context,clientId,clientSecret);
        if (!WonderPush.isReady()) {
-           LocalBroadcastManager.getInstance(context).registerReceiver(mainBroadCastReceiver,new IntentFilter(WonderPush.INTENT_INTIALIZED));
-           IntentFilter registeredMethodIntentFilter = new IntentFilter();
-           registeredMethodIntentFilter.addAction(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_ACTION);
-           registeredMethodIntentFilter.addDataScheme(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_SCHEME);
-           registeredMethodIntentFilter.addDataAuthority(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_AUTHORITY, null);
-           LocalBroadcastManager.getInstance(context).registerReceiver(buttonActionBroadCastReceiver,registeredMethodIntentFilter);
+           IntentFilter intentFilter= new IntentFilter(WonderPush.INTENT_INTIALIZED);
+           intentFilter.addAction(WPFirebaseMessagingService.ACTION_TOKEN);
+           intentFilter.addAction(WPFirebaseMessagingService.ACTION_REMOTE_MESSAGE);
+           LocalBroadcastManager.getInstance(context).registerReceiver(mainBroadCastReceiver,intentFilter);
+//           IntentFilter registeredMethodIntentFilter = new IntentFilter();
+//           registeredMethodIntentFilter.addAction(WPFirebaseMessagingService.ACTION_TOKEN);
+//           registeredMethodIntentFilter.addAction(WPFirebaseMessagingService.ACTION_REMOTE_MESSAGE);
+//           registeredMethodIntentFilter.addAction(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_ACTION);
+//           registeredMethodIntentFilter.addDataScheme(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_SCHEME);
+//           registeredMethodIntentFilter.addDataAuthority(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_AUTHORITY, null);
+//           LocalBroadcastManager.getInstance(context).registerReceiver(buttonActionBroadCastReceiver,registeredMethodIntentFilter);
            //extraSetUp();
-
 
        }else{
            System.out.println("Wonderpush is ready");

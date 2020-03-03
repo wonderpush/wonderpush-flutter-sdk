@@ -1,15 +1,29 @@
 package com.wonderpush.sdk.wonderpush_flutter_plugin.handlers;
+import android.app.Activity;
 import android.content.Context;
+
+import com.google.firebase.messaging.RemoteMessage;
 import com.wonderpush.sdk.WonderPush;
+import com.wonderpush.sdk.WonderPushFirebaseMessagingService;
+import com.wonderpush.sdk.WonderPushResourcesService;
+import com.wonderpush.sdk.WonderPushService;
 import com.wonderpush.sdk.WonderPushUserPreferences;
+import com.wonderpush.sdk.wonderpush_flutter_plugin.WPFirebaseMessagingService;
 import com.wonderpush.sdk.wonderpush_flutter_plugin.WonderPushInstance;
+import com.wonderpush.sdk.wonderpush_flutter_plugin.utils.HandleStorage;
+
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.Collections;
+import java.util.Map;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
+import io.flutter.view.FlutterCallbackInformation;
+import io.flutter.view.FlutterMain;
+import io.flutter.view.FlutterNativeView;
 
-public class MethodHandler implements MethodChannel.MethodCallHandler{
+public class MethodHandler extends WonderPushFirebaseMessagingService implements MethodChannel.MethodCallHandler{
 
     MethodChannel.Result result;
     MethodCall call;
@@ -17,6 +31,12 @@ public class MethodHandler implements MethodChannel.MethodCallHandler{
 
     public MethodHandler(Context context){
         this.context=context;
+
+    }
+
+    @Override
+    public void onMessageReceived(RemoteMessage message) {
+        super.onMessageReceived(message);
     }
 
     @Override
@@ -31,8 +51,23 @@ public class MethodHandler implements MethodChannel.MethodCallHandler{
                 break;
 
             case "handleFunction":
-                long handle = call.argument("handle");
-                System.out.print("handle in native is "+handle);
+                long setupCallbackHandle = 0;
+                long backgroundMessageHandle = 0;
+                try {
+                    @SuppressWarnings("unchecked")
+                    Map<String, Long> callbacks = ((Map<String, Long>) call.arguments);
+                    setupCallbackHandle = callbacks.get("setupHandle");
+                    backgroundMessageHandle = callbacks.get("backgroundHandle");
+                } catch (Exception e) {
+                   // Log.e(TAG, "There was an exception when getting callback handle from Dart side");
+                    e.printStackTrace();
+                }
+
+
+                WPFirebaseMessagingService.setBackgroundSetupHandle(context, setupCallbackHandle);
+                WPFirebaseMessagingService.startBackgroundIsolate(context, setupCallbackHandle);
+                WPFirebaseMessagingService.setBackgroundMessageHandle(
+                        context, backgroundMessageHandle);
                 break;
 
             case "init":
@@ -222,6 +257,12 @@ public class MethodHandler implements MethodChannel.MethodCallHandler{
                 result.success(true);
                 break;
 
+
+            case "FcmDartService#initialized":
+                WPFirebaseMessagingService.onInitialized();
+                result.success(true);
+                break;
+
 //            case "UserPreferences_getChannelGroup":
 //
 //                String groupId = call.argument("id");
@@ -296,4 +337,5 @@ public class MethodHandler implements MethodChannel.MethodCallHandler{
 
         }
     }
+
 }

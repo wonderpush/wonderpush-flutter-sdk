@@ -2,24 +2,28 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:wonderpush_flutter_plugin/wonderpush_flutter_sdk.dart';
-
 
 void callbackDispatcher() {
-  const MethodChannel _backgroundChannel = MethodChannel('wonderpush_flutter_plugin_bg');
+  const MethodChannel _backgroundChannel =
+      MethodChannel('wonderpush_flutter_plugin_bg');
   WidgetsFlutterBinding.ensureInitialized();
-
   _backgroundChannel.setMethodCallHandler((MethodCall call) async {
-
-    print('_backgroundChannel.setMethodCallHandler');
-
-    final List<dynamic> args = call.arguments;
-    final Function callback = PluginUtilities.getCallbackFromHandle(CallbackHandle.fromRawHandle(args[0]));
-    
-    assert(callback != null);
-    print(args.sublist(1));
-    callback(args.sublist(1));
+    if (call.method == 'handleBackgroundMessage') {
+      final CallbackHandle handle =
+          CallbackHandle.fromRawHandle(call.arguments['handle']);
+      final Function handlerFunction =
+          PluginUtilities.getCallbackFromHandle(handle);
+      try {
+        await handlerFunction(
+            Map<String, dynamic>.from(call.arguments['message']));
+      } catch (e) {
+        print('Unable to handle incoming background message.');
+        print(e);
+      }
+      return Future<void>.value();
+    }
   });
-
-  WonderpushFlutterPlugin.initBG();
+  try {
+    _backgroundChannel.invokeMethod<void>('FcmDartService#initialized');
+  } catch (e) {}
 }
