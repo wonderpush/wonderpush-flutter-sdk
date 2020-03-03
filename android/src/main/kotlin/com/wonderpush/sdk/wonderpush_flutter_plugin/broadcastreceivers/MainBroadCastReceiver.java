@@ -21,6 +21,8 @@ public class MainBroadCastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
+        System.out.println("Moga New notification received ");
+
         Intent pushNotif = intent.getParcelableExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_RECEIVED_PUSH_NOTIFICATION);
         Bundle extras = pushNotif == null ? null : pushNotif.getExtras();
         if (extras == null || extras.isEmpty()) {

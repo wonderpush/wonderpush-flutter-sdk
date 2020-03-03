@@ -15,6 +15,7 @@ import io.flutter.plugin.common.*
 public class WonderpushFlutterPlugin: FlutterPlugin {
 
   private lateinit var _channel: MethodChannel
+  private lateinit var _bgchannel: MethodChannel
   private lateinit var _appContext: Context
   private lateinit var _eventChannel: EventChannel
 
@@ -23,6 +24,10 @@ public class WonderpushFlutterPlugin: FlutterPlugin {
     _appContext = context
     _channel = MethodChannel(binaryMessenger, Constants.METHOD_CHANNEL_NAME)
     _channel.setMethodCallHandler(MethodHandler(context));
+
+    _bgchannel = MethodChannel(binaryMessenger, Constants.METHOD_CHANNEL_NAME_BACKGROUND)
+    _bgchannel.setMethodCallHandler(MethodHandler(context));
+
     _eventChannel=EventChannel(binaryMessenger, Constants.STREAM_CHANNEL_NAME);
      val dataHandler=DataStreamHandler();
     _eventChannel.setStreamHandler(dataHandler);

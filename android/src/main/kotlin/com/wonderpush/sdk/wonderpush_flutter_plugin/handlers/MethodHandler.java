@@ -30,6 +30,11 @@ public class MethodHandler implements MethodChannel.MethodCallHandler{
                 result.success("My Android ${android.os.Build.VERSION.RELEASE}");
                 break;
 
+            case "handleFunction":
+                long handle = call.argument("handle");
+                System.out.print("handle in native is "+handle);
+                break;
+
             case "init":
                 WonderPushInstance.getInstance().setupWonderPush(this.context,call.argument("clientId").toString(),call.argument("clientSecret").toString());
                 result.success("Setup has completed");

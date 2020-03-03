@@ -1,59 +1,18 @@
 part of wonderpush_flutter_plugin;
 
-typedef CallbackHandle _GetCallbackHandle(
-    Function(String, String, String) callback);
-
 class WonderpushFlutterPlugin {
   static const MethodChannel _channel =
       const MethodChannel('wonderpush_flutter_plugin');
   static const EventChannel stream =
       const EventChannel('wonderpush_data_stream');
 
+  static Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
+
+  static final CallbackHandle handle =
+      PluginUtilities.getCallbackHandle(callbackDispatcher);
+
   String _clientId;
   String _clientSecret;
-
-  static _GetCallbackHandle _getCallbackHandle =
-      (Function callback) => PluginUtilities.getCallbackHandle(callback);
-
-  static Future<bool> initialize(final String clientId,
-      final String clientSecret, final String senderId) async {
-    final CallbackHandle handle = _getCallbackHandle(
-        _wpSetupBackgroundChannel(clientId, clientSecret, senderId));
-    if (handle == null) {
-      return false;
-    }
-    final bool r = await _channel.invokeMethod<bool>(
-        'AlarmService.start', <dynamic>[handle.toRawHandle()]);
-    return r ?? false;
-  }
-
-  static _wpSetupBackgroundChannel(
-      String clientId, String clientSecret, String senderId) async {
-    // Setup Flutter state needed for MethodChannels.
-    WidgetsFlutterBinding.ensureInitialized();
-    _channel.setMethodCallHandler((MethodCall call) async {
-      if (call.method == 'handleBackgroundMessage') {
-        final CallbackHandle handle =
-            CallbackHandle.fromRawHandle(call.arguments['handle']);
-        final Function handlerFunction =
-            PluginUtilities.getCallbackFromHandle(handle);
-        try {
-          await handlerFunction(
-              Map<String, dynamic>.from(call.arguments['message']));
-        } catch (e) {
-          print('Unable to handle incoming background message.');
-          print(e);
-        }
-        return Future<void>.value();
-      }
-    });
-
-    // This is where the magic happens and we handle background events from the
-    // native portion of the plugin.
-
-    // Once we've finished initializing, let the native portion of the plugin
-    // know that it can start scheduling handling messages.
-  }
 
   static Future<String> get platformVersion async {
     final String version = await _channel.invokeMethod('getPlatformVersion');
@@ -62,6 +21,15 @@ class WonderpushFlutterPlugin {
 
   static Future<String> get name async {
     return Future.value("FlutterWonderPush");
+  }
+
+  static Future<bool> initBG() async {
+    final SharedPreferences prefs = await _prefs;
+    String clientId = prefs.getString('clientId');
+    String clientSecret = prefs.getString('clientSecret');
+    String senderId = prefs.getString('userId');
+    await init(
+        clientId: clientId, clientSecret: clientSecret, senderId: senderId);
   }
 
   static Future<bool> init(
@@ -75,13 +43,24 @@ class WonderpushFlutterPlugin {
     if (clientSecret == null) {
       throw ArgumentError.notNull('clientSecret');
     }
+
+    _channel.invokeMethod<bool>(
+      'handleFunction',
+      <String, dynamic>{
+        'handle': handle.toRawHandle(),
+      },
+    );
+
     await _channel.invokeMethod(
         'init', {"clientId": clientId, "clientSecret": clientSecret});
 
     if (senderId != null && senderId.trim().isNotEmpty) {
       _channel.invokeMethod('setUserId', {"userId": senderId});
     }
-
+    final SharedPreferences prefs = await _prefs;
+    prefs.setString("clientId", clientId);
+    prefs.setString("clientSecret", clientSecret);
+    prefs.setString("userId", senderId);
     return Future.value(true);
   }
 
