@@ -17,20 +17,20 @@ public class ButtonActionBroadCastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        String method = intent.getStringExtra(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_EXTRA_METHOD);
-        String arg = intent.getStringExtra(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_EXTRA_ARG);
-
-        JSONObject event = new JSONObject();
-        try {
-            event.put("type", "registeredCallback");
-            event.put("method", method);
-            event.put("arg", arg);
-        } catch (JSONException ex) {
-            Log.e("WonderPush", "Unexpected error while creating registeredCallback event", ex);
-            return;
-        }
-
-        iNotificationReceiver.sendNotificationData(event);
+//        String method = intent.getStringExtra(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_EXTRA_METHOD);
+//        String arg = intent.getStringExtra(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_EXTRA_ARG);
+//
+//        JSONObject event = new JSONObject();
+//        try {
+//            event.put("type", "registeredCallback");
+//            event.put("method", method);
+//            event.put("arg", arg);
+//        } catch (JSONException ex) {
+//            Log.e("WonderPush", "Unexpected error while creating registeredCallback event", ex);
+//            return;
+//        }
+//
+//        iNotificationReceiver.sendNotificationData(event);
     }
 
     public void registerCallback(INotificationReceiver iNotificationReceiver) {

@@ -31,10 +31,10 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class WPFirebaseMessagingService extends WonderPushFirebaseMessagingService {
 
     public static final String ACTION_REMOTE_MESSAGE =
-            "com.wonderpush.sdk.firebasemessaging.NOTIFICATION";
+            "com.wonderpush.sdk.WonderpushFlutterPlugin.NOTIFICATION";
     public static final String EXTRA_REMOTE_MESSAGE = "notification";
 
-    public static final String ACTION_TOKEN = "com.wonderpush.sdk.TOKEN";
+    public static final String ACTION_TOKEN = "com.wonderpush.sdk.WonderpushFlutterPlugin.TOKEN";
     public static final String EXTRA_TOKEN = "token";
 
     private static final String SHARED_PREFERENCES_KEY = "com.wonderpush.sdk.android_fcm_plugin";
@@ -86,15 +86,22 @@ public class WPFirebaseMessagingService extends WonderPushFirebaseMessagingServi
         // If application is running in the foreground use local broadcast to handle message.
         // Otherwise use the background isolate to handle message.
         if (isApplicationForeground(this)) {
+
+            Log.i(TAG, "App is running in Foreground");
             Intent intent = new Intent(ACTION_REMOTE_MESSAGE);
             intent.putExtra(EXTRA_REMOTE_MESSAGE, remoteMessage);
             LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
         } else {
+            Log.i(TAG, "App is running in Background");
             // If background isolate is not running yet, put message in queue and it will be handled
             // when the isolate starts.
             if (!isIsolateRunning.get()) {
+
+                Log.i(TAG, "add message in storage");
                 backgroundMessageQueue.add(remoteMessage);
             } else {
+
+                Log.i(TAG, "isolate is running...");
                 final CountDownLatch latch = new CountDownLatch(1);
                 new Handler(getMainLooper())
                         .post(
@@ -139,6 +146,9 @@ public class WPFirebaseMessagingService extends WonderPushFirebaseMessagingServi
     public static void startBackgroundIsolate(Context context, long callbackHandle) {
         FlutterMain.ensureInitializationComplete(context, null);
         String appBundlePath = FlutterMain.findAppBundlePath();
+
+       System.out.println(appBundlePath);
+
         FlutterCallbackInformation flutterCallback =
                 FlutterCallbackInformation.lookupCallbackInformation(callbackHandle);
         if (flutterCallback == null) {

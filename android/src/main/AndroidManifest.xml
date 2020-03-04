@@ -5,13 +5,16 @@
     <uses-permission android:name="android.permission.VIBRATE"/>
 
     <application
-
         >
         <service android:name=".WPFirebaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
+
+        <meta-data
+            android:name="flutterEmbedding"
+            android:value="2" />
 
     </application>
 </manifest>

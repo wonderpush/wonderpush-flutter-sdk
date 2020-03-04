@@ -24,16 +24,10 @@ public class DataStreamHandler extends BaseStreamHandler implements INotificatio
         buttonActionBroadCastReceiver.registerCallback(iNotificationReceiver);
     }
 
-    @Override
-    public void sendNotificationData(final JSONObject data) {
-        executor.execute(new Runnable() {
-            @Override
-            public void run() {
-                if (DataStreamHandler.super.sink != null)
-                    DataStreamHandler.super.sink.success(data);
-            }
-        });
-    }
+//    @Override
+//    public void sendNotificationData(final JSONObject data) {
+//
+//    }
 
     public void sendBool(final boolean data) {
         executor.execute(new Runnable() {
@@ -94,4 +88,25 @@ public class DataStreamHandler extends BaseStreamHandler implements INotificatio
     }
 
 
+    @Override
+    public void sendNotificationData(final Map<String, Object> data) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (DataStreamHandler.super.sink != null)
+                    DataStreamHandler.super.sink.success(data);
+            }
+        });
+    }
+
+    @Override
+    public void sendToken(final String token) {
+        executor.execute(new Runnable() {
+            @Override
+            public void run() {
+                if (DataStreamHandler.super.sink != null)
+                    DataStreamHandler.super.sink.success(token);
+            }
+        });
+    }
 }

@@ -1,36 +1,35 @@
 package com.wonderpush.sdk.wonderpush_flutter_plugin.handlers;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 
 import com.google.firebase.messaging.RemoteMessage;
 import com.wonderpush.sdk.WonderPush;
 import com.wonderpush.sdk.WonderPushFirebaseMessagingService;
-import com.wonderpush.sdk.WonderPushResourcesService;
-import com.wonderpush.sdk.WonderPushService;
 import com.wonderpush.sdk.WonderPushUserPreferences;
 import com.wonderpush.sdk.wonderpush_flutter_plugin.WPFirebaseMessagingService;
 import com.wonderpush.sdk.wonderpush_flutter_plugin.WonderPushInstance;
-import com.wonderpush.sdk.wonderpush_flutter_plugin.utils.HandleStorage;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
+import io.flutter.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
-import io.flutter.view.FlutterCallbackInformation;
-import io.flutter.view.FlutterMain;
-import io.flutter.view.FlutterNativeView;
 
 public class MethodHandler extends WonderPushFirebaseMessagingService implements MethodChannel.MethodCallHandler{
 
     MethodChannel.Result result;
     MethodCall call;
     Context context;
+    Activity mainActivity;
 
-    public MethodHandler(Context context){
+    public MethodHandler(Context context,Activity activity){
         this.context=context;
+        this.mainActivity=activity;
 
     }
 
@@ -50,7 +49,7 @@ public class MethodHandler extends WonderPushFirebaseMessagingService implements
                 result.success("My Android ${android.os.Build.VERSION.RELEASE}");
                 break;
 
-            case "handleFunction":
+            case "FcmDartService#start":
                 long setupCallbackHandle = 0;
                 long backgroundMessageHandle = 0;
                 try {
@@ -59,16 +58,25 @@ public class MethodHandler extends WonderPushFirebaseMessagingService implements
                     setupCallbackHandle = callbacks.get("setupHandle");
                     backgroundMessageHandle = callbacks.get("backgroundHandle");
                 } catch (Exception e) {
-                   // Log.e(TAG, "There was an exception when getting callback handle from Dart side");
+                    //Log.e(TAG, "There was an exception when getting callback handle from Dart side");
                     e.printStackTrace();
                 }
-
-
-                WPFirebaseMessagingService.setBackgroundSetupHandle(context, setupCallbackHandle);
-                WPFirebaseMessagingService.startBackgroundIsolate(context, setupCallbackHandle);
+                WPFirebaseMessagingService.setBackgroundSetupHandle(this.context, setupCallbackHandle);
+                WPFirebaseMessagingService.startBackgroundIsolate(this.context, setupCallbackHandle);
                 WPFirebaseMessagingService.setBackgroundMessageHandle(
-                        context, backgroundMessageHandle);
+                    this.context, backgroundMessageHandle);
+
+                result.success(true);
                 break;
+
+            case "configure":
+                //channel.invokeMethod("onToken", task.getResult().getToken());
+                if (mainActivity != null) {
+                    //sendMessageFromIntent("onLaunch", mainActivity.getIntent());
+                  }
+                result.success(WonderPush.getPushToken());
+                break;
+
 
             case "init":
                 WonderPushInstance.getInstance().setupWonderPush(this.context,call.argument("clientId").toString(),call.argument("clientSecret").toString());
@@ -338,4 +346,8 @@ public class MethodHandler extends WonderPushFirebaseMessagingService implements
         }
     }
 
+
 }
+
+
+

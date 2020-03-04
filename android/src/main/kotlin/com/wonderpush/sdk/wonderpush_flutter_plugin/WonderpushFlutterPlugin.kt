@@ -1,5 +1,4 @@
 package com.wonderpush.sdk.wonderpush_flutter_plugin
-
 import android.app.Activity
 import androidx.annotation.NonNull;
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -26,16 +25,17 @@ public class WonderpushFlutterPlugin: FlutterPlugin,ActivityAware {
   private lateinit var _bgchannel: MethodChannel
   private lateinit var _appContext: Context
   private lateinit var _eventChannel: EventChannel
-
-  private lateinit var mainActivity: Activity;
+  private  var mainActivity: Activity?= null
 
 
   private fun onAttachedToEngineMethod(context: Context, binaryMessenger: BinaryMessenger ) {
     _appContext = context
+
+    var methodHandler=MethodHandler(context,mainActivity);
     _channel = MethodChannel(binaryMessenger, Constants.METHOD_CHANNEL_NAME)
-    _channel.setMethodCallHandler(MethodHandler(context));
+    _channel.setMethodCallHandler(methodHandler);
     _bgchannel = MethodChannel(binaryMessenger, Constants.METHOD_CHANNEL_NAME_BACKGROUND)
-    _bgchannel.setMethodCallHandler(MethodHandler(context));
+    _bgchannel.setMethodCallHandler(methodHandler);
      WPFirebaseMessagingService.setBackgroundChannel(_bgchannel);
     _eventChannel=EventChannel(binaryMessenger, Constants.STREAM_CHANNEL_NAME);
      val dataHandler=DataStreamHandler();
@@ -72,10 +72,12 @@ public class WonderpushFlutterPlugin: FlutterPlugin,ActivityAware {
 
     @JvmStatic
     fun registerWith(registrar: Registrar) {
+       val wonderpush  =  WonderpushFlutterPlugin()
+       // wonderpush.setActivity(registrar.activity())
 
 //      this.mainActivity=registrar.activity();
 
-      WonderpushFlutterPlugin().onAttachedToEngineMethod(registrar.context(), registrar.messenger())
+      wonderpush.onAttachedToEngineMethod(registrar.context(), registrar.messenger())
     }
   }
 
@@ -83,7 +85,13 @@ public class WonderpushFlutterPlugin: FlutterPlugin,ActivityAware {
   }
 
   override fun onAttachedToActivity(binding: ActivityPluginBinding) {
-    mainActivity=binding.activity;
+    //mainActivity=binding.activity;
+  }
+
+
+  fun setActivity(activity: Activity){
+    mainActivity=activity
+
   }
 
   override fun onDetachedFromActivity() {
