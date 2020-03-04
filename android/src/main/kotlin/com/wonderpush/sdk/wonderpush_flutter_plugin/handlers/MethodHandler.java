@@ -20,7 +20,7 @@ import io.flutter.Log;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 
-public class MethodHandler extends WonderPushFirebaseMessagingService implements MethodChannel.MethodCallHandler{
+public class MethodHandler  implements MethodChannel.MethodCallHandler{
 
     MethodChannel.Result result;
     MethodCall call;
@@ -31,11 +31,6 @@ public class MethodHandler extends WonderPushFirebaseMessagingService implements
         this.context=context;
         this.mainActivity=activity;
 
-    }
-
-    @Override
-    public void onMessageReceived(RemoteMessage message) {
-        super.onMessageReceived(message);
     }
 
     @Override

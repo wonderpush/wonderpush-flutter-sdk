@@ -1,4 +1,5 @@
 part of wonderpush_flutter_plugin;
+
 typedef Future<dynamic> MessageHandler(Map<String, dynamic> message);
 void _wpSetupBackgroundChannel(
     {MethodChannel backgroundChannel =
@@ -9,7 +10,6 @@ void _wpSetupBackgroundChannel(
   // This is where the magic happens and we handle background events from the
   // native portion of the plugin.
   backgroundChannel.setMethodCallHandler((MethodCall call) async {
-
     print(call.arguments);
 
     if (call.method == 'handleBackgroundMessage') {
@@ -53,7 +53,6 @@ class WonderpushFlutterPlugin {
   MessageHandler _onLaunch;
   MessageHandler _onResume;
 
-
   /// On iOS, prompts the user for notification permissions the first time
   /// it is called.
   ///
@@ -90,7 +89,7 @@ class WonderpushFlutterPlugin {
     return version;
   }
 
-  EventChannel get stream  {
+  EventChannel get stream {
     return _stream;
   }
 
@@ -151,8 +150,6 @@ class WonderpushFlutterPlugin {
       );
     }
   }
-
-
 
   Future<bool> init(
       {@required String clientId,
@@ -215,7 +212,7 @@ class WonderpushFlutterPlugin {
     return version;
   }
 
-   final StreamController<String> _tokenStreamController =
+  final StreamController<String> _tokenStreamController =
       StreamController<String>.broadcast();
 
   /// Fires when a new FCM token is generated.
@@ -270,7 +267,6 @@ class WonderpushFlutterPlugin {
   }
 }
 
-
 class IosNotificationSettings {
   const IosNotificationSettings({
     this.sound = true,
@@ -290,8 +286,6 @@ class IosNotificationSettings {
   final bool badge;
   final bool provisional;
 
-
-
   @visibleForTesting
   Map<String, dynamic> toMap() {
     return <String, bool>{
@@ -305,4 +299,3 @@ class IosNotificationSettings {
   @override
   String toString() => 'PushNotificationSettings ${toMap()}';
 }
-

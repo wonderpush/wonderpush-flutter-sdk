@@ -90,11 +90,17 @@ public class DataStreamHandler extends BaseStreamHandler implements INotificatio
 
     @Override
     public void sendNotificationData(final Map<String, Object> data) {
+        System.out.println("-------inside sendNotificationData");
+        System.out.println(data);
         executor.execute(new Runnable() {
             @Override
             public void run() {
-                if (DataStreamHandler.super.sink != null)
+                if (DataStreamHandler.super.sink != null){
                     DataStreamHandler.super.sink.success(data);
+                }else {
+                    System.out.println(DataStreamHandler.super.sink);
+                }
+
             }
         });
     }

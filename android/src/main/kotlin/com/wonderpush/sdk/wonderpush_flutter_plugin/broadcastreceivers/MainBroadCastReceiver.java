@@ -47,6 +47,8 @@ public class MainBroadCastReceiver extends BroadcastReceiver {
                     intent.getParcelableExtra(WPFirebaseMessagingService.EXTRA_REMOTE_MESSAGE);
             Map<String, Object> content = parseRemoteMessage(message);
 
+            System.out.println(action);
+
             iNotificationReceiver.sendNotificationData(content);
             //channel.invokeMethod("onMessage", content);
         }

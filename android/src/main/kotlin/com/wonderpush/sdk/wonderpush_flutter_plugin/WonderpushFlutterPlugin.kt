@@ -30,6 +30,9 @@ public class WonderpushFlutterPlugin: FlutterPlugin,ActivityAware {
 
   private fun onAttachedToEngineMethod(context: Context, binaryMessenger: BinaryMessenger ) {
     _appContext = context
+    _eventChannel=EventChannel(binaryMessenger, Constants.STREAM_CHANNEL_NAME);
+     val dataHandler=DataStreamHandler();
+    _eventChannel.setStreamHandler(dataHandler);
 
     var methodHandler=MethodHandler(context,mainActivity);
     _channel = MethodChannel(binaryMessenger, Constants.METHOD_CHANNEL_NAME)
@@ -37,9 +40,8 @@ public class WonderpushFlutterPlugin: FlutterPlugin,ActivityAware {
     _bgchannel = MethodChannel(binaryMessenger, Constants.METHOD_CHANNEL_NAME_BACKGROUND)
     _bgchannel.setMethodCallHandler(methodHandler);
      WPFirebaseMessagingService.setBackgroundChannel(_bgchannel);
-    _eventChannel=EventChannel(binaryMessenger, Constants.STREAM_CHANNEL_NAME);
-     val dataHandler=DataStreamHandler();
-    _eventChannel.setStreamHandler(dataHandler);
+
+
   }
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {

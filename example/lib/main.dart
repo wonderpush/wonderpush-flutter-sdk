@@ -41,8 +41,6 @@ class Item {
   }
 }
 
-
-
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
@@ -57,24 +55,25 @@ class _MyAppState extends State<MyApp> {
   String _name = 'WonderPush Flutter Example';
   StreamSubscription streamSubscription;
   bool isLoading = true;
-  var _scaffoldKey = new GlobalKey<ScaffoldState>();
+  static var _scaffoldKey = new GlobalKey<ScaffoldState>();
 
-  
+  static Future<dynamic> _backgroundMessageHandler(
+      Map<String, dynamic> message) {
+    if (message.containsKey('data')) {
+      // Handle data message
+      final dynamic data = message['data'];
+      print("_backgroundMessageHandler data: ${data}");
+      showMessage(data);
+    }
 
-  static Future<dynamic> _backgroundMessageHandler(Map<String, dynamic> message) {
-  print("_backgroundMessageHandler");
-  if (message.containsKey('data')) {
-    // Handle data message
-    final dynamic data = message['data'];
-    print("_backgroundMessageHandler data: ${data}");
+    if (message.containsKey('notification')) {
+      // Handle notification message
+      final dynamic notification = message['notification'];
+      print("_backgroundMessageHandler notification: ${notification}");
+
+      showMessage(notification);
+    }
   }
-
-  if (message.containsKey('notification')) {
-    // Handle notification message
-    final dynamic notification = message['notification'];
-    print("_backgroundMessageHandler notification: ${notification}");
-  }
-}
 
   // void _showItemDialog(Map<String, dynamic> message) {
   //   showDialog<bool>(
@@ -90,29 +89,27 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    streamSubscription = WonderpushFlutterPlugin()
-        .stream
+    streamSubscription = _wonderpushFlutterPlugin.stream
         .receiveBroadcastStream()
         .listen((data) async {
-     
+      print("Flutter event stream is getting data $data");
+
       if (data == true) {
         //It means plugin setup is complete
         bool initialIzed = await init(clientId, clientSecret, senderId);
         if (initialIzed) {
           _wonderpushFlutterPlugin.configure(
-            onMessage: (Map<String, dynamic> message) async {
-              print("onMessage: $message");
-             // _showItemDialog(message);
-            },
-            onLaunch: (Map<String, dynamic> message) async {
-              print("onLaunch: $message");
-            },
-            onResume: (Map<String, dynamic> message) async {
-              print("onResume: $message");
-            },
-
-            onBackgroundMessage: _backgroundMessageHandler
-          );
+              onMessage: (Map<String, dynamic> message) async {
+                print("onMessage: $message");
+                // _showItemDialog(message);
+              },
+              onLaunch: (Map<String, dynamic> message) async {
+                print("onLaunch: $message");
+              },
+              onResume: (Map<String, dynamic> message) async {
+                print("onResume: $message");
+              },
+              onBackgroundMessage: _backgroundMessageHandler);
           _wonderpushFlutterPlugin.requestNotificationPermissions(
               const IosNotificationSettings(
                   sound: true, badge: true, alert: true, provisional: true));
@@ -131,23 +128,18 @@ class _MyAppState extends State<MyApp> {
             isLoading = false;
           });
         }
-      }else{
+      } else {
         print(data);
-         showMessage(data);
+        showMessage(data);
       }
     });
   }
 
- 
-  showMessage(dynamic result){
-  
+  static showMessage(dynamic result) {
     final snackBar = SnackBar(content: Text("$result"));
     if (_scaffoldKey.currentState != null)
       _scaffoldKey.currentState.showSnackBar(snackBar);
-
   }
-
-
 
   Future<bool> init(
       String clientId, String clientSecret, String senderId) async {
@@ -201,7 +193,7 @@ class _MyAppState extends State<MyApp> {
             title: Text("$_name"),
           ),
           body: Material(
-                      child: isLoading
+            child: isLoading
                 ? Center(
                     child: CircularProgressIndicator(),
                   )

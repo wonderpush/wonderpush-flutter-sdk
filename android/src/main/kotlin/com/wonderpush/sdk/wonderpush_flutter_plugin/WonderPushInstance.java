@@ -36,6 +36,7 @@ public class WonderPushInstance {
 
    public void setupWonderPush(Context ctx, String clientId,String clientSecret){
        context=ctx;
+        WonderPush.setRequiresUserConsent(false);
        WonderPush.initialize(context,clientId,clientSecret);
        if (!WonderPush.isReady()) {
            IntentFilter intentFilter= new IntentFilter();
@@ -49,7 +50,7 @@ public class WonderPushInstance {
            registeredMethodIntentFilter.addDataScheme(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_SCHEME);
            registeredMethodIntentFilter.addDataAuthority(WonderPush.INTENT_NOTIFICATION_BUTTON_ACTION_METHOD_AUTHORITY, null);
            LocalBroadcastManager.getInstance(context).registerReceiver(buttonActionBroadCastReceiver,registeredMethodIntentFilter);
-           extraSetUp();
+           //extraSetUp();
 
        }
 //       IntentFilter intentFilter= new IntentFilter(WonderPush.INTENT_INTIALIZED);
@@ -103,7 +104,7 @@ public class WonderPushInstance {
 
     void extraSetUp(){
 
-        WonderPush.setRequiresUserConsent(false);
+      
 
         WonderPushUserPreferences.setDefaultChannelId("default");
         if (WonderPushUserPreferences.getChannel("default") == null) {
