@@ -1,45 +1,16 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:wonderpush_flutter_plugin/wonderpush_flutter_sdk.dart';
 import 'package:wonderpush_flutter_plugin_example/event_list.dart';
+import 'package:wonderpush_flutter_plugin_example/model/remote_message.dart';
 import 'config/constants.dart';
 
-final Map<String, Item> _items = <String, Item>{};
-Item _itemForMessage(Map<String, dynamic> message) {
-  final dynamic data = message['data'] ?? message;
-  final String itemId = data['id'];
-  final Item item = _items.putIfAbsent(itemId, () => Item(itemId: itemId))
-    ..status = data['status'];
-  return item;
-}
 
-class Item {
-  Item({this.itemId});
-  final String itemId;
 
-  StreamController<Item> _controller = StreamController<Item>.broadcast();
-  Stream<Item> get onChanged => _controller.stream;
 
-  String _status;
-  String get status => _status;
-  set status(String value) {
-    _status = value;
-    _controller.add(this);
-  }
-
-  static final Map<String, Route<void>> routes = <String, Route<void>>{};
-  Route<void> get route {
-    final String routeName = '/detail/$itemId';
-    return routes.putIfAbsent(
-      routeName,
-      () => MaterialPageRoute<void>(
-        settings: RouteSettings(name: routeName),
-        builder: (BuildContext context) => null,
-      ),
-    );
-  }
-}
 
 void main() => runApp(MyApp());
 
@@ -59,7 +30,11 @@ class _MyAppState extends State<MyApp> {
 
   static Future<dynamic> _backgroundMessageHandler(
       Map<String, dynamic> message) {
-    if (message.containsKey('data')) {
+        parseMessage(message);
+  }
+
+  static parseMessage(Map<String, dynamic> message){
+     if (message.containsKey('data')) {
       // Handle data message
       final dynamic data = message['data'];
       print("_backgroundMessageHandler data: ${data}");
@@ -101,7 +76,7 @@ class _MyAppState extends State<MyApp> {
           _wonderpushFlutterPlugin.configure(
               onMessage: (Map<String, dynamic> message) async {
                 print("onMessage: $message");
-                showMessage(message);
+                parseMessage(message);
               },
               onLaunch: (Map<String, dynamic> message) async {
                 print("onLaunch: $message");
@@ -136,9 +111,26 @@ class _MyAppState extends State<MyApp> {
   }
 
   static showMessage(dynamic result) {
+   // if(message.containsKey('notification'))
+  //  Data data= result["data"] as Data;
+    // print("coming here $result");
+    try{
+     // RemoteMessage message=RemoteMessage.fromJson(result);
+
+        //   print("coming here $message");
+
     final snackBar = SnackBar(content: Text("$result"));
-    if (_scaffoldKey.currentState != null)
+    if (_scaffoldKey.currentState != null){
       _scaffoldKey.currentState.showSnackBar(snackBar);
+    }else{
+      print("app is in background $result");
+    }
+      
+    }catch(e){
+      print(e.message);
+    }
+    
+
   }
 
   Future<bool> init(
