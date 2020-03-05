@@ -101,7 +101,7 @@ class _MyAppState extends State<MyApp> {
           _wonderpushFlutterPlugin.configure(
               onMessage: (Map<String, dynamic> message) async {
                 print("onMessage: $message");
-                // _showItemDialog(message);
+                showMessage(message);
               },
               onLaunch: (Map<String, dynamic> message) async {
                 print("onLaunch: $message");

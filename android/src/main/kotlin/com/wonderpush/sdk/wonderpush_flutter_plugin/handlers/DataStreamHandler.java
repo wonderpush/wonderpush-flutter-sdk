@@ -1,8 +1,8 @@
 package com.wonderpush.sdk.wonderpush_flutter_plugin.handlers;
-import com.wonderpush.sdk.wonderpush_flutter_plugin.WonderPushInstance;
+//import com.wonderpush.sdk.wonderpush_flutter_plugin.WonderPushInstance;
 import com.wonderpush.sdk.wonderpush_flutter_plugin.broadcastreceivers.ButtonActionBroadCastReceiver;
 import com.wonderpush.sdk.wonderpush_flutter_plugin.broadcastreceivers.INotificationReceiver;
-import com.wonderpush.sdk.wonderpush_flutter_plugin.broadcastreceivers.MainBroadCastReceiver;
+//import com.wonderpush.sdk.wonderpush_flutter_plugin.broadcastreceivers.MainBroadCastReceiver;
 import com.wonderpush.sdk.wonderpush_flutter_plugin.handlers.BaseStreamHandler;
 
 import org.json.JSONObject;
@@ -14,14 +14,14 @@ import io.flutter.plugin.common.EventChannel;
 
 public class DataStreamHandler extends BaseStreamHandler implements INotificationReceiver {
 
-    private static MainBroadCastReceiver mainBroadCastReceiver= WonderPushInstance.mainBroadCastReceiver;
-    private static ButtonActionBroadCastReceiver buttonActionBroadCastReceiver= WonderPushInstance.buttonActionBroadCastReceiver;
+//    private static MainBroadCastReceiver mainBroadCastReceiver= WonderPushInstance.mainBroadCastReceiver;
+//    private static ButtonActionBroadCastReceiver buttonActionBroadCastReceiver= WonderPushInstance.buttonActionBroadCastReceiver;
     private static INotificationReceiver iNotificationReceiver;
 
     public DataStreamHandler(){
         iNotificationReceiver =this;
-        mainBroadCastReceiver.registerCallback(iNotificationReceiver);
-        buttonActionBroadCastReceiver.registerCallback(iNotificationReceiver);
+//        mainBroadCastReceiver.registerCallback(iNotificationReceiver);
+        //buttonActionBroadCastReceiver.registerCallback(iNotificationReceiver);
     }
 
 //    @Override
@@ -78,7 +78,6 @@ public class DataStreamHandler extends BaseStreamHandler implements INotificatio
     @Override
     public void onListen(Object o, EventChannel.EventSink eventSink) {
         super.onListen(o, eventSink);
-
         eventSink.success(true);
     }
 

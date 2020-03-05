@@ -97,21 +97,21 @@ class WonderpushFlutterPlugin {
     return Future.value("FlutterWonderPush");
   }
 
-  Future<bool> initBG() async {
-    // final SharedPreferences prefs = await _prefs;
-    // String clientId = prefs.getString('clientId');
-    // String clientSecret = prefs.getString('clientSecret');
-    // String senderId = prefs.getString('userId');
+  // Future<bool> initBG() async {
+  //   // final SharedPreferences prefs = await _prefs;
+  //   // String clientId = prefs.getString('clientId');
+  //   // String clientSecret = prefs.getString('clientSecret');
+  //   // String senderId = prefs.getString('userId');
 
-    const String clientId =
-        "7b61b48bdaf2bc40da311b96812e3a833c9ee48d"; //set your client id here
-    const String clientSecret =
-        "08fd5728caa4df728e2deff50bf01466224326f7015c26c7df7ce917523eb305";
+  //   const String clientId =
+  //       "7b61b48bdaf2bc40da311b96812e3a833c9ee48d"; //set your client id here
+  //   const String clientSecret =
+  //       "08fd5728caa4df728e2deff50bf01466224326f7015c26c7df7ce917523eb305";
 
-    const String senderId = "";
-    await init(
-        clientId: clientId, clientSecret: clientSecret, senderId: senderId);
-  }
+  //   const String senderId = "";
+  //   await init(
+  //       clientId: clientId, clientSecret: clientSecret, senderId: senderId);
+  // }
 
   void configure({
     MessageHandler onMessage,
@@ -246,6 +246,9 @@ class WonderpushFlutterPlugin {
   }
 
   Future<dynamic> _handleMethod(MethodCall call) async {
+    print("Flutter : _handleMethod Start");
+    print(call.arguments);
+    print("Flutter : _handleMethod End");
     switch (call.method) {
       case "onToken":
         final String token = call.arguments;
