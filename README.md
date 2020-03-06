@@ -1,6 +1,6 @@
 # WonderPush Flutter Plugin (Only on Android, Not Production Ready yet)
 
-Flutter Plugin for WonderPush Notifcation
+Flutter SDK for WonderPush − Advanced push notification service for mobile applications and Websites. High volume, fast delivery and full-featured starting €1/month.
 
 ## Rename config file 
 
