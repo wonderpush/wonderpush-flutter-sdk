@@ -416,8 +416,8 @@ public class WonderpushFlutterPlugin : FlutterPlugin, ActivityAware, MethodChann
 
         WonderPush.setRequiresUserConsent(false)
         WonderPush.initialize(_appContext, clientId, clientSecret)
-        if (!WonderPush.isReady()) {
-            val intentFilter = IntentFilter()
+//        if (!WonderPush.isReady()) {
+            val intentFilter = IntentFilter(WonderPush.INTENT_INTIALIZED)
             intentFilter.addAction(WPFirebaseMessagingService.ACTION_TOKEN)
             intentFilter.addAction(WPFirebaseMessagingService.ACTION_REMOTE_MESSAGE)
             LocalBroadcastManager.getInstance(_appContext).registerReceiver(this, intentFilter)
@@ -430,7 +430,7 @@ public class WonderpushFlutterPlugin : FlutterPlugin, ActivityAware, MethodChann
 //      LocalBroadcastManager.getInstance(_appContext).registerReceiver(buttonActionBroadCastReceiver, registeredMethodIntentFilter)
             //extraSetUp();
 
-        }
+       // }
         //       IntentFilter intentFilter= new IntentFilter(WonderPush.INTENT_INTIALIZED);
         //       intentFilter.addAction(WPFirebaseMessagingService.ACTION_TOKEN);
         //       intentFilter.addAction(WPFirebaseMessagingService.ACTION_REMOTE_MESSAGE);

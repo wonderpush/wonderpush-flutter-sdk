@@ -3,7 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:wonderpush_flutter_plugin/wonderpush_flutter_sdk.dart';
+import 'package:wonderpush_flutter_plugin/wonderpush_flutter_plugin.dart';
 import 'package:wonderpush_flutter_plugin_example/event_list.dart';
 import 'package:wonderpush_flutter_plugin_example/model/remote_message.dart';
 import 'config/constants.dart';

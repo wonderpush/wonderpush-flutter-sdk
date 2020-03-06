@@ -1,13 +1,12 @@
-# wonderpush_flutter_plugin
+# wonderpush_flutter_plugin (Only on Android, Not Production Ready)
 
-A new flutter plugin project.
+Flutter Plugin for WonderPush Notifcation
 
 ## Rename config file 
 
 rename example/lib/config/constants.sample.dart  to example/lib/config/constants.dart and put Client ID and Client Secret.
 
 ## Getting Started
-
 
 
 This project is a starting point for a Flutter

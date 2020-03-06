@@ -9,7 +9,10 @@ import android.os.Handler;
 import android.os.Process;
 import android.util.Log;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+import com.wonderpush.sdk.WonderPush;
 import com.wonderpush.sdk.WonderPushFirebaseMessagingService;
 import com.wonderpush.sdk.wonderpush_flutter_plugin.utils.LatchResult;
 
@@ -83,6 +86,8 @@ public class WPFirebaseMessagingService extends WonderPushFirebaseMessagingServi
      */
     @Override
     public void onMessageReceived(final RemoteMessage remoteMessage) {
+
+        //WonderPushFirebaseMessagingService.onMessageReceived(this, remoteMessage);
         // If application is running in the foreground use local broadcast to handle message.
         // Otherwise use the background isolate to handle message.
         if (isApplicationForeground(this)) {
@@ -132,6 +137,8 @@ public class WPFirebaseMessagingService extends WonderPushFirebaseMessagingServi
         Intent intent = new Intent(ACTION_TOKEN);
         intent.putExtra(EXTRA_TOKEN, token);
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+        //if(WonderPush.isReady())
+        //WonderPushFirebaseMessagingService.onNewToken(this, token);
     }
 
     /**
@@ -337,4 +344,6 @@ public class WPFirebaseMessagingService extends WonderPushFirebaseMessagingServi
         }
         return false;
     }
+
+
 }
