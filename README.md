@@ -1,4 +1,4 @@
-# wonderpush_flutter_plugin (Only on Android, Not Production Ready)
+# WonderPush Flutter Plugin (Only on Android, Not Production Ready yet)
 
 Flutter Plugin for WonderPush Notifcation
 
