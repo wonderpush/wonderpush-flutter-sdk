@@ -10,6 +10,6 @@
 
 @implementation WonderpushFlutterPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [SwiftWonderpushFlutterPlugin registerWithRegistrar:registrar];
+    [SwiftWonderpushFlutterPlugin registerWithRegistrar:registrar];
 }
 @end

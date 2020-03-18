@@ -26,6 +26,7 @@ public class SwiftWonderpushFlutterPlugin: NSObject, FlutterPlugin {
     case "trackEvent":
         if let arguments = call.arguments as? [String:Any],let eventType = arguments["eventType"] as? String{
             WonderPush.trackEvent(eventType)
+            WonderPush.subscribeToNotifications()
             result("Subscribed to event "+eventType+"successfully")
         }
 
