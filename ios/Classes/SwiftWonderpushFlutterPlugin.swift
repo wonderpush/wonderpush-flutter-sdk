@@ -21,14 +21,27 @@ public class SwiftWonderpushFlutterPlugin: NSObject, FlutterPlugin {
             WonderPush.setClientId(clientId, secret: clientSecret)
             WonderPush.setupDelegate(for: UIApplication.shared)
              WonderPush.setupDelegateForUserNotificationCenter()
+            WonderPush.subscribeToNotifications()
             result("Wonderpush initalized successfully");
         }else{
             result("Wonderpush initalized failed due to data mismatch datatype");
         }
+        
+    case "subscribeToNotifications":
+        WonderPush.subscribeToNotifications()
+        result("Wonderpush subscribed successfully");
+        
+    case "isSubscribedToNotifications":
+        result(WonderPush.isSubscribedToNotifications)
+        
+    case "unsubscribeFromNotifications":
+        WonderPush.unsubscribeFromNotifications()
+        result("Wonderpush unsubscribed successfully");
+        
     case "trackEvent":
         if let arguments = call.arguments as? [String:Any],let eventType = arguments["eventType"] as? String{
             WonderPush.trackEvent(eventType, attributes:nil)
-            WonderPush.subscribeToNotifications()
+            
             result("Subscribed to event "+eventType+"successfully")
         }
 
