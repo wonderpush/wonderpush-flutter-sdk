@@ -7,6 +7,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
+import com.wonderpush.sdk.WonderPush;
 
 /** SdkPlugin */
 public class SdkPlugin implements FlutterPlugin, MethodCallHandler {
@@ -32,14 +33,34 @@ public class SdkPlugin implements FlutterPlugin, MethodCallHandler {
 
   @Override
   public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-    if (call.method.equals("getPlatformVersion")) {
-      result.success("Android " + android.os.Build.VERSION.RELEASE);
-    } else {
-      result.notImplemented();
+    switch (call.method){
+      case "getPlatformVersion":
+        result.success(getPlatformVersion());
+        break;
+      case "setLogging":
+        boolean enable = call.argument("enable");
+        result.success(setLogging(enable));
+        break;
+      default:
+        result.notImplemented();
+        break;
     }
   }
 
   @Override
   public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+  }
+
+  public String getPlatformVersion(){
+    return android.os.Build.VERSION.RELEASE.toString();
+  }
+
+  public Object setLogging(boolean enable){
+    try {
+      WonderPush.setLogging(enable);
+      return null;
+    } catch (Exception e) {
+      return e;
+    }
   }
 }
