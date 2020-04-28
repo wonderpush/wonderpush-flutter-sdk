@@ -30,13 +30,50 @@ class _MyAppState extends State<MyApp> {
       platformVersion = 'Failed to get platform version.';
     }
 
-     try {
-      var logging = await Sdk.setLogging(true);
-      print('setLogging Done.');
+    try {
+     var result = await Sdk.setLogging(true);
+      print('setLogging Done. $result');
     } on PlatformException {
       print('setLogging: error occured');
     }
+    try {
+     var result1 = await Sdk.subscribeToNotifications;
+      print('subscribeToNotifications Done. $result1');
+    } on PlatformException {
+      print('subscribeToNotifications: error occured');
+    }
+     try {
+     bool result2 = await Sdk.isSubscribedToNotifications;
+      print('isSubscribedToNotifications Done. $result2');
+    } on PlatformException {
+      print('isSubscribedToNotifications: error occured');
+    }
 
+       try {
+       var result3 =  await Sdk.unsubscribeFromNotifications;
+      print('unsubscribeFromNotifications Done. $result3');
+    } on PlatformException {
+      print('unsubscribeFromNotifications: error occured');
+    }
+       try {
+     var result4 = await Sdk.isSubscribedToNotifications;
+      print('isSubscribedToNotifications1 Done. $result4');
+    } on PlatformException {
+      print('isSubscribedToNotifications1: error occured');
+    }
+ try {
+     var result5 = await Sdk.setUserId("rakesh");
+      print('setUserId Done. $result5');
+    } on PlatformException {
+      print('setUserId: error occured');
+    }
+
+    try {
+     var result6 = await Sdk.getUserId;
+      print('getUserId Done. $result6');
+    } on PlatformException {
+      print('getUserId: error occured');
+    }
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.

@@ -13,9 +13,11 @@ import com.wonderpush.sdk.WonderPush;
 public class SdkPlugin implements FlutterPlugin, MethodCallHandler {
   @Override
   public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
+    WonderPush.setIntegrator("flutter-wonderpush-1.0.0");
     final MethodChannel channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "sdk");
     channel.setMethodCallHandler(new SdkPlugin());
   }
+   
 
   // This static function is optional and equivalent to onAttachedToEngine. It supports the old
   // pre-Flutter-1.12 Android projects. You are encouraged to continue supporting
@@ -41,6 +43,22 @@ public class SdkPlugin implements FlutterPlugin, MethodCallHandler {
         boolean enable = call.argument("enable");
         result.success(setLogging(enable));
         break;
+      case "subscribeToNotifications":
+        result.success(subscribeToNotifications());
+        break;
+      case "unsubscribeFromNotifications":
+        result.success(unsubscribeFromNotifications());
+        break;
+      case "isSubscribedToNotifications":
+        result.success(isSubscribedToNotifications());
+        break;
+      case "setUserId":
+        String userId = call.argument("userId");
+        result.success(setUserId(userId));
+        break;
+      case "getUserId":
+        result.success(getUserId());
+        break;
       default:
         result.notImplemented();
         break;
@@ -56,11 +74,58 @@ public class SdkPlugin implements FlutterPlugin, MethodCallHandler {
   }
 
   public Object setLogging(boolean enable){
-    try {
+     try {
       WonderPush.setLogging(enable);
       return null;
     } catch (Exception e) {
       return e;
     }
   }
+
+  public Object subscribeToNotifications(){
+    try {
+      WonderPush.subscribeToNotifications();
+      return null;
+    } catch (Exception e) {
+      return e;
+    }
+  } 
+
+  public Object unsubscribeFromNotifications(){
+    try {
+      WonderPush.unsubscribeFromNotifications();
+      return null;
+    } catch (Exception e) {
+      return e;
+    }
+  } 
+
+   public Object isSubscribedToNotifications(){
+    try {
+      WonderPush.isSubscribedToNotifications();
+      return null;
+    } catch (Exception e) {
+      return e;
+    }
+  } 
+
+   public Object setUserId(String userId) {
+      try {
+        WonderPush.setUserId(userId);
+        return null;
+     } catch (Exception e) {
+        return e;
+      }
+    }
+
+    public String getUserId() {
+        try {
+            String userId = WonderPush.getUserId();
+            return userId;
+        } catch (Exception e) {
+           return e.toString();
+        }
+    }
 }
+
+
