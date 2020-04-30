@@ -1,9 +1,9 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:wonderpush/wonderpush.dart';
+import 'package:wonderpushflutter/wonderpushflutter.dart';
 
 void main() {
-  const MethodChannel channel = MethodChannel('wonderpush');
+  const MethodChannel channel = MethodChannel('wonderpushflutter');
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -18,6 +18,6 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    expect(await WonderPush.platformVersion, '42');
+    expect(await Wonderpushflutter.platformVersion, '42');
   });
 }

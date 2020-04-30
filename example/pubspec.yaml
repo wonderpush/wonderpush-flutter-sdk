@@ -1,5 +1,5 @@
-name: wonderpush_example
-description: Demonstrates how to use the wonderpush plugin.
+name: wonderpushflutter_example
+description: Demonstrates how to use the wonderpushflutter plugin.
 publish_to: 'none'
 
 environment:
@@ -17,7 +17,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  wonderpush:
+  wonderpushflutter:
     path: ../
 
 # For information on the generic Dart part of this file, see the

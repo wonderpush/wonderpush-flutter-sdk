@@ -1,8 +1,8 @@
-name: wonderpush
+name: wonderpushflutter
 description: WonderPush Flutter SDK
 version: 0.0.1
-author:
-homepage:
+author: WonderPush
+homepage: https://www.wonderpush.com/
 
 environment:
   sdk: ">=2.1.0 <3.0.0"

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:wonderpush/wonderpush.dart';
+import 'package:wonderpushflutter/wonderpushflutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -23,6 +23,50 @@ class _MyAppState extends State<MyApp> {
   Future<void> initPlatformState() async {
     // Platform messages may fail, so we use a try/catch PlatformException.
    
+    try {
+      await Wonderpushflutter.setLogging(true);
+      print('setLogging Done.');
+    } on PlatformException {
+      print('setLogging: error occured');
+    }
+    try {
+      await Wonderpushflutter.subscribeToNotifications;
+      print('subscribeToNotifications Done.');
+    } on PlatformException {
+      print('subscribeToNotifications: error occured');
+    }
+     try {
+     bool result2 = await Wonderpushflutter.isSubscribedToNotifications;
+      print('isSubscribedToNotifications Done. $result2');
+    } on PlatformException {
+      print('isSubscribedToNotifications: error occured');
+    }
+
+       try {
+        await Wonderpushflutter.unsubscribeFromNotifications;
+        print('unsubscribeFromNotifications Done.');
+    } on PlatformException {
+      print('unsubscribeFromNotifications: error occured');
+    }
+       try {
+        bool result3 = await Wonderpushflutter.isSubscribedToNotifications;
+      print('isSubscribedToNotifications1 Done. $result3');
+    } on PlatformException {
+      print('isSubscribedToNotifications1: error occured');
+    }
+ try {
+     await Wonderpushflutter.setUserId("rakesh");
+      print('setUserId Done');
+    } on PlatformException {
+      print('setUserId: error occured');
+    }
+
+    try {
+     var result6 = await Wonderpushflutter.getUserId;
+      print('getUserId Done. $result6');
+    } on PlatformException {
+      print('getUserId: error occured');
+    }
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling

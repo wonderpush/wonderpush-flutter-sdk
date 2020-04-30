@@ -1,21 +1,30 @@
 PODS:
   - Flutter (1.0.0)
-  - wonderpush (0.0.1):
+  - WonderPush (3.3.3):
+    - WonderPush/Core (= 3.3.3)
+  - WonderPush/Core (3.3.3)
+  - wonderpushflutter (0.0.1):
     - Flutter
+    - WonderPush (~> 3.3.3)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - wonderpush (from `.symlinks/plugins/wonderpush/ios`)
+  - wonderpushflutter (from `.symlinks/plugins/wonderpushflutter/ios`)
+
+SPEC REPOS:
+  trunk:
+    - WonderPush
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  wonderpush:
-    :path: ".symlinks/plugins/wonderpush/ios"
+  wonderpushflutter:
+    :path: ".symlinks/plugins/wonderpushflutter/ios"
 
 SPEC CHECKSUMS:
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
-  wonderpush: 33b95e53171e211fac9a6ddbcea6be75c42220e7
+  WonderPush: 645fb3bd8d07a12eb3d48b3d71b7ee8f5a878535
+  wonderpushflutter: efefb051ec3d7d7c1e4bdfaf88dd8de08a7b3007
 
 PODFILE CHECKSUM: 3dbe063e9c90a5d7c9e4e76e70a821b9e2c1d271
 

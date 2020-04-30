@@ -184,7 +184,7 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.8"
-  wonderpush:
+  wonderpushflutter:
     dependency: "direct dev"
     description:
       path: ".."
