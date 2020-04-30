@@ -1,4 +1,4 @@
-group 'com.wonderpush.sdk.flutterh'
+group 'com.wonderpush.sdk.flutter'
 version '1.0'
 
 buildscript {
@@ -31,4 +31,7 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+}
+dependencies {
+    implementation 'com.wonderpush:wonderpush-android-sdk:3.2.0'
 }
