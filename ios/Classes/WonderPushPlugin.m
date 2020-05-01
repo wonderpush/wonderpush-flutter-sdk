@@ -35,6 +35,12 @@
              result(nil);
         }else if ([@"getUserId" isEqualToString:call.method]) {
             result([self getUserId]);
+        }else if ([@"getUserId" isEqualToString:call.method]) {
+            result([self getUserId]);
+        }else if ([@"getInstallationId" isEqualToString:call.method]) {
+            result([self getInstallationId]);
+        }else if ([@"getPushToken" isEqualToString:call.method]) {
+            result([self getPushToken]);
         }else if ([@"setLogging" isEqualToString:call.method]) {
             BOOL enable = [[call.arguments valueForKey:@"enable"] boolValue];
             [self setLogging:enable];
@@ -95,12 +101,20 @@
 
 #pragma mark - Installation info
 
+-(NSString *)getInstallationId{
+   NSString *installationId = [WonderPush installationId];
+   return installationId;
+}
+
+-(NSString *)getPushToken{
+   NSString *pushToken = [WonderPush pushToken];
+   return pushToken;
+}
+
 #pragma mark - Debug
 
 -(void)setLogging:(BOOL) enable{
     [WonderPush setLogging:enable];
 }
-
-
 
 @end

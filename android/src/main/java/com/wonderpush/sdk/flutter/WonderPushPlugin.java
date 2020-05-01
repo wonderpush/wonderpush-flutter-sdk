@@ -70,6 +70,12 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 case "getUserId":
                     result.success(getUserId());
                     break;
+                case "getInstallationId":
+                    result.success(getInstallationId());
+                    break;
+                case "getPushToken":
+                    result.success(getPushToken());
+                    break;
                 case "setLogging":
                     boolean enable = call.argument("enable");
                     setLogging(enable);
@@ -131,7 +137,15 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     // Installation info	
+    public String getInstallationId() {
+        String installationId = WonderPush.getInstallationId();
+        return installationId;
+    }
 
+    public String getPushToken() {
+        String pushToken = WonderPush.getPushToken();
+        return pushToken;
+    }
     // Debug
 
     public void setLogging(boolean enable) {

@@ -91,6 +91,19 @@ class _MyAppState extends State<MyApp> {
       print('hasTag: error occured');
     }
 
+    try {
+     var result9 = await Wonderpushflutter.getInstallationId;
+      print('getInstallationId Done. $result9');
+    } on PlatformException {
+      print('getInstallationId: error occured');
+    }
+
+    try {
+     var result10 = await Wonderpushflutter.getPushToken;
+      print('getPushToken Done. $result10');
+    } on PlatformException {
+      print('getPushToken: error occured');
+    }
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling

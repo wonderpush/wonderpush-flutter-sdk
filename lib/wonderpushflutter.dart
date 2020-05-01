@@ -53,6 +53,15 @@ class Wonderpushflutter {
   }
 
   // Installation info	
+  static Future<String> get getPushToken async {
+    final String pushToken = await _channel.invokeMethod('getPushToken');
+    return pushToken;
+  }
+
+  static Future<String> get getInstallationId async {
+    final String installationId = await _channel.invokeMethod('getInstallationId');
+    return installationId;
+  }
 
   // Debug
 
