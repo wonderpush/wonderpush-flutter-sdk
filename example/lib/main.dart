@@ -29,6 +29,7 @@ class _MyAppState extends State<MyApp> {
     } on PlatformException {
       print('setLogging: error occured');
     }
+
     try {
       await Wonderpushflutter.subscribeToNotifications;
       print('subscribeToNotifications Done.');
@@ -54,6 +55,7 @@ class _MyAppState extends State<MyApp> {
     } on PlatformException {
       print('isSubscribedToNotifications1: error occured');
     }
+
  try {
      await Wonderpushflutter.setUserId("rakesh");
       print('setUserId Done');
@@ -67,6 +69,28 @@ class _MyAppState extends State<MyApp> {
     } on PlatformException {
       print('getUserId: error occured');
     }
+
+     try {
+     var result7 = await Wonderpushflutter.isReady;
+      print('isReady Done. $result7');
+    } on PlatformException {
+      print('isReady: error occured');
+    }
+
+    try {
+      await Wonderpushflutter.removeAllTags;
+      print('removeAllTags Done');
+    } on PlatformException {
+      print('isReadremoveAllTagsy: error occured');
+    }
+
+     try {
+      var result8 = await Wonderpushflutter.hasTag("sports");
+      print('hasTag Done. $result8');
+    } on PlatformException {
+      print('hasTag: error occured');
+    }
+
 
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling

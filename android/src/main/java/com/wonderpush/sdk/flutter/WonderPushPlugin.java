@@ -40,10 +40,8 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         try {
             switch (call.method) {
-                case "setLogging":
-                    boolean enable = call.argument("enable");
-                    setLogging(enable);
-                    result.success(null);
+                case "isReady":
+                    result.success(isReady());
                     break;
                 case "subscribeToNotifications":
                     subscribeToNotifications();
@@ -56,6 +54,14 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 case "isSubscribedToNotifications":
                     result.success(isSubscribedToNotifications());
                     break;
+                case "removeAllTags":
+                    removeAllTags();
+                    result.success(null);
+                    break;
+                case "hasTag":
+                    String tag = call.argument("tag");
+                    result.success(hasTag(tag));
+                    break;
                 case "setUserId":
                     String userId = call.argument("userId");
                     setUserId(userId);
@@ -63,6 +69,11 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     break;
                 case "getUserId":
                     result.success(getUserId());
+                    break;
+                case "setLogging":
+                    boolean enable = call.argument("enable");
+                    setLogging(enable);
+                    result.success(null);
                     break;
                 default:
                     result.notImplemented();
@@ -77,9 +88,13 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
     }
 
-    public void setLogging(boolean enable) {
-        WonderPush.setLogging(enable);
+    // Initialization
+
+    public boolean isReady(){
+         boolean status = WonderPush.isReady();
+         return status;
     }
+     // Subscribing users
 
     public void subscribeToNotifications() {
         WonderPush.subscribeToNotifications();
@@ -94,6 +109,18 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         return status;
     }
 
+    // Segmentation
+    public void removeAllTags() {
+        WonderPush.removeAllTags();
+    }
+    
+     public boolean hasTag(String tag) {
+        boolean status = WonderPush.hasTag(tag);
+        return status;
+    }
+   
+     // User IDs	
+
     public void setUserId(String userId) {
       WonderPush.setUserId(userId);
     }
@@ -101,5 +128,13 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     public String getUserId() {
         String userId = WonderPush.getUserId();
         return userId;
+    }
+
+    // Installation info	
+
+    // Debug
+
+    public void setLogging(boolean enable) {
+        WonderPush.setLogging(enable);
     }
 }

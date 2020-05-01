@@ -13,10 +13,8 @@
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
  @try {
-         if ([@"setLogging" isEqualToString:call.method]) {
-            BOOL enable = [[call.arguments valueForKey:@"enable"] boolValue];
-            [self setLogging:enable];
-            result(nil);
+        if ([@"isReady" isEqualToString:call.method]) {
+             result([self isReady]);
          }else if ([@"subscribeToNotifications" isEqualToString:call.method]) {
              [self subscribeToNotifications];
              result(nil);
@@ -24,14 +22,23 @@
              [self unsubscribeFromNotifications];
              result(nil);
          }else if ([@"isSubscribedToNotifications" isEqualToString:call.method]) {
-             [self isSubscribedToNotifications];
+             result([self isSubscribedToNotifications]);
+         }else if ([@"removeAllTags" isEqualToString:call.method]) {
+             [self removeAllTags];
              result(nil);
+         }else if ([@"hasTag" isEqualToString:call.method]) {
+             NSString *tag = [call.arguments valueForKey:@"tag"];
+             result([self hasTag:tag]);
          }else if ([@"setUserId" isEqualToString:call.method]) {
              NSString *userId = [call.arguments valueForKey:@"userId"];
              [self setUserId:userId];
              result(nil);
         }else if ([@"getUserId" isEqualToString:call.method]) {
             result([self getUserId]);
+        }else if ([@"setLogging" isEqualToString:call.method]) {
+            BOOL enable = [[call.arguments valueForKey:@"enable"] boolValue];
+            [self setLogging:enable];
+            result(nil);
         } else {
             result(FlutterMethodNotImplemented);
         }
@@ -42,9 +49,14 @@
   }
 }
 
--(void)setLogging:(BOOL) enable{
-    [WonderPush setLogging:enable];
+#pragma mark - Initialization	
+
+-(id)isReady{
+    BOOL status = [WonderPush isReady];
+    return [NSNumber numberWithBool:status];
 }
+
+#pragma mark - Subscribing users
 
 -(void)subscribeToNotifications{
    [WonderPush subscribeToNotifications];
@@ -54,10 +66,23 @@
     [WonderPush unsubscribeFromNotifications];
 }
 
--(BOOL)isSubscribedToNotifications{
+-(id)isSubscribedToNotifications{
    BOOL status =  [WonderPush isSubscribedToNotifications];
    return [NSNumber numberWithBool:status];
 }
+
+#pragma mark - Segmentation	
+
+-(void)removeAllTags{
+    [WonderPush removeAllTags];
+}
+
+-(id)hasTag:(NSString *)tag{
+   BOOL status =  [WonderPush hasTag:tag];
+   return [NSNumber numberWithBool:status];
+}
+
+#pragma mark - User IDs	
 
 -(void)setUserId:(NSString *)userId{
    [WonderPush setUserId:userId];
@@ -67,5 +92,15 @@
    NSString *userId = [WonderPush userId];
    return userId;
 }
+
+#pragma mark - Installation info
+
+#pragma mark - Debug
+
+-(void)setLogging:(BOOL) enable{
+    [WonderPush setLogging:enable];
+}
+
+
 
 @end
