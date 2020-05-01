@@ -62,6 +62,38 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     String tag = call.argument("tag");
                     result.success(hasTag(tag));
                     break;
+               case "setCountry":
+                    String country = call.argument("country");
+                    setCountry(country);
+                    result.success(null);
+                    break;
+               case "getCountry":
+                    result.success(getCountry());
+                    break;
+               case "setCurrency":
+                    String currency = call.argument("currency");
+                    setCurrency(currency);
+                    result.success(null);
+                    break;
+                case "getCurrency":
+                    result.success(getCurrency());
+                    break;
+               case "setLocale":
+                    String locale = call.argument("locale");
+                    setLocale(locale);
+                    result.success(null);
+                    break;
+                case "getLocale":
+                    result.success(getLocale());
+                    break;
+               case "setTimeZone":
+                    String timeZone = call.argument("timeZone");
+                    setTimeZone(timeZone);
+                    result.success(null);
+                    break;
+                case "getTimeZone":
+                    result.success(getTimeZone());
+                    break;
                 case "setUserId":
                     String userId = call.argument("userId");
                     setUserId(userId);
@@ -125,6 +157,41 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         return status;
     }
    
+    public String getCountry() {
+        String country = WonderPush.getCountry();
+        return country;
+    }
+
+    public void setCountry(String country) {
+        WonderPush.setCountry(country);
+    }
+
+    public String getCurrency() {
+        String currency = WonderPush.getCurrency();
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        WonderPush.setCurrency(currency);
+    }
+
+    public String getLocale() {
+        String locale = WonderPush.getLocale();
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        WonderPush.setLocale(locale);
+    }
+
+    public String getTimeZone() {
+       String timeZone = WonderPush.getTimeZone();
+       return timeZone;
+    }
+
+    public void setTimeZone(String timeZone) {
+        WonderPush.setTimeZone(timeZone);
+    }
      // User IDs	
 
     public void setUserId(String userId) {

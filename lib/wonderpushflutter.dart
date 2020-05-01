@@ -39,9 +39,55 @@ class Wonderpushflutter {
      return result;
   }
 
+  static Future<void> setCountry (String country) async {
+    Map<String,String> args = <String,String>{};
+    args.putIfAbsent("country", () => country);
+    await _channel.invokeMethod('setCountry', args);
+  }
+
+  static Future<String> get getCountry async {
+    final String country = await _channel.invokeMethod('getCountry');
+    return country;
+  }
+
+  static Future<void> setCurrency (String currency) async {
+    Map<String,String> args = <String,String>{};
+    args.putIfAbsent("currency", () => currency);
+    await _channel.invokeMethod('setCurrency', args);
+  }
+
+  static Future<String> get getCurrency async {
+    final String currency = await _channel.invokeMethod('getCurrency');
+    return currency;
+  }
+
+
+  static Future<void> setLocale (String locale) async {
+    Map<String,String> args = <String,String>{};
+    args.putIfAbsent("locale", () => locale);
+    await _channel.invokeMethod('setLocale', args);
+  }
+
+  static Future<String> get getLocale async {
+    final String locale = await _channel.invokeMethod('getLocale');
+    return locale;
+  }
+
+  static Future<void> setTimeZone (String timeZone) async {
+    Map<String,String> args = <String,String>{};
+    args.putIfAbsent("timeZone", () => timeZone);
+    await _channel.invokeMethod('setTimeZone', args);
+  }
+
+  static Future<String> get getTimeZone async {
+    final String timeZone = await _channel.invokeMethod('getTimeZone');
+    return timeZone;
+  }
+
+
    // User IDs	
 
-  static Future<void> setUserId (String userId) async {
+   static Future<void> setUserId (String userId) async {
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("userId", () => userId);
     await _channel.invokeMethod('setUserId', args);
@@ -51,7 +97,7 @@ class Wonderpushflutter {
     final String userId = await _channel.invokeMethod('getUserId');
     return userId;
   }
-
+  
   // Installation info	
   static Future<String> get getPushToken async {
     final String pushToken = await _channel.invokeMethod('getPushToken');

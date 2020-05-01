@@ -22,7 +22,7 @@ class _MyAppState extends State<MyApp> {
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
     // Platform messages may fail, so we use a try/catch PlatformException.
-   
+    var result;
     try {
       await Wonderpushflutter.setLogging(true);
       print('setLogging Done.');
@@ -37,8 +37,8 @@ class _MyAppState extends State<MyApp> {
       print('subscribeToNotifications: error occured');
     }
      try {
-     bool result2 = await Wonderpushflutter.isSubscribedToNotifications;
-      print('isSubscribedToNotifications Done. $result2');
+     result = await Wonderpushflutter.isSubscribedToNotifications;
+      print('isSubscribedToNotifications Done. $result');
     } on PlatformException {
       print('isSubscribedToNotifications: error occured');
     }
@@ -50,13 +50,70 @@ class _MyAppState extends State<MyApp> {
       print('unsubscribeFromNotifications: error occured');
     }
        try {
-        bool result3 = await Wonderpushflutter.isSubscribedToNotifications;
-      print('isSubscribedToNotifications1 Done. $result3');
+        result = await Wonderpushflutter.isSubscribedToNotifications;
+      print('isSubscribedToNotifications1 Done. $result');
     } on PlatformException {
       print('isSubscribedToNotifications1: error occured');
     }
 
- try {
+   try {
+     await Wonderpushflutter.setCountry("US");
+      print('setCountry Done');
+    } on PlatformException {
+      print('setCountry: error occured');
+    }
+
+    try {
+     result = await Wonderpushflutter.getCountry;
+      print('getCountry Done. $result');
+    } on PlatformException {
+      print('getCountry: error occured');
+    }
+
+  try {
+     await Wonderpushflutter.setCurrency("USD");
+      print('setCurrency Done');
+    } on PlatformException {
+      print('setCurrency: error occured');
+    }
+
+    try {
+     result = await Wonderpushflutter.getCurrency;
+      print('getCurrency Done. $result');
+    } on PlatformException {
+      print('getCurrency: error occured');
+    }
+
+try {
+     await Wonderpushflutter.setLocale("en_US");
+      print('setLocale Done');
+    } on PlatformException {
+      print('setLocale: error occured');
+    }
+
+    try {
+     result = await Wonderpushflutter.getLocale;
+      print('getLocale Done. $result');
+    } on PlatformException {
+      print('getLocale: error occured');
+    }
+    
+    try {
+     await Wonderpushflutter.setTimeZone("Europe/Paris");
+      print('setTimeZone Done');
+    } on PlatformException {
+      print('setTimeZone: error occured');
+    }
+
+    try {
+     result = await Wonderpushflutter.getTimeZone;
+      print('getTimeZone Done. $result');
+    } on PlatformException {
+      print('getTimeZone: error occured');
+    }
+    
+
+    try {
      await Wonderpushflutter.setUserId("rakesh");
       print('setUserId Done');
     } on PlatformException {
@@ -64,15 +121,15 @@ class _MyAppState extends State<MyApp> {
     }
 
     try {
-     var result6 = await Wonderpushflutter.getUserId;
-      print('getUserId Done. $result6');
+     result = await Wonderpushflutter.getUserId;
+      print('getUserId Done. $result');
     } on PlatformException {
       print('getUserId: error occured');
     }
 
      try {
-     var result7 = await Wonderpushflutter.isReady;
-      print('isReady Done. $result7');
+      result = await Wonderpushflutter.isReady;
+      print('isReady Done. $result');
     } on PlatformException {
       print('isReady: error occured');
     }
@@ -85,8 +142,8 @@ class _MyAppState extends State<MyApp> {
     }
 
      try {
-      var result8 = await Wonderpushflutter.hasTag("sports");
-      print('hasTag Done. $result8');
+      result = await Wonderpushflutter.hasTag("sports");
+      print('hasTag Done. $result');
     } on PlatformException {
       print('hasTag: error occured');
     }
@@ -99,8 +156,8 @@ class _MyAppState extends State<MyApp> {
     }
 
     try {
-     var result10 = await Wonderpushflutter.getPushToken;
-      print('getPushToken Done. $result10');
+     result = await Wonderpushflutter.getPushToken;
+      print('getPushToken Done. $result');
     } on PlatformException {
       print('getPushToken: error occured');
     }

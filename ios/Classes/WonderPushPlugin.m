@@ -29,12 +29,34 @@
          }else if ([@"hasTag" isEqualToString:call.method]) {
              NSString *tag = [call.arguments valueForKey:@"tag"];
              result([self hasTag:tag]);
+         }else if ([@"setCountry" isEqualToString:call.method]) {
+              NSString *country = [call.arguments valueForKey:@"country"];
+              [self setCountry:country];
+              result(nil);
+         }else if ([@"getCountry" isEqualToString:call.method]) {
+             result([self getCountry]);
+         }else if ([@"setCurrency" isEqualToString:call.method]) {
+              NSString *currency = [call.arguments valueForKey:@"currency"];
+              [self setCurrency:currency];
+              result(nil);
+         }else if ([@"getCurrency" isEqualToString:call.method]) {
+             result([self getCurrency]);
+         }else if ([@"setLocale" isEqualToString:call.method]) {
+              NSString *locale = [call.arguments valueForKey:@"locale"];
+              [self setLocale:locale];
+              result(nil);
+         }else if ([@"getLocale" isEqualToString:call.method]) {
+             result([self getLocale]);
+         }else if ([@"setTimeZone" isEqualToString:call.method]) {
+              NSString *timeZone = [call.arguments valueForKey:@"timeZone"];
+              [self setTimeZone:timeZone];
+              result(nil);
+         }else if ([@"getTimeZone" isEqualToString:call.method]) {
+             result([self getTimeZone]);
          }else if ([@"setUserId" isEqualToString:call.method]) {
              NSString *userId = [call.arguments valueForKey:@"userId"];
              [self setUserId:userId];
              result(nil);
-        }else if ([@"getUserId" isEqualToString:call.method]) {
-            result([self getUserId]);
         }else if ([@"getUserId" isEqualToString:call.method]) {
             result([self getUserId]);
         }else if ([@"getInstallationId" isEqualToString:call.method]) {
@@ -87,6 +109,43 @@
    BOOL status =  [WonderPush hasTag:tag];
    return [NSNumber numberWithBool:status];
 }
+
+-(id)getCountry{
+   NSString *country = [WonderPush country];
+   return country;
+}
+
+-(void)setCountry:(NSString *)country{
+   [WonderPush setCountry:country];
+}
+
+-(id)getCurrency{
+   NSString *currency = [WonderPush currency];
+   return currency;
+}
+
+-(void)setCurrency:(NSString *)currency{
+   [WonderPush setCurrency:currency];
+}
+
+-(id)getLocale{
+   NSString *locale = [WonderPush locale];
+   return locale;
+}
+
+-(void)setLocale:(NSString *)locale{
+   [WonderPush setLocale:locale];
+}
+
+-(id)getTimeZone{
+   NSString *timeZone = [WonderPush timeZone];
+   return timeZone;
+}
+
+-(void)setTimeZone:(NSString *)timeZone{
+   [WonderPush setTimeZone:timeZone];
+}
+
 
 #pragma mark - User IDs	
 
