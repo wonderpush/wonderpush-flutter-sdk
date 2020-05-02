@@ -163,7 +163,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     break;
             }
         } catch (Exception e) {
-            result.error("", null, e);
+            result.error("0", e.getLocalizedMessage(), e);
         }
     }
 

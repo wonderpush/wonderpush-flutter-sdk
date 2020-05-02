@@ -105,8 +105,9 @@
             result(FlutterMethodNotImplemented);
         }
   } @catch (NSError *e) {
-      result([FlutterError errorWithCode:@""
-                                 message:nil
+      NSString *code = [NSString stringWithFormat:@"%ld", e.code];
+      result([FlutterError errorWithCode:code
+                                 message:e.localizedDescription
                                  details:e]);
   }
 }
