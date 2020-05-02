@@ -32,14 +32,14 @@ class Wonderpushflutter {
      await _channel.invokeMethod('removeAllTags');
   }
 
-  static Future<bool>  hasTag (String tag)  async {
+  static Future<bool>  hasTag(String tag)  async {
      Map<String,String> args = <String,String>{};
      args.putIfAbsent("tag", () => tag);
      final bool result = await _channel.invokeMethod('hasTag',args);
      return result;
   }
 
-  static Future<void> setCountry (String country) async {
+  static Future<void> setCountry(String country) async {
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("country", () => country);
     await _channel.invokeMethod('setCountry', args);
@@ -62,7 +62,7 @@ class Wonderpushflutter {
   }
 
 
-  static Future<void> setLocale (String locale) async {
+  static Future<void> setLocale(String locale) async {
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("locale", () => locale);
     await _channel.invokeMethod('setLocale', args);
@@ -73,7 +73,7 @@ class Wonderpushflutter {
     return locale;
   }
 
-  static Future<void> setTimeZone (String timeZone) async {
+  static Future<void> setTimeZone(String timeZone) async {
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("timeZone", () => timeZone);
     await _channel.invokeMethod('setTimeZone', args);
@@ -87,7 +87,7 @@ class Wonderpushflutter {
 
    // User IDs	
 
-   static Future<void> setUserId (String userId) async {
+  static Future<void> setUserId(String userId) async {
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("userId", () => userId);
     await _channel.invokeMethod('setUserId', args);
@@ -107,6 +107,52 @@ class Wonderpushflutter {
   static Future<String> get getInstallationId async {
     final String installationId = await _channel.invokeMethod('getInstallationId');
     return installationId;
+  }
+
+    // Privacy
+
+   static Future<void> setRequiresUserConsent(bool isConsent) async {
+      Map<String,bool> args = <String,bool>{};
+      args.putIfAbsent("isConsent", () => isConsent);
+      await _channel.invokeMethod('setRequiresUserConsent', args);
+  }
+
+  static Future<void> setUserConsent(bool isConsent) async {
+      Map<String,bool> args = <String,bool>{};
+      args.putIfAbsent("isConsent", () => isConsent);
+      await _channel.invokeMethod('setUserConsent', args);
+  }
+
+  static Future<void> disableGeolocation() async {
+      await _channel.invokeMethod('disableGeolocation');
+  }
+
+  static Future<void> enableGeolocation() async {
+      await _channel.invokeMethod('enableGeolocation');
+  }
+
+  static Future<void> setGeolocation(double lat, double lon) async {
+      Map<String,double> args = <String,double>{};
+      args.putIfAbsent("lat", () => lat);
+      args.putIfAbsent("lat", () => lon);
+      await _channel.invokeMethod('setGeolocation',args);
+  }
+
+  static Future<void> clearEventsHistory() async {
+        await _channel.invokeMethod('clearEventsHistory');
+  }
+
+  static Future<void> clearPreferences() async {
+        await _channel.invokeMethod('clearPreferences');
+  }
+
+  static Future<void> clearAllData() async {
+        await _channel.invokeMethod('clearAllData');
+  }
+  
+  static Future<dynamic> downloadAllData() async {
+      final Object data = await _channel.invokeMethod('downloadAllData');
+      return data;
   }
 
   // Debug

@@ -162,6 +162,68 @@ try {
       print('getPushToken: error occured');
     }
 
+     try {
+      await Wonderpushflutter.setRequiresUserConsent(true);
+      print('setRequiresUserConsent Done.');
+    } on PlatformException {
+      print('setRequiresUserConsent: error occured');
+    }
+
+    try {
+      await Wonderpushflutter.setUserConsent(true);
+      print('setUserConsent Done.');
+    } on PlatformException {
+      print('setUserConsent: error occured');
+    }
+
+  try {
+      await Wonderpushflutter.disableGeolocation();
+      print('disableGeolocation Done.');
+    } on PlatformException {
+      print('disableGeolocation: error occured');
+    }
+
+    try {
+      await Wonderpushflutter.enableGeolocation();
+      print('enableGeolocation Done.');
+    } on PlatformException {
+      print('enableGeolocation: error occured');
+    }
+
+  try {
+      await Wonderpushflutter.setGeolocation(1.0,1.0);
+      print('setGeolocation Done.');
+    } on PlatformException {
+      print('setGeolocation: error occured');
+    }
+
+    try {
+      await Wonderpushflutter.clearEventsHistory();
+      print('clearEventsHistory Done.');
+    } on PlatformException {
+      print('clearEventsHistory: error occured');
+    }
+
+     try {
+      await Wonderpushflutter.clearPreferences();
+      print('clearPreferences Done.');
+    } on PlatformException {
+      print('clearPreferences: error occured');
+    }
+
+     try {
+      await Wonderpushflutter.clearAllData();
+      print('clearAllData Done.');
+    } on PlatformException {
+      print('clearAllData: error occured');
+    }
+
+      try {
+      result = await Wonderpushflutter.downloadAllData();
+      print('downloadAllData Done. $result');
+    } on PlatformException {
+      print('downloadAllData: error occured');
+    }
     // If the widget was removed from the tree while the asynchronous platform
     // message was in flight, we want to discard the reply rather than calling
     // setState to update our non-existent appearance.

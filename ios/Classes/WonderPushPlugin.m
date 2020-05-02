@@ -63,6 +63,36 @@
             result([self getInstallationId]);
         }else if ([@"getPushToken" isEqualToString:call.method]) {
             result([self getPushToken]);
+        }else if ([@"setRequiresUserConsent" isEqualToString:call.method]) {
+            BOOL isConsent = [[call.arguments valueForKey:@"isConsent"] boolValue];
+            [self setRequiresUserConsent:isConsent];
+            result(nil);
+        }else if ([@"setUserConsent" isEqualToString:call.method]) {
+            BOOL isConsent = [[call.arguments valueForKey:@"isConsent"] boolValue];
+            [self setUserConsent:isConsent];
+            result(nil);
+        }else if ([@"disableGeolocation" isEqualToString:call.method]) {
+            [self disableGeolocation];
+            result(nil);
+        }else if ([@"enableGeolocation" isEqualToString:call.method]) {
+            [self enableGeolocation];
+            result(nil);
+        }else if ([@"setGeolocation" isEqualToString:call.method]) {
+            double lat = [[call.arguments valueForKey:@"lat"] doubleValue];
+            double lon = [[call.arguments valueForKey:@"lon"] doubleValue];
+            [self setGeolocation:lat lon:lon];
+            result(nil);
+        }else if ([@"clearEventsHistory" isEqualToString:call.method]) {
+            [self clearEventsHistory];
+            result(nil);
+        }else if ([@"clearPreferences" isEqualToString:call.method]) {
+            [self clearPreferences];
+            result(nil);
+        }else if ([@"clearAllData" isEqualToString:call.method]) {
+            [self clearAllData];
+            result(nil);
+        }else if ([@"downloadAllData" isEqualToString:call.method]) {
+            [self downloadAllData:result];
         }else if ([@"setLogging" isEqualToString:call.method]) {
             BOOL enable = [[call.arguments valueForKey:@"enable"] boolValue];
             [self setLogging:enable];
@@ -168,6 +198,50 @@
 -(NSString *)getPushToken{
    NSString *pushToken = [WonderPush pushToken];
    return pushToken;
+}
+
+#pragma mark - Privacy
+
+-(void)setRequiresUserConsent:(BOOL)isConsent{
+    [WonderPush setRequiresUserConsent:isConsent];
+}
+
+-(void)setUserConsent:(BOOL)isConsent{
+    [WonderPush setUserConsent:isConsent];
+}
+
+-(void)disableGeolocation{
+    [WonderPush disableGeolocation];
+}
+
+-(void)enableGeolocation{
+    [WonderPush enableGeolocation];
+}
+
+-(void)setGeolocation:(double)lat lon:(double)lon{
+    CLLocation *location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
+    [WonderPush setGeolocation:location];
+}
+
+-(void)clearEventsHistory{
+    [WonderPush clearEventsHistory];
+}
+
+-(void)clearPreferences{
+    [WonderPush clearPreferences];
+}
+
+-(void)clearAllData{
+    [WonderPush clearAllData];
+}
+
+-(void)downloadAllData:(FlutterResult)result{
+     [WonderPush downloadAllData:^(NSData *data, NSError *error) {
+         if (error) {
+             @throw error;
+         }
+         result(data);
+     }];
 }
 
 #pragma mark - Debug

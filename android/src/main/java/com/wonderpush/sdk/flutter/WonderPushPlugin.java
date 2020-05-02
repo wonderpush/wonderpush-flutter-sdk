@@ -8,7 +8,7 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
-
+import android.location.Location;
 import com.wonderpush.sdk.WonderPush;
 
 /**
@@ -107,6 +107,46 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     break;
                 case "getPushToken":
                     result.success(getPushToken());
+                    break;
+                case "setRequiresUserConsent":
+                    boolean isRequiresUserConsent = call.argument("isConsent");
+                    setRequiresUserConsent(isRequiresUserConsent);
+                    result.success(null);
+                    break;
+                case "setUserConsent":
+                    boolean userConsent = call.argument("isConsent");
+                    setUserConsent(userConsent);
+                    result.success(null);
+                    break;
+                case "disableGeolocation":
+                    disableGeolocation();
+                    result.success(null);
+                    break;
+                case "enableGeolocation":
+                    enableGeolocation();
+                    result.success(null);
+                    break;
+               case "setGeolocation":
+                    double lat = call.argument("lat");
+                    double lon = call.argument("lon");
+                    setGeolocation(lat,lon);
+                    result.success(null);
+                    break;
+                case "clearEventsHistory":
+                    clearEventsHistory();
+                    result.success(null);
+                    break;
+                case "clearPreferences":
+                    clearPreferences();
+                    result.success(null);
+                    break;
+                case "clearAllData":
+                    clearAllData();
+                    result.success(null);
+                    break;
+                case "downloadAllData":
+                    downloadAllData();
+                    result.success(null);
                     break;
                 case "setLogging":
                     boolean enable = call.argument("enable");
@@ -213,9 +253,51 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         String pushToken = WonderPush.getPushToken();
         return pushToken;
     }
+
+    // Privacy
+
+    public void setRequiresUserConsent(Boolean isConsent) {
+        WonderPush.setRequiresUserConsent(isConsent);
+    }
+
+    public void setUserConsent(Boolean isConsent) {
+        WonderPush.setUserConsent(isConsent);
+    }
+
+    public void disableGeolocation() {
+        WonderPush.disableGeolocation();
+    }
+
+    public void enableGeolocation() {
+        WonderPush.enableGeolocation();
+    }
+
+    public void setGeolocation(double lat, double lon) {
+        Location location = new Location("WonderPush");
+        location.setLatitude(lat);
+        location.setLongitude(lon);
+        WonderPush.setGeolocation(location);
+    }
+
+    public void clearEventsHistory() {
+        WonderPush.clearEventsHistory();
+    }
+
+    public void clearPreferences() {
+        WonderPush.clearPreferences();
+    }
+
+    public void clearAllData() {
+        WonderPush.clearAllData();
+    }
+
+    public void downloadAllData() {
+        WonderPush.downloadAllData();
+    }
     // Debug
 
     public void setLogging(boolean enable) {
         WonderPush.setLogging(enable);
     }
 }
+
