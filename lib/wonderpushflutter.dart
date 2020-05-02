@@ -28,6 +28,25 @@ class Wonderpushflutter {
   }
 
    // Segmentation
+
+  static Future<void> addTag(var tags) async {
+    if(tags is String){
+      tags = [tags];
+    }
+    Map<String,List> args = <String,List>{};
+    args.putIfAbsent("tags", () => tags);
+    await _channel.invokeMethod('addTag',args);
+  }
+   
+   static Future<void> removeTag(var tags) async {
+    if(tags is String){
+      tags = [tags];
+    }
+    Map<String,List> args = <String,List>{};
+    args.putIfAbsent("tags", () => tags);
+    await _channel.invokeMethod('removeTag',args);
+  }
+
   static Future<void> get removeAllTags async {
      await _channel.invokeMethod('removeAllTags');
   }
@@ -140,7 +159,7 @@ class Wonderpushflutter {
   static Future<void> setGeolocation(double lat, double lon) async {
       Map<String,double> args = <String,double>{};
       args.putIfAbsent("lat", () => lat);
-      args.putIfAbsent("lat", () => lon);
+      args.putIfAbsent("lon", () => lon);
       await _channel.invokeMethod('setGeolocation',args);
   }
 

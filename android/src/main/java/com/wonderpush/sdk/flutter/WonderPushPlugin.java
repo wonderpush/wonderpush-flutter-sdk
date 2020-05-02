@@ -11,6 +11,9 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 import android.location.Location;
 import com.wonderpush.sdk.WonderPush;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * WonderPushPlugin
  */
@@ -53,6 +56,16 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     break;
                 case "isSubscribedToNotifications":
                     result.success(isSubscribedToNotifications());
+                    break;
+                case "addTag":
+                    ArrayList tagsToAdd = call.argument("tags");
+                    addTag(tagsToAdd);
+                    result.success(null);
+                    break;
+                case "removeTag":
+                    ArrayList tagsToRemove = call.argument("tags");
+                    removeTag(tagsToRemove);
+                    result.success(null);
                     break;
                 case "removeAllTags":
                     removeAllTags();
@@ -193,6 +206,26 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     // Segmentation
+
+    public void addTag(ArrayList tags){
+        String[] arrTags = new String[tags.size()];
+        for (int i = 0; i < tags.size(); i++) {
+            if(tags.get(i) instanceof String) {
+                arrTags[i] = (String) tags.get(i);
+            }
+        }
+        WonderPush.addTag(arrTags);
+    }
+
+    public void removeTag(ArrayList tags){
+        String[] arrTags = new String[tags.size()];
+        for (int i = 0; i < tags.size(); i++) {
+            if(tags.get(i) instanceof String) {
+                arrTags[i] = (String) tags.get(i);
+            }
+        }
+         WonderPush.removeTag(arrTags);
+    }
     public void removeAllTags() {
         WonderPush.removeAllTags();
     }

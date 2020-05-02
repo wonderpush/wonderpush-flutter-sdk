@@ -23,6 +23,14 @@
              result(nil);
          }else if ([@"isSubscribedToNotifications" isEqualToString:call.method]) {
              result([self isSubscribedToNotifications]);
+         }else if ([@"addTag" isEqualToString:call.method]) {
+             NSArray *tags = [call.arguments valueForKey:@"tags"];
+             [self addTag:tags];
+             result(nil);
+         }else if ([@"removeTag" isEqualToString:call.method]) {
+             NSArray *tags = [call.arguments valueForKey:@"tags"];
+             [self removeTag:tags];
+             result(nil);
          }else if ([@"removeAllTags" isEqualToString:call.method]) {
              [self removeAllTags];
              result(nil);
@@ -135,6 +143,13 @@
 }
 
 #pragma mark - Segmentation	
+-(void)addTag:(NSArray *)tags{
+    [WonderPush addTags:tags];
+}
+
+-(void)removeTag:(NSArray *)tags{
+    [WonderPush removeTags:tags];
+}
 
 -(void)removeAllTags{
     [WonderPush removeAllTags];

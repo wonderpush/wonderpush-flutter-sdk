@@ -135,18 +135,45 @@ try {
     }
 
     try {
-      await Wonderpushflutter.removeAllTags;
-      print('removeAllTags Done');
+      await Wonderpushflutter.addTag(['sports','food','entertainment']);
+      print('addTag Done');
     } on PlatformException {
-      print('isReadremoveAllTagsy: error occured');
+      print('addTag: error occured');
+    }
+    try {
+      await Wonderpushflutter.addTag("science");
+      print('addTag1 Done');
+    } on PlatformException {
+      print('addTag1: error occured');
     }
 
      try {
-      result = await Wonderpushflutter.hasTag("sports");
-      print('hasTag Done. $result');
+      result = await Wonderpushflutter.hasTag("science");
+      print('hasTag1 Done. $result');
     } on PlatformException {
-      print('hasTag: error occured');
+      print('hasTag1: error occured');
     }
+
+    try {
+      await Wonderpushflutter.removeTag("food");
+      print('removeTag Done');
+    } on PlatformException {
+      print('removeTag: error occured');
+    }
+
+    try {
+      result = await Wonderpushflutter.hasTag("food");
+      print('hasTag12 Done. $result');
+    } on PlatformException {
+      print('hasTag2: error occured');
+    }
+
+  // try {
+  //     await Wonderpushflutter.removeAllTags;
+  //     print('removeAllTags Done');
+  //   } on PlatformException {
+  //     print('isReadremoveAllTagsy: error occured');
+  //   }
 
      try {
       await Wonderpushflutter.unsetProperty("string_favoritePlayers");
@@ -204,26 +231,26 @@ try {
       print('setGeolocation: error occured');
     }
 
-    try {
-      await Wonderpushflutter.clearEventsHistory();
-      print('clearEventsHistory Done.');
-    } on PlatformException {
-      print('clearEventsHistory: error occured');
-    }
+    // try {
+    //   await Wonderpushflutter.clearEventsHistory();
+    //   print('clearEventsHistory Done.');
+    // } on PlatformException {
+    //   print('clearEventsHistory: error occured');
+    // }
 
-     try {
-      await Wonderpushflutter.clearPreferences();
-      print('clearPreferences Done.');
-    } on PlatformException {
-      print('clearPreferences: error occured');
-    }
+    //  try {
+    //   await Wonderpushflutter.clearPreferences();
+    //   print('clearPreferences Done.');
+    // } on PlatformException {
+    //   print('clearPreferences: error occured');
+    // }
 
-     try {
-      await Wonderpushflutter.clearAllData();
-      print('clearAllData Done.');
-    } on PlatformException {
-      print('clearAllData: error occured');
-    }
+    //  try {
+    //   await Wonderpushflutter.clearAllData();
+    //   print('clearAllData Done.');
+    // } on PlatformException {
+    //   print('clearAllData: error occured');
+    // }
 
       try {
       result = await Wonderpushflutter.downloadAllData();
