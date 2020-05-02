@@ -148,6 +148,13 @@ try {
       print('hasTag: error occured');
     }
 
+     try {
+      await Wonderpushflutter.unsetProperty("string_favoritePlayers");
+      print('unsetProperty Done.');
+    } on PlatformException {
+      print('unsetProperty: error occured');
+    }
+
     try {
      var result9 = await Wonderpushflutter.getInstallationId;
       print('getInstallationId Done. $result9');

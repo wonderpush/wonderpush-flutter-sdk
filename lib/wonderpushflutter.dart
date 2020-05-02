@@ -39,6 +39,12 @@ class Wonderpushflutter {
      return result;
   }
 
+  static Future<void> unsetProperty(String property)  async {
+     Map<String,String> args = <String,String>{};
+     args.putIfAbsent("property", () => property);
+     await _channel.invokeMethod('unsetProperty',args);
+  }
+
   static Future<void> setCountry(String country) async {
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("country", () => country);

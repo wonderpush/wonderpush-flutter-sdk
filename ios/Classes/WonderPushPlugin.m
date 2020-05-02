@@ -29,6 +29,10 @@
          }else if ([@"hasTag" isEqualToString:call.method]) {
              NSString *tag = [call.arguments valueForKey:@"tag"];
              result([self hasTag:tag]);
+         }else if ([@"unsetProperty" isEqualToString:call.method]) {
+             NSString *property = [call.arguments valueForKey:@"property"];
+             [self unsetProperty:property];
+             result(nil);
          }else if ([@"setCountry" isEqualToString:call.method]) {
               NSString *country = [call.arguments valueForKey:@"country"];
               [self setCountry:country];
@@ -138,6 +142,10 @@
 -(id)hasTag:(NSString *)tag{
    BOOL status =  [WonderPush hasTag:tag];
    return [NSNumber numberWithBool:status];
+}
+
+-(void)unsetProperty:(NSString *)property{
+   [WonderPush unsetProperty:property];
 }
 
 -(id)getCountry{

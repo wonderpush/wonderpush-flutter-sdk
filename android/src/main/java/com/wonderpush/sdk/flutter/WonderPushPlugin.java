@@ -62,6 +62,11 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     String tag = call.argument("tag");
                     result.success(hasTag(tag));
                     break;
+               case "unsetProperty":
+                    String property = call.argument("property");
+                    unsetProperty(property);
+                    result.success(null);
+                    break;
                case "setCountry":
                     String country = call.argument("country");
                     setCountry(country);
@@ -196,7 +201,11 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         boolean status = WonderPush.hasTag(tag);
         return status;
     }
-   
+
+    public void unsetProperty(String property) {
+        WonderPush.unsetProperty(property);
+    }
+
     public String getCountry() {
         String country = WonderPush.getCountry();
         return country;
