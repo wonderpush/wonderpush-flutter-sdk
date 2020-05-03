@@ -13,6 +13,7 @@ import com.wonderpush.sdk.WonderPush;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
 /**
  * WonderPushPlugin
@@ -74,6 +75,9 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 case "hasTag":
                     String tag = call.argument("tag");
                     result.success(hasTag(tag));
+                    break;
+                case "getTags":
+                    result.success(getTags());
                     break;
                case "unsetProperty":
                     String property = call.argument("property");
@@ -233,6 +237,14 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
      public boolean hasTag(String tag) {
         boolean status = WonderPush.hasTag(tag);
         return status;
+    }
+
+    public ArrayList getTags(){
+        Set<String> tags = WonderPush.getTags();
+        ArrayList<String> list = new ArrayList<>();
+        for (String tag : tags)
+            list.add(tag);
+        return list;
     }
 
     public void unsetProperty(String property) {

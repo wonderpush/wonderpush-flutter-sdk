@@ -154,6 +154,13 @@ try {
       print('hasTag1: error occured');
     }
 
+      try {
+      result = await Wonderpushflutter.getTags;
+      print('getTags Done. $result');
+    } on PlatformException {
+      print('getTags: error occured');
+    }
+
     try {
       await Wonderpushflutter.removeTag("food");
       print('removeTag Done');
@@ -168,12 +175,12 @@ try {
       print('hasTag2: error occured');
     }
 
-  // try {
-  //     await Wonderpushflutter.removeAllTags;
-  //     print('removeAllTags Done');
-  //   } on PlatformException {
-  //     print('isReadremoveAllTagsy: error occured');
-  //   }
+  try {
+      await Wonderpushflutter.removeAllTags;
+      print('removeAllTags Done');
+    } on PlatformException {
+      print('isReadremoveAllTagsy: error occured');
+    }
 
      try {
       await Wonderpushflutter.unsetProperty("string_favoritePlayers");

@@ -37,6 +37,8 @@
          }else if ([@"hasTag" isEqualToString:call.method]) {
              NSString *tag = [call.arguments valueForKey:@"tag"];
              result([self hasTag:tag]);
+         }else if ([@"getTags" isEqualToString:call.method]) {
+             result([self getTags]);
          }else if ([@"unsetProperty" isEqualToString:call.method]) {
              NSString *property = [call.arguments valueForKey:@"property"];
              [self unsetProperty:property];
@@ -160,6 +162,11 @@
    return [NSNumber numberWithBool:status];
 }
 
+- (id)getTags{
+    NSOrderedSet<NSString*> *tags = [WonderPush getTags];
+    NSArray *arrTags = [NSArray arrayWithArray:[tags array]];
+    return arrTags;
+}
 -(void)unsetProperty:(NSString *)property{
    [WonderPush unsetProperty:property];
 }
