@@ -182,6 +182,60 @@ try {
       print('isReadremoveAllTagsy: error occured');
     }
 
+    try {
+        Wonderpushflutter.addProperty("string_foo", "foo");
+        Wonderpushflutter.addProperty("string_zoo", ["foo", "qux"]);
+        print('addProperty Done');
+    } on PlatformException {
+      print('isReadremoveAllTagsy: error occured');
+    }
+
+  try {
+       Wonderpushflutter.setProperty("string_interests", ["sport", "entertainment"]);
+         Wonderpushflutter.setProperty("int_age", null);
+         Wonderpushflutter.setProperty("bool_isCustomer", true);
+        print('setProperty Done');
+    } on PlatformException {
+      print('setProperty: error occured');
+    }
+
+       try {
+        Wonderpushflutter.putProperties({ 'string_interests1': ['sport1', 'test1'] });
+        Wonderpushflutter.putProperties({ 'int_age': 40 });
+        print('putProperties Done');
+    } on PlatformException {
+      print('putProperties: error occured');
+    }
+
+    try {
+        result = await Wonderpushflutter.getProperties();
+        print('getProperties Done. $result');
+    } on PlatformException {
+      print('getProperties: error occured');
+    }
+
+  try {
+        result = await Wonderpushflutter.getPropertyValue("string_zoo");
+        print('getPropertyValue Done. $result');
+    } on PlatformException {
+      print('getPropertyValue: error occured');
+    }
+
+     try {
+        result = await Wonderpushflutter.getPropertyValues("string_foo");
+        print('getPropertyValues Done. $result');
+    } on PlatformException {
+      print('getPropertyValues: error occured');
+    }
+
+    try {
+        Wonderpushflutter.removeProperty("string_interests", "sport");
+        Wonderpushflutter.removeProperty("string_interests", ["sport", "entertainment"]);
+        print('removeProperty Done');
+    } on PlatformException {
+      print('removeProperty: error occured');
+    }
+
      try {
      Wonderpushflutter.unsetProperty("string_favoritePlayers");
       print('unsetProperty Done.');

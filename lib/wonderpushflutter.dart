@@ -63,10 +63,62 @@ class Wonderpushflutter {
      return result;
   }
 
+  static Future<dynamic> getPropertyValue(String property) async{
+     Map<String,String> args = <String,String>{};
+     args.putIfAbsent("property", () => property);
+     final Object result = await _channel.invokeMethod('getPropertyValue',args);
+     return result;
+  }
+
+  static Future<List> getPropertyValues(String property) async{
+     Map<String,String> args = <String,String>{};
+     args.putIfAbsent("property", () => property);
+     final List result = await _channel.invokeMethod('getPropertyValues',args);
+     return result;
+  }
+
+   static void addProperty(String property, var properties){
+     if(properties is String){
+       properties = [properties];
+     }
+     Map<String,Object> args = <String,Object>{};
+     args.putIfAbsent("property", () => property);
+     args.putIfAbsent("properties", () => properties);
+    _channel.invokeMethod('addProperty',args);
+  }
+
+  static void removeProperty(String property, Object properties){
+    if(properties is String){
+       properties = [properties];
+     }
+     Map<String,Object> args = <String,Object>{};
+     args.putIfAbsent("property", () => property);
+     args.putIfAbsent("properties", () => properties);
+    _channel.invokeMethod('removeProperty',args);
+  }
+
+  static void setProperty(String property, Object properties){
+     Map<String,Object> args = <String,Object>{};
+     args.putIfAbsent("property", () => property);
+     args.putIfAbsent("properties", () => properties);
+    _channel.invokeMethod('setProperty',args);
+  }
+  
   static void unsetProperty(String property) {
      Map<String,String> args = <String,String>{};
      args.putIfAbsent("property", () => property);
      _channel.invokeMethod('unsetProperty',args);
+  }
+
+  static void putProperties(Object properties){
+     Map<String,Object> args = <String,Object>{};
+     args.putIfAbsent("properties", () => properties);
+    _channel.invokeMethod('putProperties',args);
+  }
+
+   static Future<Object> getProperties() async{
+     final Map result = await _channel.invokeMethod('getProperties');
+     return result;
   }
 
   static void setCountry(String country)  {
@@ -80,7 +132,7 @@ class Wonderpushflutter {
     return country;
   }
 
-  static void setCurrency (String currency) {
+  static void setCurrency(String currency) {
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("currency", () => currency);
      _channel.invokeMethod('setCurrency', args);
@@ -90,7 +142,6 @@ class Wonderpushflutter {
     final String currency = await _channel.invokeMethod('getCurrency');
     return currency;
   }
-
 
   static void setLocale(String locale) {
     Map<String,String> args = <String,String>{};
@@ -187,7 +238,7 @@ class Wonderpushflutter {
 
   // Debug
 
-  static void setLogging (bool enable) {
+  static void setLogging(bool enable) {
       Map<String,bool> args = <String,bool>{};
       args.putIfAbsent("enable", () => enable);
      _channel.invokeMethod('setLogging', args);

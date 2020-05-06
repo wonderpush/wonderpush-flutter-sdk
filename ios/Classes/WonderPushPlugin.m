@@ -39,6 +39,33 @@
              result([self hasTag:tag]);
          }else if ([@"getTags" isEqualToString:call.method]) {
              result([self getTags]);
+         }else if ([@"addProperty" isEqualToString:call.method]) {
+            NSString *property = [call.arguments valueForKey:@"property"];
+            id properties = [call.arguments valueForKey:@"properties"];
+             [self addProperty:property properties:properties];
+             result(nil);
+         }else if ([@"removeProperty" isEqualToString:call.method]) {
+            NSString *property = [call.arguments valueForKey:@"property"];
+            id properties = [call.arguments valueForKey:@"properties"];
+             [self removeProperty:property properties:properties];
+             result(nil);
+         }else if ([@"setProperty" isEqualToString:call.method]) {
+            NSString *property = [call.arguments valueForKey:@"property"];
+            id properties = [call.arguments valueForKey:@"properties"];
+             [self setProperty:property properties:properties];
+             result(nil);
+         }else if ([@"putProperties" isEqualToString:call.method]) {
+            id properties = [call.arguments valueForKey:@"properties"];
+             [self putProperties:properties];
+             result(nil);
+         }else if ([@"getProperties" isEqualToString:call.method]) {
+             result([self getProperties]);
+         }else if ([@"getPropertyValue" isEqualToString:call.method]) {
+             NSString *property = [call.arguments valueForKey:@"property"];
+             result([self getPropertyValue:property]);
+         }else if ([@"getPropertyValues" isEqualToString:call.method]) {
+             NSString *property = [call.arguments valueForKey:@"property"];
+             result([self getPropertyValues:property]);
          }else if ([@"unsetProperty" isEqualToString:call.method]) {
              NSString *property = [call.arguments valueForKey:@"property"];
              [self unsetProperty:property];
@@ -167,10 +194,42 @@
     NSArray *arrTags = [NSArray arrayWithArray:[tags array]];
     return arrTags;
 }
+//
+-(id)getPropertyValue:(NSString *)property{
+    id value = [WonderPush getPropertyValue:property];
+    return value;
+}
+
+-(NSArray *)getPropertyValues:(NSString *)property{
+    NSArray *values  = [WonderPush getPropertyValues:property];
+    return values;
+}
+
+-(void)addProperty:(NSString *)property properties:(id)properties{
+    [WonderPush addProperty:property value:properties];
+}
+
+-(void)removeProperty:(NSString *)property properties:(id)properties{
+    [WonderPush removeProperty:property value:properties];
+}
+
+-(void)setProperty:(NSString *)property properties:(id)properties{
+    [WonderPush setProperty:property value:properties];
+}
+
 -(void)unsetProperty:(NSString *)property{
    [WonderPush unsetProperty:property];
 }
 
+-(void)putProperties:(NSDictionary *)properties{
+   [WonderPush putProperties:properties];
+}
+
+-(NSDictionary *)getProperties{
+   NSDictionary *properties = [WonderPush getProperties];
+   return properties;
+}
+//
 -(id)getCountry{
    NSString *country = [WonderPush country];
    return country;
