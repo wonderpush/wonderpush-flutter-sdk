@@ -14,12 +14,12 @@ class Wonderpushflutter {
   }
   // Subscribing users
 
-  static void  subscribeToNotifications()  {
-     _channel.invokeMethod('subscribeToNotifications');
+  static Future<void> subscribeToNotifications() async {
+     await _channel.invokeMethod('subscribeToNotifications');
   }
 
-  static void unsubscribeFromNotifications()  {
-      _channel.invokeMethod('unsubscribeFromNotifications');
+  static Future<void> unsubscribeFromNotifications() async {
+      await _channel.invokeMethod('unsubscribeFromNotifications');
   }
 
   static Future<bool> isSubscribedToNotifications() async {
@@ -29,26 +29,26 @@ class Wonderpushflutter {
 
    // Segmentation
 
-  static void addTag(var tags)  {
+  static Future<void> addTag(var tags) async {
     if(tags is String){
       tags = [tags];
     }
     Map<String,List> args = <String,List>{};
     args.putIfAbsent("tags", () => tags);
-     _channel.invokeMethod('addTag',args);
+    await _channel.invokeMethod('addTag',args);
   }
    
-  static void removeTag(var tags)  {
+  static Future<void> removeTag(var tags) async {
     if(tags is String){
       tags = [tags];
     }
     Map<String,List> args = <String,List>{};
     args.putIfAbsent("tags", () => tags);
-     _channel.invokeMethod('removeTag',args);
+    await _channel.invokeMethod('removeTag',args);
   }
 
-  static void removeAllTags() {
-      _channel.invokeMethod('removeAllTags');
+  static Future<void> removeAllTags() async {
+      await _channel.invokeMethod('removeAllTags');
   }
 
   static Future<bool>  hasTag(String tag)  async {
@@ -70,50 +70,50 @@ class Wonderpushflutter {
      return result;
   }
 
-  static Future<List> getPropertyValues(String property) async{
+  static Future<List> getPropertyValues(String property) async {
      Map<String,String> args = <String,String>{};
      args.putIfAbsent("property", () => property);
      final List result = await _channel.invokeMethod('getPropertyValues',args);
      return result;
   }
 
-   static void addProperty(String property, var properties){
+   static Future<void> addProperty(String property, var properties) async {
      if(properties is String){
        properties = [properties];
      }
      Map<String,Object> args = <String,Object>{};
      args.putIfAbsent("property", () => property);
      args.putIfAbsent("properties", () => properties);
-    _channel.invokeMethod('addProperty',args);
+     await _channel.invokeMethod('addProperty',args);
   }
 
-  static void removeProperty(String property, Object properties){
+  static Future<void> removeProperty(String property, Object properties) async{
     if(properties is String){
        properties = [properties];
      }
      Map<String,Object> args = <String,Object>{};
      args.putIfAbsent("property", () => property);
      args.putIfAbsent("properties", () => properties);
-    _channel.invokeMethod('removeProperty',args);
+    await _channel.invokeMethod('removeProperty',args);
   }
 
-  static void setProperty(String property, Object properties){
+  static Future<void> setProperty(String property, Object properties) async{
      Map<String,Object> args = <String,Object>{};
      args.putIfAbsent("property", () => property);
      args.putIfAbsent("properties", () => properties);
-    _channel.invokeMethod('setProperty',args);
+     await _channel.invokeMethod('setProperty',args);
   }
   
-  static void unsetProperty(String property) {
+  static Future<void> unsetProperty(String property) async {
      Map<String,String> args = <String,String>{};
      args.putIfAbsent("property", () => property);
-     _channel.invokeMethod('unsetProperty',args);
+     await _channel.invokeMethod('unsetProperty',args);
   }
 
-  static void putProperties(Object properties){
+  static Future<void> putProperties(Object properties) async {
      Map<String,Object> args = <String,Object>{};
      args.putIfAbsent("properties", () => properties);
-    _channel.invokeMethod('putProperties',args);
+     await _channel.invokeMethod('putProperties',args);
   }
 
    static Future<Object> getProperties() async{
@@ -121,10 +121,10 @@ class Wonderpushflutter {
      return result;
   }
 
-  static void setCountry(String country)  {
+  static Future<void> setCountry(String country) async {
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("country", () => country);
-     _channel.invokeMethod('setCountry', args);
+     await _channel.invokeMethod('setCountry', args);
   }
 
   static Future<String> getCountry() async {
@@ -132,10 +132,10 @@ class Wonderpushflutter {
     return country;
   }
 
-  static void setCurrency(String currency) {
+  static Future<void> setCurrency(String currency) async {
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("currency", () => currency);
-     _channel.invokeMethod('setCurrency', args);
+     await _channel.invokeMethod('setCurrency', args);
   }
 
   static Future<String> getCurrency() async {
@@ -143,10 +143,10 @@ class Wonderpushflutter {
     return currency;
   }
 
-  static void setLocale(String locale) {
+  static Future<void> setLocale(String locale) async{
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("locale", () => locale);
-     _channel.invokeMethod('setLocale', args);
+    await _channel.invokeMethod('setLocale', args);
   }
 
   static Future<String> getLocale() async {
@@ -154,10 +154,10 @@ class Wonderpushflutter {
     return locale;
   }
 
-  static void setTimeZone(String timeZone) {
+  static Future<void> setTimeZone(String timeZone) async{
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("timeZone", () => timeZone);
-     _channel.invokeMethod('setTimeZone', args);
+    await _channel.invokeMethod('setTimeZone', args);
   }
 
   static Future<String> getTimeZone() async {
@@ -168,10 +168,10 @@ class Wonderpushflutter {
 
    // User IDs	
 
-  static void setUserId(String userId)  {
+  static Future<void> setUserId(String userId)  async {
     Map<String,String> args = <String,String>{};
     args.putIfAbsent("userId", () => userId);
-     _channel.invokeMethod('setUserId', args);
+    await _channel.invokeMethod('setUserId', args);
   }
 
   static Future<String>  getUserId() async {
@@ -192,42 +192,42 @@ class Wonderpushflutter {
 
     // Privacy
 
-  static void setRequiresUserConsent(bool isConsent) {
+  static Future<void> setRequiresUserConsent(bool isConsent) async {
       Map<String,bool> args = <String,bool>{};
       args.putIfAbsent("isConsent", () => isConsent);
-      _channel.invokeMethod('setRequiresUserConsent', args);
+      await _channel.invokeMethod('setRequiresUserConsent', args);
   }
 
-  static void setUserConsent(bool isConsent) {
+  static Future<void> setUserConsent(bool isConsent) async {
       Map<String,bool> args = <String,bool>{};
       args.putIfAbsent("isConsent", () => isConsent);
-      _channel.invokeMethod('setUserConsent', args);
+      await _channel.invokeMethod('setUserConsent', args);
   }
 
-  static void disableGeolocation() {
-       _channel.invokeMethod('disableGeolocation');
+  static Future<void> disableGeolocation() async {
+       await _channel.invokeMethod('disableGeolocation');
   }
 
-  static void enableGeolocation() {
-       _channel.invokeMethod('enableGeolocation');
+  static Future<void> enableGeolocation() async {
+       await _channel.invokeMethod('enableGeolocation');
   }
 
-  static void setGeolocation(double lat, double lon) {
+  static Future<void> setGeolocation(double lat, double lon) async {
       Map<String,double> args = <String,double>{};
       args.putIfAbsent("lat", () => lat);
       args.putIfAbsent("lon", () => lon);
-     _channel.invokeMethod('setGeolocation',args);
+     await _channel.invokeMethod('setGeolocation',args);
   }
 
-  static void clearEventsHistory() {
-       _channel.invokeMethod('clearEventsHistory');
+  static Future<void> clearEventsHistory() async {
+       await _channel.invokeMethod('clearEventsHistory');
   }
 
-  static void clearPreferences() {
-       _channel.invokeMethod('clearPreferences');
+  static Future<void> clearPreferences() async {
+       await _channel.invokeMethod('clearPreferences');
   }
 
-  static void clearAllData() {
+  static Future<void> clearAllData() async {
        _channel.invokeMethod('clearAllData');
   }
   
@@ -238,9 +238,9 @@ class Wonderpushflutter {
 
   // Debug
 
-  static void setLogging(bool enable) {
+  static Future<void> setLogging(bool enable) async {
       Map<String,bool> args = <String,bool>{};
       args.putIfAbsent("enable", () => enable);
-     _channel.invokeMethod('setLogging', args);
+     await _channel.invokeMethod('setLogging', args);
   }
 }

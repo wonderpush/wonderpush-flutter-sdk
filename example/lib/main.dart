@@ -24,14 +24,14 @@ class _MyAppState extends State<MyApp> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     var result;
     try {
-       Wonderpushflutter.setLogging(true);
+       await Wonderpushflutter.setLogging(true);
       print('setLogging Done.');
     } on PlatformException {
       print('setLogging: error occured');
     }
 
     try {
-      Wonderpushflutter.subscribeToNotifications();
+      await Wonderpushflutter.subscribeToNotifications();
       print('subscribeToNotifications Done.');
     } on PlatformException {
       print('subscribeToNotifications: error occured');
@@ -44,7 +44,7 @@ class _MyAppState extends State<MyApp> {
     }
 
     try {
-        Wonderpushflutter.unsubscribeFromNotifications();
+        await Wonderpushflutter.unsubscribeFromNotifications();
         print('unsubscribeFromNotifications Done.');
     } on PlatformException {
       print('unsubscribeFromNotifications: error occured');
@@ -57,21 +57,21 @@ class _MyAppState extends State<MyApp> {
       }
 
    try {
-      Wonderpushflutter.setCountry("US");
+      await Wonderpushflutter.setCountry("US");
       print('setCountry Done');
     } on PlatformException {
       print('setCountry: error occured');
     }
 
     try {
-     result =  Wonderpushflutter.getCountry();
+     result =  await Wonderpushflutter.getCountry();
       print('getCountry Done. $result');
     } on PlatformException {
       print('getCountry: error occured');
     }
 
   try {
-      Wonderpushflutter.setCurrency("USD");
+      await Wonderpushflutter.setCurrency("USD");
       print('setCurrency Done');
     } on PlatformException {
       print('setCurrency: error occured');
@@ -85,7 +85,7 @@ class _MyAppState extends State<MyApp> {
     }
 
 try {
-      Wonderpushflutter.setLocale("en_US");
+      await Wonderpushflutter.setLocale("en_US");
       print('setLocale Done');
     } on PlatformException {
       print('setLocale: error occured');
@@ -99,7 +99,7 @@ try {
     }
     
     try {
-      Wonderpushflutter.setTimeZone("Europe/Paris");
+      await Wonderpushflutter.setTimeZone("Europe/Paris");
       print('setTimeZone Done');
     } on PlatformException {
       print('setTimeZone: error occured');
@@ -114,14 +114,14 @@ try {
     
 
     try {
-      Wonderpushflutter.setUserId("rakesh");
+      await Wonderpushflutter.setUserId("rakesh");
       print('setUserId Done');
     } on PlatformException {
       print('setUserId: error occured');
     }
 
     try {
-     result =  Wonderpushflutter.getUserId();
+     result =  await Wonderpushflutter.getUserId();
       print('getUserId Done. $result');
     } on PlatformException {
       print('getUserId: error occured');
@@ -135,13 +135,13 @@ try {
     }
 
     try {
-       Wonderpushflutter.addTag(['sports','food','entertainment']);
+       await Wonderpushflutter.addTag(['sports','food','entertainment']);
       print('addTag Done');
     } on PlatformException {
       print('addTag: error occured');
     }
     try {
-      Wonderpushflutter.addTag("science");
+      await Wonderpushflutter.addTag("science");
       print('addTag1 Done');
     } on PlatformException {
       print('addTag1: error occured');
@@ -162,7 +162,7 @@ try {
     }
 
     try {
-      Wonderpushflutter.removeTag("food");
+      await Wonderpushflutter.removeTag("food");
       print('removeTag Done');
     } on PlatformException {
       print('removeTag: error occured');
@@ -176,32 +176,32 @@ try {
     }
 
   try {
-      Wonderpushflutter.removeAllTags();
+      await Wonderpushflutter.removeAllTags();
       print('removeAllTags Done');
     } on PlatformException {
       print('isReadremoveAllTagsy: error occured');
     }
 
     try {
-        Wonderpushflutter.addProperty("string_foo", "foo");
-        Wonderpushflutter.addProperty("string_zoo", ["foo", "qux"]);
+        await Wonderpushflutter.addProperty("string_foo", "foo");
+        await Wonderpushflutter.addProperty("string_zoo", ["foo", "qux"]);
         print('addProperty Done');
     } on PlatformException {
       print('isReadremoveAllTagsy: error occured');
     }
 
   try {
-       Wonderpushflutter.setProperty("string_interests", ["sport", "entertainment"]);
-         Wonderpushflutter.setProperty("int_age", null);
-         Wonderpushflutter.setProperty("bool_isCustomer", true);
+       await Wonderpushflutter.setProperty("string_interests", ["sport", "entertainment"]);
+         await Wonderpushflutter.setProperty("int_age", null);
+         await Wonderpushflutter.setProperty("bool_isCustomer", true);
         print('setProperty Done');
     } on PlatformException {
       print('setProperty: error occured');
     }
 
        try {
-        Wonderpushflutter.putProperties({ 'string_interests1': ['sport1', 'test1'] });
-        Wonderpushflutter.putProperties({ 'int_age': 40 });
+       await Wonderpushflutter.putProperties({ 'string_interests1': ['sport1', 'test1'] });
+       await Wonderpushflutter.putProperties({ 'int_age': 40 });
         print('putProperties Done');
     } on PlatformException {
       print('putProperties: error occured');
@@ -229,15 +229,15 @@ try {
     }
 
     try {
-        Wonderpushflutter.removeProperty("string_interests", "sport");
-        Wonderpushflutter.removeProperty("string_interests", ["sport", "entertainment"]);
+        await Wonderpushflutter.removeProperty("string_interests", "sport");
+        await Wonderpushflutter.removeProperty("string_interests", ["sport", "entertainment"]);
         print('removeProperty Done');
     } on PlatformException {
       print('removeProperty: error occured');
     }
 
      try {
-     Wonderpushflutter.unsetProperty("string_favoritePlayers");
+     await Wonderpushflutter.unsetProperty("string_favoritePlayers");
       print('unsetProperty Done.');
     } on PlatformException {
       print('unsetProperty: error occured');
@@ -258,56 +258,56 @@ try {
     }
 
      try {
-      Wonderpushflutter.setRequiresUserConsent(true);
+     await Wonderpushflutter.setRequiresUserConsent(true);
       print('setRequiresUserConsent Done.');
     } on PlatformException {
       print('setRequiresUserConsent: error occured');
     }
 
     try {
-       Wonderpushflutter.setUserConsent(true);
+     await Wonderpushflutter.setUserConsent(true);
       print('setUserConsent Done.');
     } on PlatformException {
       print('setUserConsent: error occured');
     }
 
   try {
-      Wonderpushflutter.disableGeolocation();
+      await Wonderpushflutter.disableGeolocation();
       print('disableGeolocation Done.');
     } on PlatformException {
       print('disableGeolocation: error occured');
     }
 
     try {
-      Wonderpushflutter.enableGeolocation();
+      await Wonderpushflutter.enableGeolocation();
       print('enableGeolocation Done.');
     } on PlatformException {
       print('enableGeolocation: error occured');
     }
 
   try {
-      Wonderpushflutter.setGeolocation(1.0,1.0);
+      await Wonderpushflutter.setGeolocation(1.0,1.0);
       print('setGeolocation Done.');
     } on PlatformException {
       print('setGeolocation: error occured');
     }
 
     try {
-      Wonderpushflutter.clearEventsHistory();
+      await Wonderpushflutter.clearEventsHistory();
       print('clearEventsHistory Done.');
     } on PlatformException {
       print('clearEventsHistory: error occured');
     }
 
     try {
-      Wonderpushflutter.clearPreferences();
+      await Wonderpushflutter.clearPreferences();
       print('clearPreferences Done.');
     } on PlatformException {
       print('clearPreferences: error occured');
     }
 
     try {
-       Wonderpushflutter.clearAllData();
+       await Wonderpushflutter.clearAllData();
       print('clearAllData Done.');
     } on PlatformException {
       print('clearAllData: error occured');
