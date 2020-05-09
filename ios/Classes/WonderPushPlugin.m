@@ -23,6 +23,11 @@
              result(nil);
          }else if ([@"isSubscribedToNotifications" isEqualToString:call.method]) {
              result([self isSubscribedToNotifications]);
+         }else if ([@"trackEvent" isEqualToString:call.method]) {
+             NSString *type = [call.arguments valueForKey:@"type"];
+             id attributes = [call.arguments valueForKey:@"attributes"];
+             [self trackEvent:type attributes:attributes];
+             result(nil);
          }else if ([@"addTag" isEqualToString:call.method]) {
              NSArray *tags = [call.arguments valueForKey:@"tags"];
              [self addTag:tags];
@@ -171,7 +176,12 @@
    return [NSNumber numberWithBool:status];
 }
 
-#pragma mark - Segmentation	
+#pragma mark - Segmentation
+
+-(void)trackEvent:(NSString *)type attributes:(NSDictionary *)attributes{
+   [WonderPush trackEvent:type attributes:attributes];
+}
+
 -(void)addTag:(NSArray *)tags{
     [WonderPush addTags:tags];
 }

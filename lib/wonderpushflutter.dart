@@ -29,8 +29,14 @@ class Wonderpushflutter {
 
    // Segmentation
 
+  static Future<void> trackEvent(String type, [Object attributes]) async {
+     Map<String,Object> args = <String,Object>{};
+     args.putIfAbsent("attributes", () => attributes);
+      args.putIfAbsent("type", () => type);
+     await _channel.invokeMethod('trackEvent',args);
+  }
   static Future<void> addTag(var tags) async {
-    if(tags is String){
+    if(!(tags is List)){
       tags = [tags];
     }
     Map<String,List> args = <String,List>{};
@@ -39,7 +45,7 @@ class Wonderpushflutter {
   }
    
   static Future<void> removeTag(var tags) async {
-    if(tags is String){
+    if(!(tags is List)){
       tags = [tags];
     }
     Map<String,List> args = <String,List>{};
@@ -78,7 +84,7 @@ class Wonderpushflutter {
   }
 
    static Future<void> addProperty(String property, var properties) async {
-     if(properties is String){
+     if(!(properties is List)){
        properties = [properties];
      }
      Map<String,Object> args = <String,Object>{};
@@ -88,7 +94,7 @@ class Wonderpushflutter {
   }
 
   static Future<void> removeProperty(String property, Object properties) async{
-    if(properties is String){
+    if(!(properties is List)){
        properties = [properties];
      }
      Map<String,Object> args = <String,Object>{};

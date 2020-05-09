@@ -11,8 +11,16 @@ import io.flutter.plugin.common.PluginRegistry.Registrar;
 import android.location.Location;
 import com.wonderpush.sdk.WonderPush;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -58,6 +66,12 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 case "isSubscribedToNotifications":
                     result.success(isSubscribedToNotifications());
                     break;
+                case "trackEvent":
+                    String type = call.argument("type");
+                    Map attributes = call.argument("attributes");
+                    trackEvent(type,attributes);
+                    result.success(null);
+                    break;
                 case "addTag":
                     ArrayList tagsToAdd = call.argument("tags");
                     addTag(tagsToAdd);
@@ -79,10 +93,44 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 case "getTags":
                     result.success(getTags());
                     break;
+                case "getPropertyValue":
+                    String propertyValueToGet = call.argument("property");
+                    result.success(getPropertyValue(propertyValueToGet));
+                    break;
+                case "getPropertyValues":
+                    String propertyValuesToGet = call.argument("property");
+                    result.success(getPropertyValues(propertyValuesToGet));
+                    break;
+                case "addProperty":
+                    String propertyToAdd = call.argument("property");
+                    ArrayList propertiesToAdd = call.argument("properties");
+                    addProperty(propertyToAdd,propertiesToAdd);
+                    result.success(null);
+                    break;
+                case "removeProperty":
+                    String propertyToRemove = call.argument("property");
+                    ArrayList propertiesToRemove = call.argument("properties");
+                    removeProperty(propertyToRemove,propertiesToRemove);
+                    result.success(null);
+                    break;
+                case "setProperty":
+                    String propertyToSet = call.argument("property");
+                    ArrayList propertiesToSet = call.argument("properties");
+                    setProperty(propertyToSet,propertiesToSet);
+                    result.success(null);
+                    break;
                case "unsetProperty":
                     String property = call.argument("property");
                     unsetProperty(property);
                     result.success(null);
+                    break;
+                case "putProperties":
+                    Map propertiesToPut = call.argument("properties");
+                    putProperties(propertiesToPut);
+                    result.success(null);
+                    break;
+                case "getProperties":
+                    result.success(getProperties());
                     break;
                case "setCountry":
                     String country = call.argument("country");
@@ -211,6 +259,10 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     // Segmentation
 
+    public void trackEvent(String type, Map properties) throws JSONException{
+        JSONObject jsonObject = toJsonObject(properties);
+        WonderPush.trackEvent(type,jsonObject);
+    }
     public void addTag(ArrayList tags){
         String[] arrTags = new String[tags.size()];
         for (int i = 0; i < tags.size(); i++) {
@@ -247,8 +299,57 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         return list;
     }
 
+    public void addProperty(String property, ArrayList properties) throws  JSONException{
+        WonderPush.addProperty(property, toJsonArray(properties));
+    }
+    public void removeProperty(String property, ArrayList properties)  throws  JSONException{
+        WonderPush.removeProperty(property, toJsonArray(properties));
+    }
+    public void setProperty(String property, ArrayList properties) throws  JSONException {
+        WonderPush.setProperty(property, toJsonArray(properties));
+    }
     public void unsetProperty(String property) {
         WonderPush.unsetProperty(property);
+    }
+
+    public void putProperties(Map properties) throws JSONException{
+        JSONObject jsonObject = toJsonObject(properties);
+        WonderPush.putProperties(jsonObject);
+    }
+
+    public Object getPropertyValue(String property) throws JSONException{
+        Object value = WonderPush.getPropertyValue(property);
+        if (value instanceof JSONObject) {
+            return (jsonToMap((JSONObject) value));
+        } else if (value instanceof JSONArray) {
+            return(jsonToList((JSONArray) value));
+        } else if (value == null || value == JSONObject.NULL) {
+            return null;
+        } else{
+            return value;
+        }
+    }
+    public List getPropertyValues(String property) throws JSONException{
+        List<Object> values = WonderPush.getPropertyValues(property);
+        List<Object> properties = WonderPush.getPropertyValues(property);
+        for (Object obj : values) {
+            if (obj instanceof JSONObject) {
+                properties.add(jsonToMap((JSONObject) obj));
+            } else if (obj instanceof JSONArray) {
+                properties.add(jsonToList((JSONArray) obj));
+            } else if (obj == null || obj == JSONObject.NULL) {
+                properties.add(obj);
+            }else{
+                properties.add(obj);
+             }
+        }
+        return properties;
+    }
+
+    public Map getProperties() throws JSONException{
+        JSONObject jsonObject = WonderPush.getProperties();
+        Map map = jsonToMap(jsonObject);
+        return map;
     }
 
     public String getCountry() {
@@ -352,6 +453,79 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     public void setLogging(boolean enable) {
         WonderPush.setLogging(enable);
+    }
+
+
+    // Custom methods
+
+    private static List jsonToList(JSONArray jsonArray) throws JSONException {
+        List list = new ArrayList();
+        for (int i = 0; i < jsonArray.length(); i++) {
+            Object value = jsonArray.get(i);
+            if (value instanceof JSONObject) {
+                list.add(jsonToMap((JSONObject) value));
+            } else if (value instanceof JSONArray) {
+                list.add(jsonToList((JSONArray) value));
+            } else if (value == JSONObject.NULL) {
+                list.add(null);
+            }else{
+                list.add(value);
+            }
+        }
+        return list;
+    }
+    private static Map jsonToMap(JSONObject jsonObject) throws JSONException {
+        Map map = new HashMap();
+        Iterator iterator = jsonObject.keys();
+        while (iterator.hasNext()) {
+            String key = (String) iterator.next();
+            Object value = jsonObject.get(key);
+            if (value instanceof JSONObject) {
+                map.put(key, jsonToMap((JSONObject) value));
+            } else if (value instanceof JSONArray) {
+                map.put(key, jsonToList((JSONArray) value));
+            } else if (value == null || value == JSONObject.NULL) {
+                map.put(key,null);
+            }else{
+                map.put(key,value);
+            }
+        }
+        return map;
+    }
+
+    private JSONObject toJsonObject(Map map) throws JSONException {
+        JSONObject object = new JSONObject();
+        Iterator <String > iter = map.keySet().iterator();
+        while (iter.hasNext()) {
+            String key = iter.next();
+            Object value = map.get(key);
+            if (value instanceof Map) {
+                object.put(key, toJsonObject((Map) value));
+            } else if (value instanceof List) {
+                object.put(key, toJsonArray((List) value));
+            } else if (value == null || value == JSONObject.NULL) {
+                object.put(key, null);
+            } else {
+                object.put(key, value);
+            }
+        }
+        return object;
+    }
+    private JSONArray toJsonArray(List list) throws JSONException {
+        JSONArray array = new JSONArray();
+        for (int idx = 0; idx < list.size(); idx++) {
+            Object value = list.get(idx);
+            if (value instanceof Map) {
+                array.put(toJsonObject((Map) value));
+            } else if (value instanceof List) {
+                array.put(toJsonArray((List) value));
+            } else if (value == null || value == JSONObject.NULL) {
+                array.put(null);
+            } else {
+                array.put(value);
+            }
+        }
+        return array;
     }
 }
 

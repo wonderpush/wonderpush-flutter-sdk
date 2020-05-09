@@ -84,7 +84,7 @@ class _MyAppState extends State<MyApp> {
       print('getCurrency: error occured');
     }
 
-try {
+    try {
       await Wonderpushflutter.setLocale("en_US");
       print('setLocale Done');
     } on PlatformException {
@@ -140,6 +140,14 @@ try {
     } on PlatformException {
       print('addTag: error occured');
     }
+     try {
+        await Wonderpushflutter.trackEvent('type', { 'product': 123 });
+        print('trackEvent: purchase Done');
+        await Wonderpushflutter.trackEvent('visit');
+        print('trackEvent: visit Done');
+      } on PlatformException {
+      print('addTag1: error occured');
+    }
     try {
       await Wonderpushflutter.addTag("science");
       print('addTag1 Done');
@@ -183,17 +191,48 @@ try {
     }
 
     try {
-        await Wonderpushflutter.addProperty("string_foo", "foo");
-        await Wonderpushflutter.addProperty("string_zoo", ["foo", "qux"]);
-        print('addProperty Done');
+        await Wonderpushflutter.addProperty("string_value", "foo");
+        print('addProperty Done string_value');
+        await Wonderpushflutter.addProperty("string_values",  ["sport", "entertainment"]);
+        print('addProperty Done string_values');
+           await Wonderpushflutter.addProperty("short_value",  11);
+        print('addProperty Done short_value');
+        await Wonderpushflutter.addProperty("short_values",  [12,13,14]);
+        print('addProperty Done short_values');
+           await Wonderpushflutter.addProperty("byte_value",  1);
+        print('addProperty Done byte_value');
+        await Wonderpushflutter.addProperty("byte_values",  [1,2,3]);
+        print('addProperty Done byte_values');
+        await Wonderpushflutter.addProperty("int_value",  40);
+        print('addProperty Done int_value');
+        await Wonderpushflutter.addProperty("int_values",  [40,50,60]);
+        print('addProperty Done int_values');
+        await Wonderpushflutter.addProperty("long_value",  100);
+        print('addProperty Done long_value');
+        await Wonderpushflutter.addProperty("long_values",  [100,200,300]);
+        print('addProperty Done long_values');
+         await Wonderpushflutter.addProperty("float_value",  100.1);
+        print('addProperty Done float_value');
+        await Wonderpushflutter.addProperty("float_values",  [101.1,200.2,300.3]);
+        print('addProperty Done float_values');
+         await Wonderpushflutter.addProperty("double_value",  1000.1);
+        print('addProperty Done double_value');
+        await Wonderpushflutter.addProperty("double_values",  [1001.1,2000.2,3000.3]);
+        print('addProperty Done double_values');
+        await Wonderpushflutter.addProperty("bool_value",  true);
+        print('addProperty Done bool_value');
+        await Wonderpushflutter.addProperty("bool_values",  [true,false,true]);
+        print('addProperty Done bool_values');
+        await Wonderpushflutter.addProperty("date_value",  '2020-04-14T06:51:57+0000');
+        print('addProperty Done date_interests1');
+        await Wonderpushflutter.addProperty('date_value1', 1586279937000);
+        print('addProperty Done date_interests');
     } on PlatformException {
       print('isReadremoveAllTagsy: error occured');
     }
 
   try {
        await Wonderpushflutter.setProperty("string_interests", ["sport", "entertainment"]);
-         await Wonderpushflutter.setProperty("int_age", null);
-         await Wonderpushflutter.setProperty("bool_isCustomer", true);
         print('setProperty Done');
     } on PlatformException {
       print('setProperty: error occured');
@@ -201,7 +240,25 @@ try {
 
        try {
        await Wonderpushflutter.putProperties({ 'string_interests1': ['sport1', 'test1'] });
-       await Wonderpushflutter.putProperties({ 'int_age': 40 });
+       print('putProperties string_interests1 Done');
+       await Wonderpushflutter.putProperties({ 'int_age1': 40 });
+       print('putProperties int_age1 Done');
+       await Wonderpushflutter.putProperties({ 'int_age2': 40 });
+       print('putProperties int_age2 Done');
+          await Wonderpushflutter.putProperties({ 'geoloc_foo4': { 'lat': 2.9,'lon': 2.8 } });
+       print('putProperties int_age2 Done');
+       await Wonderpushflutter.putProperties({ 'int_age3': 1,
+                  'string_foo3': 'bar',
+                  'byte_foo3': 1,
+                  'short_foo3': 1,
+                  'long_foo3': 1,
+                  'float_foo3': 1,
+                  'double_foo3': 1,
+                  'bool_foo3': true,
+                  'date_foo3': '2015-10-21T16:29:00-07:00',
+                  'date_bar3': 1445470140000,
+                  'geoloc_foo3': { 'lat': 1.9,'lon': 1.8 }
+              });
         print('putProperties Done');
     } on PlatformException {
       print('putProperties: error occured');
@@ -215,14 +272,14 @@ try {
     }
 
   try {
-        result = await Wonderpushflutter.getPropertyValue("string_zoo");
+        result = await Wonderpushflutter.getPropertyValue("bool_isCustomer");
         print('getPropertyValue Done. $result');
     } on PlatformException {
       print('getPropertyValue: error occured');
     }
 
      try {
-        result = await Wonderpushflutter.getPropertyValues("string_foo");
+        result = await Wonderpushflutter.getPropertyValues("string_interests");
         print('getPropertyValues Done. $result');
     } on PlatformException {
       print('getPropertyValues: error occured');
@@ -230,7 +287,6 @@ try {
 
     try {
         await Wonderpushflutter.removeProperty("string_interests", "sport");
-        await Wonderpushflutter.removeProperty("string_interests", ["sport", "entertainment"]);
         print('removeProperty Done');
     } on PlatformException {
       print('removeProperty: error occured');
@@ -319,9 +375,7 @@ try {
     } on PlatformException {
       print('downloadAllData: error occured');
     }
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
+
     if (!mounted) return;
 
     setState(() {
