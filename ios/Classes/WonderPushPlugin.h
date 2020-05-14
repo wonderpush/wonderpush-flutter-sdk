@@ -1,4 +1,6 @@
 #import <Flutter/Flutter.h>
 
-@interface WonderPushPlugin : NSObject<FlutterPlugin>
+@interface WonderPushPlugin : NSObject<FlutterPlugin,FlutterStreamHandler>
+
+
 @end

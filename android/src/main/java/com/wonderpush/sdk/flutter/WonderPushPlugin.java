@@ -1,8 +1,21 @@
 package com.wonderpush.sdk.flutter;
 
 import androidx.annotation.NonNull;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.Context;
+import android.util.Log;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
+import io.flutter.plugin.common.EventChannel;
+import io.flutter.plugin.common.EventChannel.EventSink;
+import io.flutter.plugin.common.EventChannel.StreamHandler;
+
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -26,12 +39,28 @@ import java.util.Set;
 /**
  * WonderPushPlugin
  */
-public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
+public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler, StreamHandler {
+
+    private EventSink eventSink = null;
+
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-        WonderPush.setIntegrator("wonderpush_flutter-1.0.0");
         final MethodChannel channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "wonderpushflutter");
         channel.setMethodCallHandler(new WonderPushPlugin());
+    }
+
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
+
+    }
+
+    @Override
+    public void onListen(Object arguments, EventChannel.EventSink events){
+        this.eventSink = events;
+    }
+
+    public void onCancel(Object arguments){
+        this.eventSink = null;
     }
 
     // This static function is optional and equivalent to onAttachedToEngine. It supports the old
@@ -44,8 +73,28 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     // depending on the user's project. onAttachedToEngine or registerWith must both be defined
     // in the same class.
     public static void registerWith(Registrar registrar) {
+        WonderPush.setIntegrator("wonderpush_flutter-1.0.0");
+        final WonderPushPlugin instance = new WonderPushPlugin();
         final MethodChannel channel = new MethodChannel(registrar.messenger(), "wonderpushflutter");
-        channel.setMethodCallHandler(new WonderPushPlugin());
+        channel.setMethodCallHandler(instance);
+
+        EventChannel eventChannel = new EventChannel(registrar.messenger(),"wonderpushReceivedPushNotification");
+        eventChannel.setStreamHandler(instance);
+
+        Context context = registrar.context();
+        LocalBroadcastManager.getInstance(context).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                if (!WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_NOTIFICATION_TYPE_DATA.equals(
+                        intent.getStringExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_NOTIFICATION_TYPE))) {
+                    Intent pushNotif = intent.getParcelableExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_RECEIVED_PUSH_NOTIFICATION);
+                    Log.d("WonderPushPlugin: ", pushNotif.toString());
+                    instance.eventSink.success(pushNotif);
+                }
+            }
+        }, new IntentFilter(WonderPush.INTENT_NOTIFICATION_WILL_OPEN));
+
+
     }
 
     @Override
@@ -232,9 +281,6 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         }
     }
 
-    @Override
-    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-    }
 
     // Initialization
 

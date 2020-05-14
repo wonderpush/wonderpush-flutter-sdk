@@ -21,6 +21,15 @@ class _MyAppState extends State<MyApp> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
+    Stream<dynamic> stream = new Stream.fromFuture(Wonderpushflutter.wonderpushReceivedPushNotification(null));
+    stream.listen((data) {
+        _showDialog("wonderpushReceivedPushNotification");
+        print("DataReceived: $data");
+      }, onDone: () {
+          print("Done");
+      }, onError: (error) {
+          print("Some Error $error");
+      });
     // Platform messages may fail, so we use a try/catch PlatformException.
     var result;
     try {
@@ -43,18 +52,18 @@ class _MyAppState extends State<MyApp> {
       print('isSubscribedToNotifications: error occured');
     }
 
-    try {
-        await Wonderpushflutter.unsubscribeFromNotifications();
-        print('unsubscribeFromNotifications Done.');
-    } on PlatformException {
-      print('unsubscribeFromNotifications: error occured');
-    }
-       try {
-        result = await Wonderpushflutter.isSubscribedToNotifications();
-        print('isSubscribedToNotifications1 Done. $result');
-      } on PlatformException {
-         print('isSubscribedToNotifications1: error occured');
-      }
+    // try {
+    //     await Wonderpushflutter.unsubscribeFromNotifications();
+    //     print('unsubscribeFromNotifications Done.');
+    // } on PlatformException {
+    //   print('unsubscribeFromNotifications: error occured');
+    // }
+    //    try {
+    //     result = await Wonderpushflutter.isSubscribedToNotifications();
+    //     print('isSubscribedToNotifications1 Done. $result');
+    //   } on PlatformException {
+    //      print('isSubscribedToNotifications1: error occured');
+    //   }
 
    try {
       await Wonderpushflutter.setCountry("US");
@@ -393,6 +402,29 @@ class _MyAppState extends State<MyApp> {
           child: Text('Running'),
         ),
       ),
+    );
+  }
+
+  void _showDialog(String mesage) {
+    // flutter defined function
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // return object of type Dialog
+        return AlertDialog(
+          title: new Text("Alert Dialog title"),
+          content: new Text(mesage),
+          actions: <Widget>[
+            // usually buttons at the bottom of the dialog
+            new FlatButton(
+              child: new Text("Close"),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

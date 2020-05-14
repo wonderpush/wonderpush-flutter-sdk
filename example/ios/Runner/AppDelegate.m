@@ -1,6 +1,8 @@
 #import "AppDelegate.h"
 #import "GeneratedPluginRegistrant.h"
 #import <WonderPush/WonderPush.h>
+#import <WonderPushPlugin.h>
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application
@@ -11,7 +13,25 @@
     [WonderPush setupDelegateForApplication:application];
     [WonderPush setupDelegateForUserNotificationCenter];
   // Override point for customization after application launch.
+    
+    [NSTimer scheduledTimerWithTimeInterval:30.0
+    target:self
+    selector:@selector(testEventExpose)
+    userInfo:nil
+    repeats:NO];
+    [NSTimer scheduledTimerWithTimeInterval:60.0
+     target:self
+     selector:@selector(testDelegetExpose)
+     userInfo:nil
+     repeats:NO];
   return [super application:application didFinishLaunchingWithOptions:launchOptions];
 }
 
+
+-(void)testEventExpose{
+    NSLog(@"testEventExpose");
+}
+-(void)testDelegetExpose{
+    NSLog(@"testDelegetExpose");
+}
 @end

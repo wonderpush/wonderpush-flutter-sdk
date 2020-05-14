@@ -1,16 +1,43 @@
 #import "WonderPushPlugin.h"
 #import "WonderPush.h"
+@interface WonderPushPlugin()
+
+@property(nonatomic)FlutterEventSink eventSink;
+@end
 
 @implementation WonderPushPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  [WonderPush setIntegrator:@"wonderpush_flutter-1.0.0"];
-  FlutterMethodChannel* channel = [FlutterMethodChannel
-      methodChannelWithName:@"wonderpushflutter"
-            binaryMessenger:[registrar messenger]];
-  WonderPushPlugin* instance = [[WonderPushPlugin alloc] init];
-  [registrar addMethodCallDelegate:instance channel:channel];
+    [WonderPush setIntegrator:@"wonderpush_flutter-1.0.0"];
+    
+    FlutterMethodChannel* channel = [FlutterMethodChannel
+        methodChannelWithName:@"wonderpushflutter"
+              binaryMessenger:[registrar messenger]];
+    WonderPushPlugin *instance = [[WonderPushPlugin alloc] init];
+    [registrar addMethodCallDelegate:instance channel:channel];
+    
+    FlutterEventChannel *eventChannel = [FlutterEventChannel eventChannelWithName: @"wonderpushReceivedPushNotification" binaryMessenger:registrar.messenger];
+     [eventChannel setStreamHandler:instance];
+    
+   [[NSNotificationCenter defaultCenter] addObserverForName:WP_NOTIFICATION_OPENED_BROADCAST object:nil queue:nil usingBlock:^(NSNotification *note) {
+       NSDictionary *pushNotification = note.userInfo;
+       instance.eventSink(pushNotification);
+       NSLog(@"WonderPushPlugin Notification clicked: %@", pushNotification);
+  }];
+ 
+}
+ 
+- (FlutterError* _Nullable)onListenWithArguments:(id _Nullable)arguments
+                                       eventSink:(FlutterEventSink)events{
+    self.eventSink = events;
+    return nil;
 }
 
+
+
+- (FlutterError* _Nullable)onCancelWithArguments:(id _Nullable)arguments{
+    self.eventSink = nil;
+    return nil;
+}
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
  @try {
         if ([@"isReady" isEqualToString:call.method]) {
@@ -349,5 +376,8 @@
 -(void)setLogging:(BOOL) enable{
     [WonderPush setLogging:enable];
 }
+
+
+
 
 @end
