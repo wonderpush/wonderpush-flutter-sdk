@@ -1,43 +1,41 @@
 #import "WonderPushPlugin.h"
 #import "WonderPush.h"
-@interface WonderPushPlugin()
+@interface WonderPushPlugin()<WonderPushDelegate>
 
-@property(nonatomic)FlutterEventSink eventSink;
+
 @end
+static FlutterMethodChannel *methodChannel = nil;
+static WonderPushPlugin *plugInInstace = nil;
 
 @implementation WonderPushPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     [WonderPush setIntegrator:@"wonderpush_flutter-1.0.0"];
-    
-    FlutterMethodChannel* channel = [FlutterMethodChannel
+    plugInInstace = [[WonderPushPlugin alloc] init];
+    methodChannel = [FlutterMethodChannel
         methodChannelWithName:@"wonderpushflutter"
               binaryMessenger:[registrar messenger]];
-    WonderPushPlugin *instance = [[WonderPushPlugin alloc] init];
-    [registrar addMethodCallDelegate:instance channel:channel];
+    [registrar addMethodCallDelegate:plugInInstace channel:methodChannel];
     
-    FlutterEventChannel *eventChannel = [FlutterEventChannel eventChannelWithName: @"wonderpushReceivedPushNotification" binaryMessenger:registrar.messenger];
-     [eventChannel setStreamHandler:instance];
-    
-   [[NSNotificationCenter defaultCenter] addObserverForName:WP_NOTIFICATION_OPENED_BROADCAST object:nil queue:nil usingBlock:^(NSNotification *note) {
-       NSDictionary *pushNotification = note.userInfo;
-       instance.eventSink(pushNotification);
-       NSLog(@"WonderPushPlugin Notification clicked: %@", pushNotification);
-  }];
- 
+    [[NSNotificationCenter defaultCenter] addObserverForName:WP_NOTIFICATION_OPENED_BROADCAST object:nil queue:nil usingBlock:^(NSNotification *note) {
+        NSDictionary *pushNotification = note.userInfo;
+        dispatch_async(dispatch_get_main_queue(), ^{
+              [methodChannel invokeMethod:@"wonderpushReceivedPushNotification" arguments:pushNotification];
+         });
+    }];
 }
- 
-- (FlutterError* _Nullable)onListenWithArguments:(id _Nullable)arguments
-                                       eventSink:(FlutterEventSink)events{
-    self.eventSink = events;
-    return nil;
+
++(void)setupWonderPushDelegate{
+    [WonderPush setDelegate:plugInInstace];
+}
+
+- (void) wonderPushWillOpenURL:(NSURL *)URL withCompletionHandler:(void (^)(NSURL *))completionHandler {
+  dispatch_async(dispatch_get_main_queue(), ^{
+       [methodChannel invokeMethod:@"wonderPushWillOpenURL" arguments:[URL absoluteString]];
+      completionHandler(URL);
+  });
 }
 
 
-
-- (FlutterError* _Nullable)onCancelWithArguments:(id _Nullable)arguments{
-    self.eventSink = nil;
-    return nil;
-}
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
  @try {
         if ([@"isReady" isEqualToString:call.method]) {

@@ -390,7 +390,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ashok Patel (W9D7DT7T9T)";
+				CODE_SIGN_IDENTITY = "Apple Development: Ashok Patel (W9D7DT7T9T)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 9WB9QL8269;
@@ -429,9 +429,9 @@
 					"-framework",
 					Flutter,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = con.bc.testpushapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.testwonderpush;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = Dev_testpush_14052020;
+				PROVISIONING_PROFILE_SPECIFIER = WonderPushTest_New_15052020;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Profile;
@@ -549,7 +549,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ashok Patel (W9D7DT7T9T)";
+				CODE_SIGN_IDENTITY = "Apple Development: Ashok Patel (W9D7DT7T9T)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 9WB9QL8269;
@@ -588,9 +588,9 @@
 					"-framework",
 					Flutter,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = con.bc.testpushapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.testwonderpush;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = Dev_testpush_14052020;
+				PROVISIONING_PROFILE_SPECIFIER = WonderPushTest_New_15052020;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -601,7 +601,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = Runner/Runner.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Ashok Patel (W9D7DT7T9T)";
+				CODE_SIGN_IDENTITY = "Apple Development: Ashok Patel (W9D7DT7T9T)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "Apple Development: Ashok Patel (W9D7DT7T9T)";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = "$(FLUTTER_BUILD_NUMBER)";
 				DEVELOPMENT_TEAM = 9WB9QL8269;
@@ -640,9 +641,9 @@
 					"-framework",
 					Flutter,
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = con.bc.testpushapp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.testwonderpush;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = Dev_testpush_14052020;
+				PROVISIONING_PROFILE_SPECIFIER = WonderPushTest_New_15052020;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;

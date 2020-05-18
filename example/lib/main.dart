@@ -16,20 +16,38 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+            Wonderpushflutter.methodchannel.setMethodCallHandler(_handleMethod);
+
     initPlatformState();
+
+
   }
+
+ Future<void> _handleMethod(MethodCall call) async {
+      final String method = call.method;
+      dynamic argument = call.arguments;
+                  print("_handleMethod"); 
+      switch(method) { 
+          case "wonderPushWillOpenURL": {  
+            print("wonderPushWillOpenURL $argument");
+          } 
+          break; 
+          case "wonderpushReceivedPushNotification": {  
+            print("wonderpushReceivedPushNotification $argument");
+          } 
+          break; 
+          default: { 
+            print("Invalid choice"); 
+          } 
+          break; 
+      } 
+}
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    Stream<dynamic> stream = new Stream.fromFuture(Wonderpushflutter.wonderpushReceivedPushNotification(null));
-    stream.listen((data) {
-        _showDialog("wonderpushReceivedPushNotification");
-        print("DataReceived: $data");
-      }, onDone: () {
-          print("Done");
-      }, onError: (error) {
-          print("Some Error $error");
-      });
+                     print("initPlatformState");
+
+
     // Platform messages may fail, so we use a try/catch PlatformException.
     var result;
     try {
@@ -378,12 +396,12 @@ class _MyAppState extends State<MyApp> {
       print('clearAllData: error occured');
     }
 
-    try {
-      result = await Wonderpushflutter.downloadAllData();
-      print('downloadAllData Done. $result');
-    } on PlatformException {
-      print('downloadAllData: error occured');
-    }
+    // try {
+    //   result = await Wonderpushflutter.downloadAllData();
+    //   print('downloadAllData Done. $result');
+    // } on PlatformException {
+    //   print('downloadAllData: error occured');
+    // }
 
     if (!mounted) return;
 

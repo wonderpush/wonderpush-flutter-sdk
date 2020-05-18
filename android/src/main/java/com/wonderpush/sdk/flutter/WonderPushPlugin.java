@@ -1,6 +1,8 @@
 package com.wonderpush.sdk.flutter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.UiThread;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.app.Activity;
@@ -8,6 +10,8 @@ import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -22,7 +26,10 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 import android.location.Location;
+
+import com.wonderpush.sdk.DeepLinkEvent;
 import com.wonderpush.sdk.WonderPush;
+import com.wonderpush.sdk.WonderPushAbstractDelegate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,13 +46,15 @@ import java.util.Set;
 /**
  * WonderPushPlugin
  */
-public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler, StreamHandler {
+public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
-    private EventSink eventSink = null;
+   static MethodChannel eventChannel = null;
+   static Context context = null;
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
         final MethodChannel channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "wonderpushflutter");
+        eventChannel = channel;
         channel.setMethodCallHandler(new WonderPushPlugin());
     }
 
@@ -54,14 +63,6 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler, Strea
 
     }
 
-    @Override
-    public void onListen(Object arguments, EventChannel.EventSink events){
-        this.eventSink = events;
-    }
-
-    public void onCancel(Object arguments){
-        this.eventSink = null;
-    }
 
     // This static function is optional and equivalent to onAttachedToEngine. It supports the old
     // pre-Flutter-1.12 Android projects. You are encouraged to continue supporting
@@ -74,22 +75,20 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler, Strea
     // in the same class.
     public static void registerWith(Registrar registrar) {
         WonderPush.setIntegrator("wonderpush_flutter-1.0.0");
-        final WonderPushPlugin instance = new WonderPushPlugin();
-        final MethodChannel channel = new MethodChannel(registrar.messenger(), "wonderpushflutter");
-        channel.setMethodCallHandler(instance);
-
-        EventChannel eventChannel = new EventChannel(registrar.messenger(),"wonderpushReceivedPushNotification");
-        eventChannel.setStreamHandler(instance);
-
-        Context context = registrar.context();
+        context = registrar.context();
         LocalBroadcastManager.getInstance(context).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 if (!WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_NOTIFICATION_TYPE_DATA.equals(
                         intent.getStringExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_NOTIFICATION_TYPE))) {
-                    Intent pushNotif = intent.getParcelableExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_RECEIVED_PUSH_NOTIFICATION);
+                    final Intent pushNotif = intent.getParcelableExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_RECEIVED_PUSH_NOTIFICATION);
                     Log.d("WonderPushPlugin: ", pushNotif.toString());
-                    instance.eventSink.success(pushNotif);
+                    new Handler().postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            eventChannel.invokeMethod(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_RECEIVED_PUSH_NOTIFICATION,pushNotif);
+                        }
+                    }, 100);
                 }
             }
         }, new IntentFilter(WonderPush.INTENT_NOTIFICATION_WILL_OPEN));
@@ -97,6 +96,21 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler, Strea
 
     }
 
+    public static void setupWonderPushDelegate(){
+        WonderPush.setDelegate(new WonderPushAbstractDelegate() {
+            @Override
+            public String urlForDeepLink(DeepLinkEvent event) {
+                final DeepLinkEvent e = event;
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        eventChannel.invokeMethod("wonderPushWillOpenURL",e.getUrl());
+                    }
+                }, 100);
+                return event.getUrl();
+            }
+        });
+    }
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         try {
@@ -306,8 +320,12 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler, Strea
     // Segmentation
 
     public void trackEvent(String type, Map properties) throws JSONException{
-        JSONObject jsonObject = toJsonObject(properties);
-        WonderPush.trackEvent(type,jsonObject);
+        if(properties != null){
+            JSONObject jsonObject = toJsonObject(properties);
+            WonderPush.trackEvent(type,jsonObject);
+        }else{
+            WonderPush.trackEvent(type);
+        }
     }
     public void addTag(ArrayList tags){
         String[] arrTags = new String[tags.size()];
