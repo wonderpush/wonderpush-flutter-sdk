@@ -2,7 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/services.dart';
 
-class Wonderpushflutter extends Object {
+class WonderPush extends Object {
    static const MethodChannel methodchannel =  const MethodChannel('wonderpushflutter');
 
 
