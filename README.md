@@ -1,4 +1,4 @@
-# wonderpushflutter
+# wonderpush_flutter
 
 WonderPush Flutter SDK
 

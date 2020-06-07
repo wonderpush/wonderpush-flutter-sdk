@@ -1,6 +1,6 @@
-# wonderpushflutter_example
+# wonderpush_flutter_example
 
-Demonstrates how to use the wonderpushflutter plugin.
+Demonstrates how to use the wonderpush_flutter plugin.
 
 ## Getting Started
 

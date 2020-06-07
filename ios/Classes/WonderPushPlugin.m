@@ -12,14 +12,14 @@ static WonderPushPlugin *plugInInstace = nil;
     [WonderPush setIntegrator:@"wonderpush_flutter-1.0.0"];
     plugInInstace = [[WonderPushPlugin alloc] init];
     methodChannel = [FlutterMethodChannel
-        methodChannelWithName:@"wonderpushflutter"
+        methodChannelWithName:@"wonderpush_flutter"
               binaryMessenger:[registrar messenger]];
     [registrar addMethodCallDelegate:plugInInstace channel:methodChannel];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:WP_NOTIFICATION_OPENED_BROADCAST object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSDictionary *pushNotification = note.userInfo;
         dispatch_async(dispatch_get_main_queue(), ^{
-              [methodChannel invokeMethod:@"wonderpushReceivedPushNotification" arguments:pushNotification];
+              [methodChannel invokeMethod:@"wonderPushReceivedPushNotification" arguments:pushNotification];
          });
     }];
 }

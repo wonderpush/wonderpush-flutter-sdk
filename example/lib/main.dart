@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:wonderpushflutter/wonderpushflutter.dart';
+import 'package:wonderpush_flutter/wonderpush_flutter.dart';
 
 void main() => runApp(MyApp());
 
@@ -16,6 +16,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
+    
             WonderPush.methodchannel.setMethodCallHandler(_handleMethod);
 
     initPlatformState();

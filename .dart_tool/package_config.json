@@ -164,13 +164,13 @@
       "languageVersion": "2.3"
     },
     {
-      "name": "wonderpushflutter",
+      "name": "wonderpush_flutter",
       "rootUri": "../",
       "packageUri": "lib/",
       "languageVersion": "2.1"
     }
   ],
-  "generated": "2020-05-25T13:11:42.461158Z",
+  "generated": "2020-06-07T17:59:25.458649Z",
   "generator": "pub",
   "generatorVersion": "2.7.2"
 }
