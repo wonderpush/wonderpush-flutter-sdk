@@ -33,8 +33,8 @@ class _MyAppState extends State<MyApp> {
             print("wonderPushWillOpenURL $argument");
           } 
           break; 
-          case "wonderpushReceivedPushNotification": {  
-            print("wonderpushReceivedPushNotification $argument");
+          case "wonderPushReceivedPushNotification": {  
+            print("wonderPushReceivedPushNotification $argument");
           } 
           break; 
           default: { 
