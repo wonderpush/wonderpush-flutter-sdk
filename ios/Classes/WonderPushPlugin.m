@@ -175,7 +175,7 @@ static WonderPushPlugin *plugInInstace = nil;
       NSString *code = [NSString stringWithFormat:@"%ld", e.code];
       result([FlutterError errorWithCode:code
                                  message:e.localizedDescription
-                                 details:e]);
+                                 details:e.userInfo]);
   }
 }
 
