@@ -166,13 +166,13 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     break;
                 case "addProperty":
                     String propertyToAdd = call.argument("property");
-                    ArrayList propertiesToAdd = call.argument("properties");
+                    Object propertiesToAdd = call.argument("properties");
                     addProperty(propertyToAdd,propertiesToAdd);
                     result.success(null);
                     break;
                 case "removeProperty":
                     String propertyToRemove = call.argument("property");
-                    ArrayList propertiesToRemove = call.argument("properties");
+                    Object propertiesToRemove = call.argument("properties");
                     removeProperty(propertyToRemove,propertiesToRemove);
                     result.success(null);
                     break;
@@ -363,11 +363,11 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         return list;
     }
 
-    public void addProperty(String property, ArrayList properties) throws  JSONException{
-        WonderPush.addProperty(property, toJsonArray(properties));
+    public void addProperty(String property, Object properties) throws  JSONException{
+        WonderPush.addProperty(property, properties);
     }
-    public void removeProperty(String property, ArrayList properties)  throws  JSONException{
-        WonderPush.removeProperty(property, toJsonArray(properties));
+    public void removeProperty(String property, Object properties)  throws  JSONException{
+        WonderPush.removeProperty(property, properties);
     }
     public void setProperty(String property, Object properties) throws  JSONException {
         WonderPush.setProperty(property, properties);
