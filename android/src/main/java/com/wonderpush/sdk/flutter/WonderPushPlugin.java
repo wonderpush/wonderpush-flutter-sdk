@@ -1,25 +1,19 @@
 package com.wonderpush.sdk.flutter;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.UiThread;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.Context;
+import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
-import android.util.Log;
-import io.flutter.embedding.engine.plugins.FlutterPlugin;
-import io.flutter.embedding.engine.plugins.activity.ActivityAware;
-import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
-import io.flutter.plugin.common.EventChannel;
-import io.flutter.plugin.common.EventChannel.EventSink;
-import io.flutter.plugin.common.EventChannel.StreamHandler;
 
+import io.flutter.embedding.engine.dart.DartExecutor;
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -36,7 +30,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -48,14 +41,27 @@ import java.util.Set;
  */
 public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
-   static MethodChannel eventChannel = null;
-   static Context context = null;
+    MethodChannel eventChannel = null;
+
+    private static WonderPushPlugin instance;
+
+    public WonderPushPlugin() {
+        instance = this;
+    }
+
+    public static WonderPushPlugin getInstance() {
+        if (instance == null) {
+            instance = new WonderPushPlugin();
+        }
+        return instance;
+    }
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-        final MethodChannel channel = new MethodChannel(flutterPluginBinding.getFlutterEngine().getDartExecutor(), "wonderpush_flutter");
-        eventChannel = channel;
-        channel.setMethodCallHandler(new WonderPushPlugin());
+
+        this.onAttachedToEngine(
+                flutterPluginBinding.getApplicationContext(),
+                flutterPluginBinding.getBinaryMessenger());
     }
 
     @Override
@@ -63,6 +69,65 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     }
 
+    private void onAttachedToEngine(Context applicationContext, BinaryMessenger binaryMessenger) {
+        // Integrator
+        WonderPush.setIntegrator("wonderpush_flutter-1.0.0");
+
+        // Method channel
+        final MethodChannel channel = new MethodChannel(binaryMessenger, "wonderpush_flutter");
+        eventChannel = channel;
+        channel.setMethodCallHandler(this);
+
+        // Listen to notification clicks
+        LocalBroadcastManager.getInstance(applicationContext).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                WonderPushPlugin.this.onReceiveNotificationWillOpen(intent);
+            }
+        }, new IntentFilter(WonderPush.INTENT_NOTIFICATION_WILL_OPEN));
+    }
+
+    private void onReceiveNotificationWillOpen(Intent intent) {
+
+        // No push data
+        if (WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_NOTIFICATION_TYPE_DATA.equals(
+                intent.getStringExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_NOTIFICATION_TYPE))) {
+            return;
+        }
+
+        // Get the push notif
+        final Intent pushNotif = intent.getParcelableExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_RECEIVED_PUSH_NOTIFICATION);
+        Bundle bundle = pushNotif.getExtras();
+        if (bundle == null) {
+            return;
+        }
+
+        // Turn the bundle into a Map
+        final Map<String, Object> notificationData = new HashMap<>();
+        Set<String> keys = bundle.keySet();
+        for (String key : keys) {
+            if (key.equals("_wp")) {
+                String jsonString = bundle.getString("_wp");
+                try {
+                    JSONObject jsonObject = new JSONObject(jsonString);
+                    notificationData.put("_wp", jsonToMap(jsonObject));
+                } catch (JSONException e) {
+
+                }
+                continue;
+            }
+            notificationData.put(key, bundle.get(key));
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (eventChannel != null) {
+                    eventChannel.invokeMethod("wonderPushReceivedPushNotification", notificationData);
+                }
+            }
+        }, 100);
+    }
 
     // This static function is optional and equivalent to onAttachedToEngine. It supports the old
     // pre-Flutter-1.12 Android projects. You are encouraged to continue supporting
@@ -74,26 +139,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     // depending on the user's project. onAttachedToEngine or registerWith must both be defined
     // in the same class.
     public static void registerWith(Registrar registrar) {
-        WonderPush.setIntegrator("wonderpush_flutter-1.0.0");
-        context = registrar.context();
-        LocalBroadcastManager.getInstance(context).registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                if (!WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_NOTIFICATION_TYPE_DATA.equals(
-                        intent.getStringExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_NOTIFICATION_TYPE))) {
-                    final Intent pushNotif = intent.getParcelableExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_RECEIVED_PUSH_NOTIFICATION);
-                    Log.d("WonderPushPlugin: ", pushNotif.toString());
-                    new Handler().postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            eventChannel.invokeMethod(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_RECEIVED_PUSH_NOTIFICATION,pushNotif);
-                        }
-                    }, 100);
-                }
-            }
-        }, new IntentFilter(WonderPush.INTENT_NOTIFICATION_WILL_OPEN));
-
-
+        WonderPushPlugin.getInstance().onAttachedToEngine(registrar.context().getApplicationContext(), registrar.messenger());
     }
 
     public static void setupWonderPushDelegate(){
@@ -104,13 +150,16 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        eventChannel.invokeMethod("wonderPushWillOpenURL",e.getUrl());
+                        if (getInstance().eventChannel != null) {
+                            getInstance().eventChannel.invokeMethod("wonderPushWillOpenURL", e.getUrl());
+                        }
                     }
                 }, 100);
                 return event.getUrl();
             }
         });
     }
+
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         try {
