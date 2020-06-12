@@ -492,7 +492,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     public void setGeolocation(double lat, double lon) {
-        Location location = new Location("WonderPush");
+        Location location = new Location("");
         location.setLatitude(lat);
         location.setLongitude(lon);
         WonderPush.setGeolocation(location);
