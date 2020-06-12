@@ -142,7 +142,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         WonderPushPlugin.getInstance().onAttachedToEngine(registrar.context().getApplicationContext(), registrar.messenger());
     }
 
-    public static void setupWonderPushDelegate(){
+    public static void setupWonderPushDelegate() {
         WonderPush.setDelegate(new WonderPushAbstractDelegate() {
             @Override
             public String urlForDeepLink(DeepLinkEvent event) {
@@ -181,7 +181,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 case "trackEvent":
                     String type = call.argument("type");
                     Map attributes = call.argument("attributes");
-                    trackEvent(type,attributes);
+                    trackEvent(type, attributes);
                     result.success(null);
                     break;
                 case "addTag":
@@ -216,22 +216,22 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 case "addProperty":
                     String propertyToAdd = call.argument("property");
                     Object propertiesToAdd = call.argument("properties");
-                    addProperty(propertyToAdd,propertiesToAdd);
+                    addProperty(propertyToAdd, propertiesToAdd);
                     result.success(null);
                     break;
                 case "removeProperty":
                     String propertyToRemove = call.argument("property");
                     Object propertiesToRemove = call.argument("properties");
-                    removeProperty(propertyToRemove,propertiesToRemove);
+                    removeProperty(propertyToRemove, propertiesToRemove);
                     result.success(null);
                     break;
                 case "setProperty":
                     String propertyToSet = call.argument("property");
                     Object propertiesToSet = call.argument("properties");
-                    setProperty(propertyToSet,propertiesToSet);
+                    setProperty(propertyToSet, propertiesToSet);
                     result.success(null);
                     break;
-               case "unsetProperty":
+                case "unsetProperty":
                     String property = call.argument("property");
                     unsetProperty(property);
                     result.success(null);
@@ -244,15 +244,15 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 case "getProperties":
                     result.success(getProperties());
                     break;
-               case "setCountry":
+                case "setCountry":
                     String country = call.argument("country");
                     setCountry(country);
                     result.success(null);
                     break;
-               case "getCountry":
+                case "getCountry":
                     result.success(getCountry());
                     break;
-               case "setCurrency":
+                case "setCurrency":
                     String currency = call.argument("currency");
                     setCurrency(currency);
                     result.success(null);
@@ -260,7 +260,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 case "getCurrency":
                     result.success(getCurrency());
                     break;
-               case "setLocale":
+                case "setLocale":
                     String locale = call.argument("locale");
                     setLocale(locale);
                     result.success(null);
@@ -268,7 +268,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 case "getLocale":
                     result.success(getLocale());
                     break;
-               case "setTimeZone":
+                case "setTimeZone":
                     String timeZone = call.argument("timeZone");
                     setTimeZone(timeZone);
                     result.success(null);
@@ -308,10 +308,10 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     enableGeolocation();
                     result.success(null);
                     break;
-               case "setGeolocation":
+                case "setGeolocation":
                     double lat = call.argument("lat");
                     double lon = call.argument("lon");
-                    setGeolocation(lat,lon);
+                    setGeolocation(lat, lon);
                     result.success(null);
                     break;
                 case "clearEventsHistory":
@@ -344,14 +344,13 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         }
     }
 
-
     // Initialization
 
-    public boolean isReady(){
-         boolean status = WonderPush.isReady();
-         return status;
+    public boolean isReady() {
+        boolean status = WonderPush.isReady();
+        return status;
     }
-     // Subscribing users
+    // Subscribing users
 
     public void subscribeToNotifications() {
         WonderPush.subscribeToNotifications();
@@ -368,43 +367,45 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     // Segmentation
 
-    public void trackEvent(String type, Map properties) throws JSONException{
-        if(properties != null){
+    public void trackEvent(String type, Map properties) throws JSONException {
+        if (properties != null) {
             JSONObject jsonObject = toJsonObject(properties);
-            WonderPush.trackEvent(type,jsonObject);
-        }else{
+            WonderPush.trackEvent(type, jsonObject);
+        } else {
             WonderPush.trackEvent(type);
         }
     }
-    public void addTag(ArrayList tags){
+
+    public void addTag(ArrayList tags) {
         String[] arrTags = new String[tags.size()];
         for (int i = 0; i < tags.size(); i++) {
-            if(tags.get(i) instanceof String) {
+            if (tags.get(i) instanceof String) {
                 arrTags[i] = (String) tags.get(i);
             }
         }
         WonderPush.addTag(arrTags);
     }
 
-    public void removeTag(ArrayList tags){
+    public void removeTag(ArrayList tags) {
         String[] arrTags = new String[tags.size()];
         for (int i = 0; i < tags.size(); i++) {
-            if(tags.get(i) instanceof String) {
+            if (tags.get(i) instanceof String) {
                 arrTags[i] = (String) tags.get(i);
             }
         }
-         WonderPush.removeTag(arrTags);
+        WonderPush.removeTag(arrTags);
     }
+
     public void removeAllTags() {
         WonderPush.removeAllTags();
     }
-    
-     public boolean hasTag(String tag) {
+
+    public boolean hasTag(String tag) {
         boolean status = WonderPush.hasTag(tag);
         return status;
     }
 
-    public ArrayList getTags(){
+    public ArrayList getTags() {
         Set<String> tags = WonderPush.getTags();
         ArrayList<String> list = new ArrayList<>();
         for (String tag : tags)
@@ -412,37 +413,41 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         return list;
     }
 
-    public void addProperty(String property, Object properties) throws  JSONException{
+    public void addProperty(String property, Object properties) throws JSONException {
         WonderPush.addProperty(property, properties);
     }
-    public void removeProperty(String property, Object properties)  throws  JSONException{
+
+    public void removeProperty(String property, Object properties) throws JSONException {
         WonderPush.removeProperty(property, properties);
     }
-    public void setProperty(String property, Object properties) throws  JSONException {
+
+    public void setProperty(String property, Object properties) throws JSONException {
         WonderPush.setProperty(property, properties);
     }
+
     public void unsetProperty(String property) {
         WonderPush.unsetProperty(property);
     }
 
-    public void putProperties(Map properties) throws JSONException{
+    public void putProperties(Map properties) throws JSONException {
         JSONObject jsonObject = toJsonObject(properties);
         WonderPush.putProperties(jsonObject);
     }
 
-    public Object getPropertyValue(String property) throws JSONException{
+    public Object getPropertyValue(String property) throws JSONException {
         Object value = WonderPush.getPropertyValue(property);
         if (value instanceof JSONObject) {
             return (jsonToMap((JSONObject) value));
         } else if (value instanceof JSONArray) {
-            return(jsonToList((JSONArray) value));
+            return (jsonToList((JSONArray) value));
         } else if (value == null || value == JSONObject.NULL) {
             return null;
-        } else{
+        } else {
             return value;
         }
     }
-    public List getPropertyValues(String property) throws JSONException{
+
+    public List getPropertyValues(String property) throws JSONException {
         List<Object> values = WonderPush.getPropertyValues(property);
         List<Object> properties = WonderPush.getPropertyValues(property);
         for (Object obj : values) {
@@ -452,14 +457,14 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 properties.add(jsonToList((JSONArray) obj));
             } else if (obj == null || obj == JSONObject.NULL) {
                 properties.add(obj);
-            }else{
+            } else {
                 properties.add(obj);
-             }
+            }
         }
         return properties;
     }
 
-    public Map getProperties() throws JSONException{
+    public Map getProperties() throws JSONException {
         JSONObject jsonObject = WonderPush.getProperties();
         Map map = jsonToMap(jsonObject);
         return map;
@@ -493,17 +498,17 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     public String getTimeZone() {
-       String timeZone = WonderPush.getTimeZone();
-       return timeZone;
+        String timeZone = WonderPush.getTimeZone();
+        return timeZone;
     }
 
     public void setTimeZone(String timeZone) {
         WonderPush.setTimeZone(timeZone);
     }
-     // User IDs	
+    // User IDs
 
     public void setUserId(String userId) {
-      WonderPush.setUserId(userId);
+        WonderPush.setUserId(userId);
     }
 
     public String getUserId() {
@@ -581,12 +586,13 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 list.add(jsonToList((JSONArray) value));
             } else if (value == JSONObject.NULL) {
                 list.add(null);
-            }else{
+            } else {
                 list.add(value);
             }
         }
         return list;
     }
+
     private static Map jsonToMap(JSONObject jsonObject) throws JSONException {
         Map map = new HashMap();
         Iterator iterator = jsonObject.keys();
@@ -598,9 +604,9 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
             } else if (value instanceof JSONArray) {
                 map.put(key, jsonToList((JSONArray) value));
             } else if (value == null || value == JSONObject.NULL) {
-                map.put(key,null);
-            }else{
-                map.put(key,value);
+                map.put(key, null);
+            } else {
+                map.put(key, value);
             }
         }
         return map;
@@ -608,7 +614,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     private JSONObject toJsonObject(Map map) throws JSONException {
         JSONObject object = new JSONObject();
-        Iterator <String > iter = map.keySet().iterator();
+        Iterator<String> iter = map.keySet().iterator();
         while (iter.hasNext()) {
             String key = iter.next();
             Object value = map.get(key);
@@ -624,6 +630,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         }
         return object;
     }
+
     private JSONArray toJsonArray(List list) throws JSONException {
         JSONArray array = new JSONArray();
         for (int idx = 0; idx < list.size(); idx++) {
