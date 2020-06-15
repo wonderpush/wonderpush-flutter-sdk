@@ -284,7 +284,7 @@ static WonderPushPlugin *pluginInstance = nil;
     [WonderPush setCurrency:currency];
 }
 
--(id)getLocale {
+-(id) getLocale {
     NSString *locale = [WonderPush locale];
     return locale;
 }
