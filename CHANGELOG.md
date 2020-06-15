@@ -1,3 +1,3 @@
-## 0.0.1
+## 1.0.0
 
-* TODO: Describe initial release.
+* This is the initial release of the WonderPush Flutter SDK. Get started here: https://docs.wonderpush.com/docs/flutter-push-notifications

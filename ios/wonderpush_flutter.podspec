@@ -11,7 +11,7 @@ WonderPush Flutter SDK
                        DESC
   s.homepage         = 'https://www.wonderpush.com/'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'WonderPush' => 'contact@wonderpush.com' }
+  s.author           = { 'WonderPush' => 'dev@wonderpush.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
