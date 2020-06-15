@@ -1,0 +1,31 @@
+PODS:
+  - Flutter (1.0.0)
+  - WonderPush (3.3.3):
+    - WonderPush/Core (= 3.3.3)
+  - WonderPush/Core (3.3.3)
+  - wonderpush_flutter (0.0.1):
+    - Flutter
+    - WonderPush (= 3.3.3)
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - wonderpush_flutter (from `.symlinks/plugins/wonderpush_flutter/ios`)
+
+SPEC REPOS:
+  trunk:
+    - WonderPush
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  wonderpush_flutter:
+    :path: ".symlinks/plugins/wonderpush_flutter/ios"
+
+SPEC CHECKSUMS:
+  Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
+  WonderPush: 645fb3bd8d07a12eb3d48b3d71b7ee8f5a878535
+  wonderpush_flutter: e38af0e344b45e7e1109d7fcd23c0394be73e6a3
+
+PODFILE CHECKSUM: 9d0ac94d3d11f2290fe3fb976f070609fc82675b
+
+COCOAPODS: 1.9.2
