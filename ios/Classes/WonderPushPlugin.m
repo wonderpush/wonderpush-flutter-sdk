@@ -163,7 +163,8 @@ static WonderPushPlugin *pluginInstance = nil;
             [self clearAllData];
             result(nil);
         } else if ([@"downloadAllData" isEqualToString:call.method]) {
-            [self downloadAllData:result];
+            [self downloadAllData];
+            result(nil);
         } else if ([@"setLogging" isEqualToString:call.method]) {
             BOOL enable = [[call.arguments valueForKey:@"enable"] boolValue];
             [self setLogging:enable];
@@ -360,12 +361,23 @@ static WonderPushPlugin *pluginInstance = nil;
     [WonderPush clearAllData];
 }
 
--(void) downloadAllData:(FlutterResult)result {
+-(void) downloadAllData {
     [WonderPush downloadAllData:^(NSData *data, NSError *error) {
         if (error) {
-            @throw error;
+            return;
         }
-        result(data);
+        
+        // Upon success, present a UIActivityViewController
+        
+        // Find the topmost view controller
+        UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
+        while (topController.presentedViewController) {
+            topController = topController.presentedViewController;
+        }
+        
+        NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+        UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[string] applicationActivities:nil];
+        [topController presentViewController:controller animated:YES completion:nil];
     }];
 }
 

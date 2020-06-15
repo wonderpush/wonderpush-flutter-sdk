@@ -238,9 +238,8 @@ class WonderPush extends Object {
     _methodChannel.invokeMethod('clearAllData');
   }
 
-  static Future<dynamic> downloadAllData() async {
-    final Object data = await _methodChannel.invokeMethod('downloadAllData');
-    return data;
+  static Future<void> downloadAllData() async {
+    await _methodChannel.invokeMethod('downloadAllData');
   }
 
   // Debug
