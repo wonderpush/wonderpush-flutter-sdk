@@ -16,33 +16,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    
-            WonderPush.methodchannel.setMethodCallHandler(_handleMethod);
-
     initPlatformState();
-
-
   }
-
- Future<void> _handleMethod(MethodCall call) async {
-      final String method = call.method;
-      dynamic argument = call.arguments;
-                  print("_handleMethod"); 
-      switch(method) { 
-          case "wonderPushWillOpenURL": {  
-            print("wonderPushWillOpenURL $argument");
-          } 
-          break; 
-          case "wonderPushReceivedPushNotification": {  
-            print("wonderPushReceivedPushNotification $argument");
-          } 
-          break; 
-          default: { 
-            print("Invalid choice"); 
-          } 
-          break; 
-      } 
-}
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
