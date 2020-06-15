@@ -1,14 +1,15 @@
 #import "WonderPushPlugin.h"
 #import "WonderPush.h"
-@interface WonderPushPlugin()<WonderPushDelegate>
 
-
+@interface WonderPushPlugin() <WonderPushDelegate>
 @end
+
 static FlutterMethodChannel *methodChannel = nil;
 static WonderPushPlugin *pluginInstance = nil;
 
 @implementation WonderPushPlugin
-+ (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+
++ (void) registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     [WonderPush setIntegrator:@"wonderpush_flutter-1.0.0"];
     pluginInstance = [[WonderPushPlugin alloc] init];
     methodChannel = [FlutterMethodChannel
@@ -24,7 +25,7 @@ static WonderPushPlugin *pluginInstance = nil;
     }];
 }
 
-+(void)setupWonderPushDelegate{
++(void) setupWonderPushDelegate {
     [WonderPush setDelegate:pluginInstance];
 }
 
@@ -35,8 +36,7 @@ static WonderPushPlugin *pluginInstance = nil;
     });
 }
 
-
-- (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+- (void) handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
     @try {
         if ([@"isReady" isEqualToString:call.method]) {
             result([self isReady]);
@@ -179,188 +179,188 @@ static WonderPushPlugin *pluginInstance = nil;
     }
 }
 
-#pragma mark - Initialization	
+#pragma mark - Initialization
 
--(id)isReady{
+-(id) isReady {
     BOOL status = [WonderPush isReady];
     return [NSNumber numberWithBool:status];
 }
 
 #pragma mark - Subscribing users
 
--(void)subscribeToNotifications{
+-(void) subscribeToNotifications {
     [WonderPush subscribeToNotifications];
 }
 
--(void)unsubscribeFromNotifications{
+-(void) unsubscribeFromNotifications {
     [WonderPush unsubscribeFromNotifications];
 }
 
--(id)isSubscribedToNotifications{
+-(id) isSubscribedToNotifications {
     BOOL status =  [WonderPush isSubscribedToNotifications];
     return [NSNumber numberWithBool:status];
 }
 
 #pragma mark - Segmentation
 
--(void)trackEvent:(NSString *)type attributes:(NSDictionary *)attributes{
+-(void) trackEvent:(NSString *)type attributes:(NSDictionary *)attributes {
     [WonderPush trackEvent:type attributes:attributes];
 }
 
--(void)addTag:(NSArray *)tags{
+-(void) addTag:(NSArray *)tags {
     [WonderPush addTags:tags];
 }
 
--(void)removeTag:(NSArray *)tags{
+-(void) removeTag:(NSArray *)tags {
     [WonderPush removeTags:tags];
 }
 
--(void)removeAllTags{
+-(void) removeAllTags {
     [WonderPush removeAllTags];
 }
 
--(id)hasTag:(NSString *)tag{
+-(id) hasTag:(NSString *)tag {
     BOOL status =  [WonderPush hasTag:tag];
     return [NSNumber numberWithBool:status];
 }
 
-- (id)getTags{
+- (id) getTags {
     NSOrderedSet<NSString*> *tags = [WonderPush getTags];
     NSArray *arrTags = [NSArray arrayWithArray:[tags array]];
     return arrTags;
 }
 
--(id)getPropertyValue:(NSString *)property{
+-(id) getPropertyValue:(NSString *)property {
     id value = [WonderPush getPropertyValue:property];
     return value;
 }
 
--(NSArray *)getPropertyValues:(NSString *)property{
+-(NSArray *) getPropertyValues:(NSString *)property {
     NSArray *values  = [WonderPush getPropertyValues:property];
     return values;
 }
 
--(void)addProperty:(NSString *)property properties:(id)properties{
+-(void) addProperty:(NSString *)property properties:(id)properties {
     [WonderPush addProperty:property value:properties];
 }
 
--(void)removeProperty:(NSString *)property properties:(id)properties{
+-(void) removeProperty:(NSString *)property properties:(id)properties {
     [WonderPush removeProperty:property value:properties];
 }
 
--(void)setProperty:(NSString *)property properties:(id)properties{
+-(void) setProperty:(NSString *)property properties:(id)properties {
     [WonderPush setProperty:property value:properties];
 }
 
--(void)unsetProperty:(NSString *)property{
+-(void) unsetProperty:(NSString *)property {
     [WonderPush unsetProperty:property];
 }
 
--(void)putProperties:(NSDictionary *)properties{
+-(void) putProperties:(NSDictionary *)properties {
     [WonderPush putProperties:properties];
 }
 
--(NSDictionary *)getProperties{
+-(NSDictionary *) getProperties {
     NSDictionary *properties = [WonderPush getProperties];
     return properties;
 }
 
--(id)getCountry{
+-(id) getCountry {
     NSString *country = [WonderPush country];
     return country;
 }
 
--(void)setCountry:(NSString *)country{
+-(void) setCountry:(NSString *)country {
     [WonderPush setCountry:country];
 }
 
--(id)getCurrency{
+-(id) getCurrency {
     NSString *currency = [WonderPush currency];
     return currency;
 }
 
--(void)setCurrency:(NSString *)currency{
+-(void) setCurrency:(NSString *)currency {
     [WonderPush setCurrency:currency];
 }
 
--(id)getLocale{
+-(id)getLocale {
     NSString *locale = [WonderPush locale];
     return locale;
 }
 
--(void)setLocale:(NSString *)locale{
+-(void) setLocale:(NSString *)locale {
     [WonderPush setLocale:locale];
 }
 
--(id)getTimeZone{
+-(id) getTimeZone {
     NSString *timeZone = [WonderPush timeZone];
     return timeZone;
 }
 
--(void)setTimeZone:(NSString *)timeZone{
+-(void) setTimeZone:(NSString *)timeZone {
     [WonderPush setTimeZone:timeZone];
 }
 
 
-#pragma mark - User IDs	
+#pragma mark - User IDs
 
--(void)setUserId:(NSString *)userId{
+-(void) setUserId:(NSString *)userId {
     [WonderPush setUserId:userId];
 }
 
--(NSString *)getUserId{
+-(NSString *) getUserId {
     NSString *userId = [WonderPush userId];
     return userId;
 }
 
 #pragma mark - Installation info
 
--(NSString *)getInstallationId{
+-(NSString *) getInstallationId {
     NSString *installationId = [WonderPush installationId];
     return installationId;
 }
 
--(NSString *)getPushToken{
+-(NSString *) getPushToken {
     NSString *pushToken = [WonderPush pushToken];
     return pushToken;
 }
 
 #pragma mark - Privacy
 
--(void)setRequiresUserConsent:(BOOL)isConsent{
+-(void) setRequiresUserConsent:(BOOL)isConsent {
     [WonderPush setRequiresUserConsent:isConsent];
 }
 
--(void)setUserConsent:(BOOL)isConsent{
+-(void) setUserConsent:(BOOL)isConsent {
     [WonderPush setUserConsent:isConsent];
 }
 
--(void)disableGeolocation{
+-(void) disableGeolocation {
     [WonderPush disableGeolocation];
 }
 
--(void)enableGeolocation{
+-(void) enableGeolocation {
     [WonderPush enableGeolocation];
 }
 
--(void)setGeolocation:(double)lat lon:(double)lon{
+-(void) setGeolocation:(double)lat lon:(double)lon {
     CLLocation *location = [[CLLocation alloc] initWithLatitude:lat longitude:lon];
     [WonderPush setGeolocation:location];
 }
 
--(void)clearEventsHistory{
+-(void) clearEventsHistory {
     [WonderPush clearEventsHistory];
 }
 
--(void)clearPreferences{
+-(void) clearPreferences {
     [WonderPush clearPreferences];
 }
 
--(void)clearAllData{
+-(void) clearAllData {
     [WonderPush clearAllData];
 }
 
--(void)downloadAllData:(FlutterResult)result{
+-(void) downloadAllData:(FlutterResult)result {
     [WonderPush downloadAllData:^(NSData *data, NSError *error) {
         if (error) {
             @throw error;
@@ -371,7 +371,7 @@ static WonderPushPlugin *pluginInstance = nil;
 
 #pragma mark - Debug
 
--(void)setLogging:(BOOL) enable{
+-(void) setLogging:(BOOL) enable {
     [WonderPush setLogging:enable];
 }
 
