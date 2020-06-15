@@ -5,16 +5,16 @@
 
 @end
 static FlutterMethodChannel *methodChannel = nil;
-static WonderPushPlugin *plugInInstace = nil;
+static WonderPushPlugin *pluginInstance = nil;
 
 @implementation WonderPushPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
     [WonderPush setIntegrator:@"wonderpush_flutter-1.0.0"];
-    plugInInstace = [[WonderPushPlugin alloc] init];
+    pluginInstance = [[WonderPushPlugin alloc] init];
     methodChannel = [FlutterMethodChannel
                      methodChannelWithName:@"wonderpush_flutter"
                      binaryMessenger:[registrar messenger]];
-    [registrar addMethodCallDelegate:plugInInstace channel:methodChannel];
+    [registrar addMethodCallDelegate:pluginInstance channel:methodChannel];
     
     [[NSNotificationCenter defaultCenter] addObserverForName:WP_NOTIFICATION_OPENED_BROADCAST object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSDictionary *pushNotification = note.userInfo;
@@ -25,7 +25,7 @@ static WonderPushPlugin *plugInInstace = nil;
 }
 
 +(void)setupWonderPushDelegate{
-    [WonderPush setDelegate:plugInInstace];
+    [WonderPush setDelegate:pluginInstance];
 }
 
 - (void) wonderPushWillOpenURL:(NSURL *)URL withCompletionHandler:(void (^)(NSURL *))completionHandler {
