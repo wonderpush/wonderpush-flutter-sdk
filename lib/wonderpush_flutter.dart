@@ -4,7 +4,8 @@ import 'package:flutter/services.dart';
 
 /// The WonderPush SDK main class.
 class WonderPush extends Object {
-  static const MethodChannel _methodChannel = const MethodChannel('wonderpush_flutter');
+  static const MethodChannel _methodChannel =
+      const MethodChannel('wonderpush_flutter');
 
   // Initialization
 
@@ -28,7 +29,8 @@ class WonderPush extends Object {
 
   /// Tells whether user is subscribed to push notifications.
   static Future<bool> isSubscribedToNotifications() async {
-    final bool result = await _methodChannel.invokeMethod('isSubscribedToNotifications');
+    final bool result =
+        await _methodChannel.invokeMethod('isSubscribedToNotifications');
     return result;
   }
 
@@ -90,7 +92,8 @@ class WonderPush extends Object {
   static Future<dynamic> getPropertyValue(String property) async {
     Map<String, String> args = <String, String>{};
     args.putIfAbsent("property", () => property);
-    final Object result = await _methodChannel.invokeMethod('getPropertyValue', args);
+    final Object result =
+        await _methodChannel.invokeMethod('getPropertyValue', args);
     return result;
   }
 
@@ -102,7 +105,8 @@ class WonderPush extends Object {
   static Future<List> getPropertyValues(String property) async {
     Map<String, String> args = <String, String>{};
     args.putIfAbsent("property", () => property);
-    final List result = await _methodChannel.invokeMethod('getPropertyValues', args);
+    final List result =
+        await _methodChannel.invokeMethod('getPropertyValues', args);
     return result;
   }
 
@@ -231,7 +235,6 @@ class WonderPush extends Object {
     return timeZone;
   }
 
-
   // User IDs
 
   /// Assigns your own user ID to an installation. See [User IDs](https://docs.wonderpush.com/docs/user-ids).
@@ -256,7 +259,8 @@ class WonderPush extends Object {
 
   /// Returns the installationId, or null if the WonderPush servers have not been contacted just yet.
   static Future<String> getInstallationId() async {
-    final String installationId = await _methodChannel.invokeMethod('getInstallationId');
+    final String installationId =
+        await _methodChannel.invokeMethod('getInstallationId');
     return installationId;
   }
 
