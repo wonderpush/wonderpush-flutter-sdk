@@ -1,399 +1,136 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
 import 'package:wonderpush_flutter/wonderpush_flutter.dart';
 
-void main() => runApp(MyApp());
+// Installation instructions:
+// https://docs.wonderpush.com/docs/flutter-push-notifications
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
+// To test this example, you'll have to adapt your Client ID and Client Secret in the following files:
+// - example/android/app/build.gradle
+// - example/ios/Runner/AppDelegate.m
+// You can find these values on your [wonderpush dashboard](https://dashboard.wonderpush.com/)
+
+void main() {
+  runApp(MyApp());
+  WonderPush.subscribeToNotifications();
+  if (kDebugMode) {
+    WonderPush.setLogging(true);
+  }
 }
 
-class _MyAppState extends State<MyApp> {
+class MyApp extends StatelessWidget {
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        // This is the theme of your application.
+        //
+        // Try running your application with "flutter run". You'll see the
+        // application has a blue toolbar. Then, without quitting the app, try
+        // changing the primarySwatch below to Colors.green and then invoke
+        // "hot reload" (press "r" in the console where you ran "flutter run",
+        // or simply save your changes to "hot reload" in a Flutter IDE).
+        // Notice that the counter didn't reset back to zero; the application
+        // is not restarted.
+        primarySwatch: Colors.blue,
+        // This makes the visual density adapt to the platform that you run
+        // the app on. For desktop platforms, the controls will be smaller and
+        // closer together (more dense) than on mobile platforms.
+        visualDensity: VisualDensity.adaptivePlatformDensity,
+      ),
+      home: MyHomePage(title: 'Flutter Demo Home Page'),
+    );
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  MyHomePage({Key key, this.title}) : super(key: key);
+
+  // This widget is the home page of your application. It is stateful, meaning
+  // that it has a State object (defined below) that contains fields that affect
+  // how it looks.
+
+  // This class is the configuration for the state. It holds the values (in this
+  // case the title) provided by the parent (in this case the App widget) and
+  // used by the build method of the State. Fields in a Widget subclass are
+  // always marked "final".
+
+  final String title;
 
   @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
+  _MyHomePageState createState() => _MyHomePageState();
+}
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-                     print("initPlatformState");
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
 
-
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    var result;
-    try {
-       await WonderPush.setLogging(true);
-      print('setLogging Done.');
-    } on PlatformException {
-      print('setLogging: error occured');
-    }
-
-    try {
-      await WonderPush.subscribeToNotifications();
-      print('subscribeToNotifications Done.');
-    } on PlatformException {
-      print('subscribeToNotifications: error occured');
-    }
-     result = await WonderPush.isSubscribedToNotifications();
-      print('isSubscribedToNotifications Done. $result');
-   
-
-    // try {
-    //     await WonderPush.unsubscribeFromNotifications();
-    //     print('unsubscribeFromNotifications Done.');
-    // } on PlatformException {
-    //   print('unsubscribeFromNotifications: error occured');
-    // }
-    //    try {
-    //     result = await WonderPush.isSubscribedToNotifications();
-    //     print('isSubscribedToNotifications1 Done. $result');
-    //   } on PlatformException {
-    //      print('isSubscribedToNotifications1: error occured');
-    //   }
-
-   try {
-      await WonderPush.setCountry("US");
-      print('WonderPush Done');
-    } on PlatformException {
-      print('setCountry: error occured');
-    }
-
-    try {
-     result =  await WonderPush.getCountry();
-      print('WonderPush Done. $result');
-    } on PlatformException {
-      print('getCountry: error occured');
-    }
-
-  try {
-      await WonderPush.setCurrency("USD");
-      print('setCurrency Done');
-    } on PlatformException {
-      print('setCurrency: error occured');
-    }
-
-    try {
-     result = await WonderPush.getCurrency();
-      print('getCurrency Done. $result');
-    } on PlatformException {
-      print('getCurrency: error occured');
-    }
-
-    try {
-      await WonderPush.setLocale("en_US");
-      print('setLocale Done');
-    } on PlatformException {
-      print('setLocale: error occured');
-    }
-
-    try {
-     result = await WonderPush.getLocale();
-      print('getLocale Done. $result');
-    } on PlatformException {
-      print('getLocale: error occured');
-    }
-    
-    try {
-      await WonderPush.setTimeZone("Europe/Paris");
-      print('setTimeZone Done');
-    } on PlatformException {
-      print('setTimeZone: error occured');
-    }
-
-    try {
-     result = await WonderPush.getTimeZone();
-      print('getTimeZone Done. $result');
-    } on PlatformException {
-      print('getTimeZone: error occured');
-    }
-    
-
-    try {
-      await WonderPush.setUserId("rakesh");
-      print('setUserId Done');
-    } on PlatformException {
-      print('setUserId: error occured');
-    }
-
-    try {
-     result =  await WonderPush.getUserId();
-      print('getUserId Done. $result');
-    } on PlatformException {
-      print('getUserId: error occured');
-    }
-
-     try {
-      result = await WonderPush.isReady();
-      print('isReady Done. $result');
-    } on PlatformException {
-      print('isReady: error occured');
-    }
-
-    try {
-       await WonderPush.addTag(["sports","food","entertainment"]);
-      print('addTag Done');
-    } on PlatformException {
-      print('addTag: error occured');
-    }
-     try {
-        await WonderPush.trackEvent('type', { 'product': 123 });
-        print('trackEvent: purchase Done');
-        await WonderPush.trackEvent('visit');
-        print('trackEvent: visit Done');
-      } on PlatformException {
-      print('addTag1: error occured');
-    }
-    try {
-      await WonderPush.addTag("science");
-      print('addTag1 Done');
-    } on PlatformException {
-      print('addTag1: error occured');
-    }
-
-     try {
-      result = await WonderPush.hasTag("science");
-      print(result ? "User is a customer" : "User is not a customer");
-    } on PlatformException {
-      print('hasTag1: error occured');
-    }
-
-      try {
-      result = await WonderPush.getTags();
-      print('getTags Done. $result');
-    } on PlatformException {
-      print('getTags: error occured');
-    }
-
-    try {
-      await WonderPush.removeTag("food");
-      print('removeTag Done');
-    } on PlatformException {
-      print('removeTag: error occured');
-    }
-
-    try {
-      result = await WonderPush.hasTag("food");
-      print('hasTag12 Done. $result');
-    } on PlatformException {
-      print('hasTag2: error occured');
-    }
-
-  try {
-      await WonderPush.removeAllTags();
-      print('removeAllTags Done');
-    } on PlatformException {
-      print('isReadremoveAllTagsy: error occured');
-    }
-
-    try {
-        await WonderPush.addProperty("string_value", "foo");
-        print('addProperty Done string_value');
-        await WonderPush.addProperty("string_values",  ["sport", "entertainment"]);
-        print('addProperty Done string_values');
-           await WonderPush.addProperty("short_value",  11);
-        print('addProperty Done short_value');
-        await WonderPush.addProperty("short_values",  [12,13,14]);
-        print('addProperty Done short_values');
-           await WonderPush.addProperty("byte_value",  1);
-        print('addProperty Done byte_value');
-        await WonderPush.addProperty("byte_values",  [1,2,3]);
-        print('addProperty Done byte_values');
-        await WonderPush.addProperty("int_value",  40);
-        print('addProperty Done int_value');
-        await WonderPush.addProperty("int_values",  [40,50,60]);
-        print('addProperty Done int_values');
-        await WonderPush.addProperty("long_value",  100);
-        print('addProperty Done long_value');
-        await WonderPush.addProperty("long_values",  [100,200,300]);
-        print('addProperty Done long_values');
-         await WonderPush.addProperty("float_value",  100.1);
-        print('addProperty Done float_value');
-        await WonderPush.addProperty("float_values",  [101.1,200.2,300.3]);
-        print('addProperty Done float_values');
-         await WonderPush.addProperty("double_value",  1000.1);
-        print('addProperty Done double_value');
-        await WonderPush.addProperty("double_values",  [1001.1,2000.2,3000.3]);
-        print('addProperty Done double_values');
-        await WonderPush.addProperty("bool_value",  true);
-        print('addProperty Done bool_value');
-        await WonderPush.addProperty("bool_values",  [true,false,true]);
-        print('addProperty Done bool_values');
-        await WonderPush.addProperty("date_value",  '2020-04-14T06:51:57+0000');
-        print('addProperty Done date_interests1');
-        await WonderPush.addProperty('date_value1', 1586279937000);
-        print('addProperty Done date_interests');
-    } on PlatformException {
-      print('isReadremoveAllTagsy: error occured');
-    }
-
-  try {
-       await WonderPush.setProperty("string_interests", ["sport", "entertainment"]);
-        print('setProperty Done');
-    } on PlatformException {
-      print('setProperty: error occured');
-    }
-
-       try {
-       await WonderPush.putProperties({ 'string_interests1': ['sport1', 'test1'] });
-       print('putProperties string_interests1 Done');
-       await WonderPush.putProperties({ 'int_age1': 40 });
-       print('putProperties int_age1 Done');
-       await WonderPush.putProperties({ 'int_age2': 40 });
-       print('putProperties int_age2 Done');
-          await WonderPush.putProperties({ 'geoloc_foo4': { 'lat': 2.9,'lon': 2.8 } });
-       print('putProperties int_age2 Done');
-       await WonderPush.putProperties({ 'int_age3': 1,
-                  'string_foo3': 'bar',
-                  'byte_foo3': 1,
-                  'short_foo3': 1,
-                  'long_foo3': 1,
-                  'float_foo3': 1,
-                  'double_foo3': 1,
-                  'bool_foo3': true,
-                  'date_foo3': '2015-10-21T16:29:00-07:00',
-                  'date_bar3': 1445470140000,
-                  'geoloc_foo3': { 'lat': 1.9,'lon': 1.8 }
-              });
-        print('putProperties Done');
-    } on PlatformException {
-      print('putProperties: error occured');
-    }
-
-    try {
-        result = await WonderPush.getProperties();
-        print('getProperties Done. $result');
-    } on PlatformException {
-      print('getProperties: error occured');
-    }
-
-  try {
-        result = await WonderPush.getPropertyValue("bool_isCustomer");
-        print('getPropertyValue Done. $result');
-    } on PlatformException {
-      print('getPropertyValue: error occured');
-    }
-
-     try {
-        result = await WonderPush.getPropertyValues("string_interests");
-        print('getPropertyValues Done. $result');
-    } on PlatformException {
-      print('getPropertyValues: error occured');
-    }
-
-    try {
-        await WonderPush.removeProperty("string_interests", "sport");
-        print('removeProperty Done');
-    } on PlatformException {
-      print('removeProperty: error occured');
-    }
-
-     try {
-     await WonderPush.unsetProperty("string_favoritePlayers");
-      print('unsetProperty Done.');
-    } on PlatformException {
-      print('unsetProperty: error occured');
-    }
-
-    try {
-      result = await WonderPush.getInstallationId();
-      print('getInstallationId Done. $result');
-    } on PlatformException {
-      print('getInstallationId: error occured');
-    }
-
-    try {
-      result = await WonderPush.getPushToken();
-      print('getPushToken Done. $result');
-    } on PlatformException {
-      print('getPushToken: error occured');
-    }
-
-     try {
-     await WonderPush.setRequiresUserConsent(true);
-      print('setRequiresUserConsent Done.');
-    } on PlatformException {
-      print('setRequiresUserConsent: error occured');
-    }
-
-    try {
-     await WonderPush.setUserConsent(true);
-      print('setUserConsent Done.');
-    } on PlatformException {
-      print('setUserConsent: error occured');
-    }
-
-  try {
-      await WonderPush.disableGeolocation();
-      print('disableGeolocation Done.');
-    } on PlatformException {
-      print('disableGeolocation: error occured');
-    }
-
-    try {
-      await WonderPush.enableGeolocation();
-      print('enableGeolocation Done.');
-    } on PlatformException {
-      print('enableGeolocation: error occured');
-    }
-
-  try {
-      await WonderPush.setGeolocation(1.0,1.0);
-      print('setGeolocation Done.');
-    } on PlatformException {
-      print('setGeolocation: error occured');
-    }
-
-    try {
-      await WonderPush.clearEventsHistory();
-      print('clearEventsHistory Done.');
-    } on PlatformException {
-      print('clearEventsHistory: error occured');
-    }
-
-    try {
-      await WonderPush.clearPreferences();
-      print('clearPreferences Done.');
-    } on PlatformException {
-      print('clearPreferences: error occured');
-    }
-
-    try {
-       await WonderPush.clearAllData();
-      print('clearAllData Done.');
-    } on PlatformException {
-      print('clearAllData: error occured');
-    }
-
-    // try {
-    //   result = await WonderPush.downloadAllData();
-    //   print('downloadAllData Done. $result');
-    // } on PlatformException {
-    //   print('downloadAllData: error occured');
-    // }
-
-    if (!mounted) return;
-
+  void _incrementCounter() {
     setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter++;
+      WonderPush.setProperty("int_counter", _counter).then((value) {
+        // Value of the counter is now sent to WonderPush and available for segmentation
+      }, onError: (error) {
+        // An error occurred
+      });
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Plugin example app'),
-        ),
-        body: Center(
-          child: Text('Running'),
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
+    return Scaffold(
+      appBar: AppBar(
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(widget.title),
+      ),
+      body: Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: Column(
+          // Column is also a layout widget. It takes a list of children and
+          // arranges them vertically. By default, it sizes itself to fit its
+          // children horizontally, and tries to be as tall as its parent.
+          //
+          // Invoke "debug painting" (press "p" in the console, choose the
+          // "Toggle Debug Paint" action from the Flutter Inspector in Android
+          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
+          // to see the wireframe for each widget.
+          //
+          // Column has various properties to control how it sizes itself and
+          // how it positions its children. Here we use mainAxisAlignment to
+          // center the children vertically; the main axis here is the vertical
+          // axis because Columns are vertical (the cross axis would be
+          // horizontal).
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              'You have pushed the button this many times:',
+            ),
+            Text(
+              '$_counter',
+              style: Theme.of(context).textTheme.headline4,
+            ),
+          ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
-
 }

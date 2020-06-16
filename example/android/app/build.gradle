@@ -39,9 +39,10 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField 'String', 'WONDERPUSH_CLIENT_ID', '"fd49eef17401e6b2916e9101fa48c9c2f15ec330"'
-        buildConfigField 'String', 'WONDERPUSH_CLIENT_SECRET', '"fd9b63c4c77c9a66d00aa64e5aed8d25e8ccb510e96baff8b08a8a980777e1c6"'
-        buildConfigField 'String', 'WONDERPUSH_SENDER_ID', '"227914050568"'
+        // See https://docs.wonderpush.com/docs/flutter-push-notifications#step-1-fill-your-firebase-credentials-in-the-dashboard
+        buildConfigField 'String', 'WONDERPUSH_CLIENT_ID', '"REPLACE_WITH_CLIENT_ID"'
+        buildConfigField 'String', 'WONDERPUSH_CLIENT_SECRET', '"REPLACE_WITH_CLIENT_SECRET"'
+        buildConfigField 'String', 'WONDERPUSH_SENDER_ID', '"REPLACE_WITH_SENDER_ID"'
     }
 
     buildTypes {

@@ -9,7 +9,8 @@
     didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [GeneratedPluginRegistrant registerWithRegistry:self];
     [WonderPush setLogging:YES];
-    [WonderPush setClientId:@"fd49eef17401e6b2916e9101fa48c9c2f15ec330" secret:@"fd9b63c4c77c9a66d00aa64e5aed8d25e8ccb510e96baff8b08a8a980777e1c6"];
+    // See https://docs.wonderpush.com/docs/flutter-push-notifications#step-2-prepare-your-xcode-project-for-push-notifications
+    [WonderPush setClientId:@"REPLACE_WITH_CLIENT_ID" secret:@"REPLACE_WITH_CLIENT_SECRET"];
     [WonderPush setupDelegateForApplication:application];
     [WonderPush setupDelegateForUserNotificationCenter];
     
