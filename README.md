@@ -36,7 +36,7 @@ See our [Flutter Installation Guide](https://docs.wonderpush.com/docs/flutter-pu
 
 ## Reference
 
-Check out the [**API reference**](https://docs.wonderpush.com/docs/flutter-push-notifications) for a list of available methods. There's also a [dartdoc reference](https://wonderpush.github.io/wonderpush-flutter-sdk/).
+Check out the [**API reference**](https://docs.wonderpush.com/docs/flutter-push-notifications) for a list of available methods. There's also a [dartdoc reference](https://pub.dev/documentation/wonderpush_flutter/).
 
 ## Migrate from OneSignal plugin and others
 If you need to be GDPR compliant and you already use a push notification plugin, migrating to WonderPush is easy: all you have to do is add the WonderPush plugin to your app and disable the other plugin.
