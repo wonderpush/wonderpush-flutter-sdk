@@ -180,7 +180,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     break;
                 case "trackEvent":
                     String type = call.argument("type");
-                    Map attributes = call.argument("attributes");
+                    Map<String, Object> attributes = call.argument("attributes");
                     trackEvent(type, attributes);
                     result.success(null);
                     break;
@@ -237,7 +237,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     result.success(null);
                     break;
                 case "putProperties":
-                    Map propertiesToPut = call.argument("properties");
+                    Map<String, Object> propertiesToPut = call.argument("properties");
                     putProperties(propertiesToPut);
                     result.success(null);
                     break;
@@ -367,7 +367,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     // Segmentation
 
-    public void trackEvent(String type, Map properties) throws JSONException {
+    public void trackEvent(String type, Map<String, Object> properties) throws JSONException {
         if (properties != null) {
             JSONObject jsonObject = toJsonObject(properties);
             WonderPush.trackEvent(type, jsonObject);
@@ -429,7 +429,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         WonderPush.unsetProperty(property);
     }
 
-    public void putProperties(Map properties) throws JSONException {
+    public void putProperties(Map<String, Object> properties) throws JSONException {
         JSONObject jsonObject = toJsonObject(properties);
         WonderPush.putProperties(jsonObject);
     }
@@ -576,8 +576,8 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     // Custom methods
 
-    private static List jsonToList(JSONArray jsonArray) throws JSONException {
-        List list = new ArrayList();
+    private static List<Object> jsonToList(JSONArray jsonArray) throws JSONException {
+        List<Object> list = new ArrayList<>();
         for (int i = 0; i < jsonArray.length(); i++) {
             Object value = jsonArray.get(i);
             if (value instanceof JSONObject) {
@@ -593,8 +593,8 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         return list;
     }
 
-    private static Map jsonToMap(JSONObject jsonObject) throws JSONException {
-        Map map = new HashMap();
+    private static Map<String, Object> jsonToMap(JSONObject jsonObject) throws JSONException {
+        Map<String, Object> map = new HashMap<>();
         Iterator iterator = jsonObject.keys();
         while (iterator.hasNext()) {
             String key = (String) iterator.next();
@@ -612,16 +612,17 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         return map;
     }
 
-    private JSONObject toJsonObject(Map map) throws JSONException {
+    @SuppressWarnings("unchecked")
+    private JSONObject toJsonObject(Map<String, Object> map) throws JSONException {
         JSONObject object = new JSONObject();
         Iterator<String> iter = map.keySet().iterator();
         while (iter.hasNext()) {
             String key = iter.next();
             Object value = map.get(key);
             if (value instanceof Map) {
-                object.put(key, toJsonObject((Map) value));
+                object.put(key, toJsonObject((Map<String, Object>) value));
             } else if (value instanceof List) {
-                object.put(key, toJsonArray((List) value));
+                object.put(key, toJsonArray((List<Object>) value));
             } else if (value == null || value == JSONObject.NULL) {
                 object.put(key, null);
             } else {
@@ -631,14 +632,15 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         return object;
     }
 
-    private JSONArray toJsonArray(List list) throws JSONException {
+    @SuppressWarnings("unchecked")
+    private JSONArray toJsonArray(List<Object> list) throws JSONException {
         JSONArray array = new JSONArray();
         for (int idx = 0; idx < list.size(); idx++) {
             Object value = list.get(idx);
             if (value instanceof Map) {
-                array.put(toJsonObject((Map) value));
+                array.put(toJsonObject((Map<String, Object>) value));
             } else if (value instanceof List) {
-                array.put(toJsonArray((List) value));
+                array.put(toJsonArray((List<Object>) value));
             } else if (value == null || value == JSONObject.NULL) {
                 array.put(null);
             } else {
