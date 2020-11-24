@@ -71,7 +71,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     private void onAttachedToEngine(Context applicationContext, BinaryMessenger binaryMessenger) {
         // Integrator
-        WonderPush.setIntegrator("wonderpush_flutter-1.0.1");
+        WonderPush.setIntegrator("wonderpush_flutter-2.0.0");
 
         // Method channel
         final MethodChannel channel = new MethodChannel(binaryMessenger, "wonderpush_flutter");
@@ -164,9 +164,6 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
         try {
             switch (call.method) {
-                case "isReady":
-                    result.success(isReady());
-                    break;
                 case "subscribeToNotifications":
                     subscribeToNotifications();
                     result.success(null);
@@ -344,12 +341,6 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         }
     }
 
-    // Initialization
-
-    public boolean isReady() {
-        boolean status = WonderPush.isReady();
-        return status;
-    }
     // Subscribing users
 
     public void subscribeToNotifications() {

@@ -10,7 +10,7 @@ static WonderPushPlugin *pluginInstance = nil;
 @implementation WonderPushPlugin
 
 + (void) registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    [WonderPush setIntegrator:@"wonderpush_flutter-1.0.1"];
+    [WonderPush setIntegrator:@"wonderpush_flutter-2.0.0"];
     pluginInstance = [[WonderPushPlugin alloc] init];
     methodChannel = [FlutterMethodChannel
                      methodChannelWithName:@"wonderpush_flutter"
@@ -38,9 +38,7 @@ static WonderPushPlugin *pluginInstance = nil;
 
 - (void) handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
     @try {
-        if ([@"isReady" isEqualToString:call.method]) {
-            result([self isReady]);
-        } else if ([@"subscribeToNotifications" isEqualToString:call.method]) {
+        if ([@"subscribeToNotifications" isEqualToString:call.method]) {
             [self subscribeToNotifications];
             result(nil);
         } else if ([@"unsubscribeFromNotifications" isEqualToString:call.method]) {
@@ -178,13 +176,6 @@ static WonderPushPlugin *pluginInstance = nil;
                                    message:e.localizedDescription
                                    details:e.userInfo]);
     }
-}
-
-#pragma mark - Initialization
-
--(id) isReady {
-    BOOL status = [WonderPush isReady];
-    return [NSNumber numberWithBool:status];
 }
 
 #pragma mark - Subscribing users

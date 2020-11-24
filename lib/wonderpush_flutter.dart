@@ -7,14 +7,6 @@ class WonderPush extends Object {
   static const MethodChannel _methodChannel =
       const MethodChannel('wonderpush_flutter');
 
-  // Initialization
-
-  /// Returns whether the WonderPush SDK is ready to operate.
-  static Future<bool> isReady() async {
-    final bool result = await _methodChannel.invokeMethod('isReady');
-    return result;
-  }
-
   // Subscribing users
 
   /// Prompts user to subscribe to push notifications on iOS, subscribes the user directly on Android.
