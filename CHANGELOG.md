@@ -1,3 +1,8 @@
+## 2.0.1
+
+* Upgrade to WonderPush Android SDK v4.0.2
+  Fixes discovery of FCM/HCM push services on minified release builds.
+
 ## 2.0.0
 
 * Upgrade to WonderPush Android SDK v4.0.1
