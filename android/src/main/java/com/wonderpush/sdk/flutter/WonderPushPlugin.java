@@ -71,7 +71,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     private void onAttachedToEngine(Context applicationContext, BinaryMessenger binaryMessenger) {
         // Integrator
-        WonderPush.setIntegrator("wonderpush_flutter-2.0.1");
+        WonderPush.setIntegrator("wonderpush_flutter-2.0.2");
 
         // Method channel
         final MethodChannel channel = new MethodChannel(binaryMessenger, "wonderpush_flutter");
