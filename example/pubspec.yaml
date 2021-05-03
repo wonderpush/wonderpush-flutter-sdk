@@ -19,6 +19,8 @@ dev_dependencies:
 
   wonderpush_flutter:
     path: ../
+  wonderpush_fcm_flutter:
+    path: ../packages/fcm
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
