@@ -1,3 +1,15 @@
+## 2.1.0
+
+* Null safety
+* Upgrade to WonderPush Android SDK v4.0.5
+  * Fix NPE on setUserId() called quickly after first startup
+  * Support for collapsible big pictures
+  * Fix a ClassNotFoundException when notification opens an external app.
+  * Small fix to ensure a bad configuration does not prevent any received notification from being displayed due to an invalid small icon resource. If you are impacted then you must upgrade our FCM module to v1.0.2 to fix further issues.
+  * Miscellaneous fixes
+* Upgrade to WonderPush iOS SDK v4.0.2
+  * Miscellaneous fixes
+
 ## 2.0.2
 
 * Upgrade to WonderPush iOS SDK v4.0.1
