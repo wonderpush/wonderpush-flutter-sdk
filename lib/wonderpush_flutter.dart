@@ -21,16 +21,16 @@ class WonderPush extends Object {
 
   /// Tells whether user is subscribed to push notifications.
   static Future<bool> isSubscribedToNotifications() async {
-    final bool result =
+    final bool? result =
         await _methodChannel.invokeMethod('isSubscribedToNotifications');
-    return result;
+    return result ?? false;
   }
 
   // Segmentation
 
   /// Sends an event with of type [type] and [attributes] of your choice.
-  static Future<void> trackEvent(String type, [Object attributes]) async {
-    Map<String, Object> args = <String, Object>{};
+  static Future<void> trackEvent(String type, [Object? attributes]) async {
+    Map<String, Object?> args = <String, Object?>{};
     args.putIfAbsent("attributes", () => attributes);
     args.putIfAbsent("type", () => type);
     await _methodChannel.invokeMethod('trackEvent', args);
@@ -67,14 +67,14 @@ class WonderPush extends Object {
   static Future<bool> hasTag(String tag) async {
     Map<String, String> args = <String, String>{};
     args.putIfAbsent("tag", () => tag);
-    final bool result = await _methodChannel.invokeMethod('hasTag', args);
-    return result;
+    final bool? result = await _methodChannel.invokeMethod('hasTag', args);
+    return result ?? false;
   }
 
   /// Returns a list of tags associated with the current installation.
   static Future<List> getTags() async {
-    final List result = await _methodChannel.invokeMethod('getTags');
-    return result;
+    final List? result = await _methodChannel.invokeMethod('getTags');
+    return result ?? [];
   }
 
   /// Returns the value of a given [property] associated to this installation.
@@ -84,7 +84,7 @@ class WonderPush extends Object {
   static Future<dynamic> getPropertyValue(String property) async {
     Map<String, String> args = <String, String>{};
     args.putIfAbsent("property", () => property);
-    final Object result =
+    final Object? result =
         await _methodChannel.invokeMethod('getPropertyValue', args);
     return result;
   }
@@ -97,9 +97,9 @@ class WonderPush extends Object {
   static Future<List> getPropertyValues(String property) async {
     Map<String, String> args = <String, String>{};
     args.putIfAbsent("property", () => property);
-    final List result =
+    final List? result =
         await _methodChannel.invokeMethod('getPropertyValues', args);
-    return result;
+    return result ?? [];
   }
 
   /// Adds the [value] to a given [property] associated to this installation.
@@ -113,7 +113,7 @@ class WonderPush extends Object {
     }
     Map<String, Object> args = <String, Object>{};
     args.putIfAbsent("property", () => property);
-    args.putIfAbsent("properties", () => value);
+    args.putIfAbsent("properties", () => (value as List));
     await _methodChannel.invokeMethod('addProperty', args);
   }
 
@@ -159,8 +159,8 @@ class WonderPush extends Object {
 
   /// Returns an object containing the properties of the current installation.
   static Future<Object> getProperties() async {
-    final Map result = await _methodChannel.invokeMethod('getProperties');
-    return result;
+    final Map? result = await _methodChannel.invokeMethod('getProperties');
+    return result ?? {};
   }
 
   /// Overrides the user's [country].
@@ -174,8 +174,8 @@ class WonderPush extends Object {
   }
 
   /// Returns the user's country, either as previously stored, or as guessed from the system.
-  static Future<String> getCountry() async {
-    final String country = await _methodChannel.invokeMethod('getCountry');
+  static Future<String?> getCountry() async {
+    final String? country = await _methodChannel.invokeMethod('getCountry');
     return country;
   }
 
@@ -190,8 +190,8 @@ class WonderPush extends Object {
   }
 
   /// Returns the user's currency, either as previously stored, or as guessed from the system.
-  static Future<String> getCurrency() async {
-    final String currency = await _methodChannel.invokeMethod('getCurrency');
+  static Future<String?> getCurrency() async {
+    final String? currency = await _methodChannel.invokeMethod('getCurrency');
     return currency;
   }
 
@@ -206,8 +206,8 @@ class WonderPush extends Object {
   }
 
   /// Returns the user's locale, either as previously stored, or as guessed from the system.
-  static Future<String> getLocale() async {
-    final String locale = await _methodChannel.invokeMethod('getLocale');
+  static Future<String?> getLocale() async {
+    final String? locale = await _methodChannel.invokeMethod('getLocale');
     return locale;
   }
 
@@ -222,8 +222,8 @@ class WonderPush extends Object {
   }
 
   /// Returns the user's time zone, either as previously stored, or as guessed from the system.
-  static Future<String> getTimeZone() async {
-    final String timeZone = await _methodChannel.invokeMethod('getTimeZone');
+  static Future<String?> getTimeZone() async {
+    final String? timeZone = await _methodChannel.invokeMethod('getTimeZone');
     return timeZone;
   }
 
@@ -237,21 +237,21 @@ class WonderPush extends Object {
   }
 
   /// Returns the userId you've assigned to this installation, or null. See [User IDs](https://docs.wonderpush.com/docs/user-ids).
-  static Future<String> getUserId() async {
-    final String userId = await _methodChannel.invokeMethod('getUserId');
+  static Future<String?> getUserId() async {
+    final String? userId = await _methodChannel.invokeMethod('getUserId');
     return userId;
   }
 
   // Installation info
   /// Returns the push token of this installation, or null.
-  static Future<String> getPushToken() async {
-    final String pushToken = await _methodChannel.invokeMethod('getPushToken');
+  static Future<String?> getPushToken() async {
+    final String? pushToken = await _methodChannel.invokeMethod('getPushToken');
     return pushToken;
   }
 
   /// Returns the installationId, or null if the WonderPush servers have not been contacted just yet.
-  static Future<String> getInstallationId() async {
-    final String installationId =
+  static Future<String?> getInstallationId() async {
+    final String? installationId =
         await _methodChannel.invokeMethod('getInstallationId');
     return installationId;
   }
