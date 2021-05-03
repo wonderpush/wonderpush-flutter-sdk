@@ -1,6 +1,7 @@
-.dart_tool
-.packages
-pubspec.lock
-doc
 .DS_Store
-/.idea/
+.dart_tool/
+
+.packages
+.pub/
+
+build/
