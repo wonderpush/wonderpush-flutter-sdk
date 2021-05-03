@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'wonderpush_flutter'
-  s.version          = '0.0.1'
+  s.version          = '4.0.1'
   s.summary          = 'WonderPush Flutter SDK'
   s.description      = <<-DESC
 WonderPush Flutter SDK
