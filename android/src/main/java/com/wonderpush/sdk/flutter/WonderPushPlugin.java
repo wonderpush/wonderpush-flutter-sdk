@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 
 import io.flutter.embedding.engine.dart.DartExecutor;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
@@ -119,7 +120,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
             notificationData.put(key, bundle.get(key));
         }
 
-        new Handler().postDelayed(new Runnable() {
+        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (eventChannel != null) {
@@ -147,7 +148,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
             @Override
             public String urlForDeepLink(DeepLinkEvent event) {
                 final DeepLinkEvent e = event;
-                new Handler().postDelayed(new Runnable() {
+                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
                     @Override
                     public void run() {
                         if (getInstance().eventChannel != null) {
