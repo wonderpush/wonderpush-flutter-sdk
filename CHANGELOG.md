@@ -1,3 +1,6 @@
+## 2.1.2
+* Use Android SDK v4.0.6
+
 ## 2.1.1
 * Fix potential data race on iOS
 
