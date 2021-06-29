@@ -1,3 +1,10 @@
+## 1.0.3
+
+* Update to WonderPush Android SDK FCM module v1.0.3:
+  * Upgrade `firebase-messaging` to get rid of a dependency on pre-AndroidX support libraries. Without this change you needed to use `android.enableJetifier=true`.
+  * Upgrade `firebase-messaging` to be compatible with versions 22+, as they replaced their Instance ID SDK with their Installations SDK.
+    WonderPush failed to retrieve a push token with such versions of the dependency. This only affected users that depended on Firebase outside of WonderPush if one of their dependencies forced the `firebase-messaging` to use version 22+.
+
 ## 1.0.2
 
 If you faced one of these errors:
