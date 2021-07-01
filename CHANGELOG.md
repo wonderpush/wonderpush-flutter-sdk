@@ -1,3 +1,7 @@
+## 2.1.3
+* Use iOS SDK v4.0.4
+* Use Android SDK v4.0.7
+
 ## 2.1.2
 * Use Android SDK v4.0.6
 
