@@ -1,0 +1,34 @@
+group 'com.wonderpush.sdk.flutter.hcm'
+version '1.0.2'
+
+buildscript {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.android.tools.build:gradle:4.1.0'
+    }
+}
+
+rootProject.allprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+}
+
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion 30
+
+    defaultConfig {
+        minSdkVersion 19
+    }
+}
+
+dependencies {
+    implementation 'com.wonderpush:wonderpush-android-sdk-hcm:1.0.2'
+}
