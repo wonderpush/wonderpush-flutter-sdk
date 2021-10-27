@@ -1,3 +1,26 @@
+## 2.1.4
+
+**If you use "targetSdk 31" this SDK version is _required_**, along with our FCM module v1.0.4 minimum.
+For the others, we recommend to always use the latest published version.
+
+**Changelog:**
+
+* Upgrade to WonderPush Android SDK v4.1.0
+  * Support targeting builds to Android 12, when using `targetSdk 31`
+  * Change the `APP_LAUNCH` in-app system trigger to match application cold starts
+  * Allow to display in-apps contained in manually-displayed data push notifications
+
+# Android 12 support
+
+If you use `targetSdk 31`, this SDK version is **required**.
+You will also need to upgrade the version of our FCM module to [v1.0.4](https://github.com/wonderpush/wonderpush-flutter-sdk/releases/tag/fcm-v1.0.4) minimum.
+
+Here is a more detailed outline of the changes:
+  * Adapt to the [Notification trampoline restrictions](https://developer.android.com/about/versions/12/behavior-changes-12#notification-trampolines)
+  * Remove now-unnecessary and now-restricted use of [the `ACTION_CLOSE_SYSTEM_DIALOGS` intent](https://developer.android.com/about/versions/12/behavior-changes-all#close-system-dialogs).
+  * Fix missing `@APP_OPEN` events when an activity is resumed after a long time, [like Android 12 now does](https://developer.android.com/about/versions/12/behavior-changes-all#back-press) when pressing back on the root activity.
+  * Handle a few deprecations
+
 ## 2.1.3
 * Use iOS SDK v4.0.4
 * Use Android SDK v4.0.7
