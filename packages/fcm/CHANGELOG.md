@@ -1,3 +1,19 @@
+## 1.0.4
+
+* Update to WonderPush Android SDK FCM module v1.0.4:
+  * Declare missing exported attribute for Android 12 compatibility
+
+This update is required if your application uses `targetSdk 31`.
+This releases fixes the following build error:
+
+```
+Manifest merger failed : Apps targeting Android 12 and higher are required
+to specify an explicit value for android:exported when the corresponding
+component has an intent filter defined.
+```
+
+See [the related Android 12 change](https://developer.android.com/about/versions/12/behavior-changes-12#exported).
+
 ## 1.0.3
 
 * Update to WonderPush Android SDK FCM module v1.0.3:
