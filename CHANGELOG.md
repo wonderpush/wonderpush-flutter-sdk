@@ -1,3 +1,10 @@
+## 2.1.5
+
+* Upgrade to WonderPush Android SDK v4.1.2
+  * Fix NPE when no `targetUrl` was given in the push notification using the API
+  * Add missing try/catch in `WonderPushNotificationTrackingReceiver`
+  * Give clicked button index in intent
+
 ## 2.1.4
 
 **If you use "targetSdk 31" this SDK version is _required_**, along with our FCM module v1.0.4 minimum.
