@@ -1,3 +1,9 @@
+## 1.0.5
+
+* Upgrade to WonderPush Android SDK FCM v1.0.5
+  * Check for other conflicting `FirebaseMessagingService`s and provide with resolution stategies right from logcat.
+* Replace JCenter repository with Maven Central
+
 ## 1.0.4
 
 * Update to WonderPush Android SDK FCM module v1.0.4:
