@@ -1,19 +1,19 @@
 PODS:
   - Flutter (1.0.0)
-  - WonderPush (4.0.1):
-    - WonderPush/Core (= 4.0.1)
-  - WonderPush/Core (4.0.1)
-  - wonderpush_flutter (4.0.1):
+  - WonderPush (4.0.9):
+    - WonderPush/Core (= 4.0.9)
+  - WonderPush/Core (4.0.9)
+  - wonderpush_flutter (4.0.9):
     - Flutter
-    - WonderPush (= 4.0.1)
-  - WonderPushExtension (4.0.1):
-    - WonderPushExtension/Extension (= 4.0.1)
-  - WonderPushExtension/Extension (4.0.1)
+    - WonderPush (= 4.0.9)
+  - WonderPushExtension (4.0.9):
+    - WonderPushExtension/Extension (= 4.0.9)
+  - WonderPushExtension/Extension (4.0.9)
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
   - wonderpush_flutter (from `.symlinks/plugins/wonderpush_flutter/ios`)
-  - WonderPushExtension (= 4.0.1)
+  - WonderPushExtension (= 4.0.9)
 
 SPEC REPOS:
   trunk:
@@ -28,10 +28,10 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: 434fef37c0980e73bb6479ef766c45957d4b510c
-  WonderPush: 171323a8a31d7c8c72e79f6817cb2a0e992e8754
-  wonderpush_flutter: d74b7e2085638ff7868c94a58d1e43ad71cb238f
-  WonderPushExtension: a4aadaa4a850c9bba2d1745e176ea97dd7fad709
+  WonderPush: 0516cbd98b9e2368dd09819f2108fbb7825096e1
+  wonderpush_flutter: 3a39b4afb67704532799fa49df7581084281f0b2
+  WonderPushExtension: 655245faa64371636ba59a9dff2878959a9004aa
 
-PODFILE CHECKSUM: 8d4ea1a425d7028ec22537e5d8d70764550dbe95
+PODFILE CHECKSUM: 513bba4221c032af97362259bf70fd51e4a1ebd9
 
 COCOAPODS: 1.10.1
