@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'wonderpush_flutter'
-  s.version          = '4.0.9'
+  s.version          = '4.0.10'
   s.summary          = 'WonderPush Flutter SDK'
   s.description      = <<-DESC
 WonderPush Flutter SDK
@@ -16,7 +16,7 @@ WonderPush Flutter SDK
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'WonderPush', '4.0.9'
+  s.dependency 'WonderPush', '4.0.10'
   s.platform = :ios, '9.0'
 
   # Flutter.framework does not contain a i386 slice.
