@@ -10,7 +10,7 @@ static WonderPushPlugin *pluginInstance = nil;
 @implementation WonderPushPlugin
 
 + (void) registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-    [WonderPush setIntegrator:@"wonderpush_flutter-2.1.7"];
+    [WonderPush setIntegrator:@"wonderpush_flutter-2.1.8"];
     pluginInstance = [[WonderPushPlugin alloc] init];
     methodChannel = [FlutterMethodChannel
                      methodChannelWithName:@"wonderpush_flutter"
