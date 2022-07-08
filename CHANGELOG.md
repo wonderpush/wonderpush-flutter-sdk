@@ -1,3 +1,10 @@
+## 2.1.10
+
+* Upgrade to WonderPush Android SDK v4.1.5
+  * Fix a bug when an in-app triggered by a delay while the application is in background becomes unclosable
+  * Avoid displaying multiple in-apps at once
+  * Timer should not display in-app while in background, wait for next foreground
+
 ## 2.1.9
 
 * Upgrade to WonderPush iOS SDK v4.0.12
