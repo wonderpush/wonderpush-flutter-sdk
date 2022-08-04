@@ -1,5 +1,5 @@
 group 'com.wonderpush.sdk.flutter'
-version '2.1.10'
+version '2.2.0'
 
 buildscript {
     repositories {

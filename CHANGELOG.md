@@ -1,3 +1,10 @@
+## 2.2.0
+
+* Upgrade to WonderPush Android SDK v4.2.0
+  * support for our incoming HTML Popups feature
+* Upgrade to WonderPush iOS SDK v4.1.0
+  * support for our incoming HTML Popups feature
+
 ## 2.1.10
 
 * Upgrade to WonderPush Android SDK v4.1.5
