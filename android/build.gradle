@@ -29,6 +29,6 @@ android {
     }
 }
 dependencies {
-    implementation 'com.wonderpush:wonderpush-android-sdk:4.1.5'
+    implementation 'com.wonderpush:wonderpush-android-sdk:4.2.0'
     implementation 'androidx.localbroadcastmanager:localbroadcastmanager:1.0.0'
 }
