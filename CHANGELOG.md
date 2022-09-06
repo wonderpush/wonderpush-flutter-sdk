@@ -1,3 +1,7 @@
+## 2.3.1
+* Upgrade to WonderPush Android SDK v4.3.1
+* Upgrade to WonderPush iOS SDK v4.1.1
+
 ## 2.3.0
 * Upgrade to WonderPush Android SDK v4.3.0 to support Android 13. See instructions here: https://docs.wonderpush.com/docs/upgrading-to-android-sdk-v430-to-support-android-13
 
