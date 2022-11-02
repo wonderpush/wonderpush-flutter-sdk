@@ -1,3 +1,7 @@
+## 2.3.3
+* Upgrade to WonderPush iOS SDK v4.1.3
+* Upgrade to WonderPush Android SDK v4.3.2
+
 ## 2.3.2
 * Upgrade to WonderPush iOS SDK v4.1.2
 
