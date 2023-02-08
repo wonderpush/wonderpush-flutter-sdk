@@ -1,3 +1,8 @@
+## 2.3.4
+* Upgrade to WonderPush iOS SDK v4.1.4
+* Bug fix where putProperties ignored null values on Android
+* Change setProperty signature to accept null values
+
 ## 2.3.3
 * Upgrade to WonderPush iOS SDK v4.1.3
 * Upgrade to WonderPush Android SDK v4.3.2
