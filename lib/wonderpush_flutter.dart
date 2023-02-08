@@ -134,8 +134,8 @@ class WonderPush extends Object {
   /// The previous value is replaced entirely.
   /// The [value] can be a string, number, object, list or null (which has the same effect as [unsetProperty]).
   /// See [format of property names](https://docs.wonderpush.com/docs/properties#section-property-names) for detailed syntax.
-  static Future<void> setProperty(String property, Object value) async {
-    Map<String, Object> args = <String, Object>{};
+  static Future<void> setProperty(String property, Object? value) async {
+    Map<String, Object?> args = <String, Object?>{};
     args.putIfAbsent("property", () => property);
     args.putIfAbsent("properties", () => value);
     await _methodChannel.invokeMethod('setProperty', args);
