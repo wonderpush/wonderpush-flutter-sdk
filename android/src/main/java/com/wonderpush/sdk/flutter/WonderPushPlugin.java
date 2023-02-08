@@ -602,7 +602,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
             } else if (value instanceof List) {
                 object.put(key, toJsonArray((List<Object>) value));
             } else if (value == null || value == JSONObject.NULL) {
-                object.put(key, null);
+                object.put(key, JSONObject.NULL);
             } else {
                 object.put(key, value);
             }
@@ -620,7 +620,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
             } else if (value instanceof List) {
                 array.put(toJsonArray((List<Object>) value));
             } else if (value == null || value == JSONObject.NULL) {
-                array.put(null);
+                array.put(JSONObject.NULL);
             } else {
                 array.put(value);
             }
