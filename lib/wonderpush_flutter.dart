@@ -256,6 +256,27 @@ class WonderPush extends Object {
     return installationId;
   }
 
+  /// Returns the deviceId
+  static Future<String?> getDeviceId() async {
+    final String? deviceId =
+        await _methodChannel.invokeMethod('getDeviceId');
+    return deviceId;
+  }
+
+  /// Returns the accessToken
+  static Future<String?> getAccessToken() async {
+    final String? accessToken =
+        await _methodChannel.invokeMethod('getAccessToken');
+    return accessToken;
+  }
+
+  /// Returns the userConsent
+  static Future<bool?> getUserConsent() async {
+    final bool? userConsent =
+        await _methodChannel.invokeMethod('getUserConsent');
+    return userConsent;
+  }
+
   // Privacy
 
   /// Sets whether user consent is required before the SDK takes any action.

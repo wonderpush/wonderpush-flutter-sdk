@@ -130,6 +130,12 @@ static WonderPushPlugin *pluginInstance = nil;
             result([self getUserId]);
         } else if ([@"getInstallationId" isEqualToString:call.method]) {
             result([self getInstallationId]);
+        } else if ([@"getDeviceId" isEqualToString:call.method]) {
+            result([self getDeviceId]);
+        } else if ([@"getAccessToken" isEqualToString:call.method]) {
+            result([self getAccessToken]);
+        } else if ([@"getUserConsent" isEqualToString:call.method]) {
+            result([self getUserConsent]);
         } else if ([@"getPushToken" isEqualToString:call.method]) {
             result([self getPushToken]);
         } else if ([@"setRequiresUserConsent" isEqualToString:call.method]) {
@@ -310,6 +316,21 @@ static WonderPushPlugin *pluginInstance = nil;
 -(NSString *) getInstallationId {
     NSString *installationId = [WonderPush installationId];
     return installationId;
+}
+
+-(NSString *) getDeviceId {
+    NSString *deviceId = [WonderPush deviceId];
+    return deviceId;
+}
+
+-(NSString *) getAccessToken {
+    NSString *accessToken = [WonderPush accessToken];
+    return accessToken;
+}
+
+-(id) getUserConsent {
+    BOOL userConsent =  [WonderPush getUserConsent];
+    return [NSNumber numberWithBool:userConsent];
 }
 
 -(NSString *) getPushToken {

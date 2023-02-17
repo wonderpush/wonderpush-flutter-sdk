@@ -271,6 +271,15 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                 case "getInstallationId":
                     result.success(getInstallationId());
                     break;
+                case "getDeviceId":
+                    result.success(getDeviceId());
+                    break;
+                case "getAccessToken":
+                    result.success(getAccessToken());
+                    break;
+                case "getUserConsent":
+                    result.success(getUserConsent());
+                    break;
                 case "getPushToken":
                     result.success(getPushToken());
                     break;
@@ -498,6 +507,21 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     public String getInstallationId() {
         String installationId = WonderPush.getInstallationId();
         return installationId;
+    }
+
+    public String getDeviceId() {
+        String deviceId = WonderPush.getDeviceId();
+        return deviceId;
+    }
+
+    public String getAccessToken() {
+        String accessToken = WonderPush.getAccessToken();
+        return accessToken;
+    }
+
+    public boolean getUserConsent() {
+        boolean userConsent = WonderPush.getUserConsent();
+        return userConsent;
     }
 
     public String getPushToken() {
