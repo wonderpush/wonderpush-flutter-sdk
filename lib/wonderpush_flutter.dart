@@ -10,8 +10,8 @@ class WonderPush extends Object {
   // Subscribing users
 
   /// Prompts user to subscribe to push notifications on iOS, subscribes the user directly on Android.
-  static Future<void> subscribeToNotifications() async {
-    await _methodChannel.invokeMethod('subscribeToNotifications');
+  static Future<void> subscribeToNotifications([bool fallbackToSettings = false]) async {
+    await _methodChannel.invokeMethod('subscribeToNotifications', fallbackToSettings);
   }
 
   /// Unsubscribes user from push notifications.

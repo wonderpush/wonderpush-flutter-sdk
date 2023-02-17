@@ -152,7 +152,8 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         try {
             switch (call.method) {
                 case "subscribeToNotifications":
-                    subscribeToNotifications();
+                    boolean fallbackToSettings = (boolean) call.arguments;
+                    subscribeToNotifications(fallbackToSettings);
                     result.success(null);
                     break;
                 case "unsubscribeFromNotifications":
@@ -339,8 +340,8 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     // Subscribing users
 
-    public void subscribeToNotifications() {
-        WonderPush.subscribeToNotifications();
+    public void subscribeToNotifications(boolean fallbackToSettings) {
+        WonderPush.subscribeToNotifications(fallbackToSettings);
     }
 
     public void unsubscribeFromNotifications() {
