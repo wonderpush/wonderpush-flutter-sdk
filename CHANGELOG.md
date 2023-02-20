@@ -1,3 +1,9 @@
+## 2.3.5
+* Upgrade to WonderPush iOS SDK v4.1.5
+* Upgrade to WonderPush Android SDK v4.3.3
+* Expose access token, device ID and user consent
+* Allow subscribeToNotifications(bool) to show a dialog that takes users to settings on Android
+
 ## 2.3.4
 * Upgrade to WonderPush iOS SDK v4.1.4
 * Bug fix where putProperties ignored null values on Android
