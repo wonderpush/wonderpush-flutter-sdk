@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 
-import io.flutter.embedding.engine.dart.DartExecutor;
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 
 import io.flutter.plugin.common.BinaryMessenger;
@@ -20,10 +19,10 @@ import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import android.location.Location;
+import android.util.Log;
 
-import com.wonderpush.sdk.DeepLinkEvent;
 import com.wonderpush.sdk.WonderPush;
-import com.wonderpush.sdk.WonderPushAbstractDelegate;
+import com.wonderpush.sdk.WonderPushDelegate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,7 +40,10 @@ import java.util.Set;
  */
 public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
-    MethodChannel eventChannel = null;
+    static final String TAG = "WonderPushPlugin";
+    private MethodChannel eventChannel = null;
+    private boolean flutterDelegateRegistered = false;
+
 
     private static WonderPushPlugin instance;
 
@@ -54,6 +56,38 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
             instance = new WonderPushPlugin();
         }
         return instance;
+    }
+
+    static class FlutterCallback {
+        String method;
+        Object arguments;
+        FlutterCallback(String m, Object a) {
+            method = m;
+            arguments = a;
+        }
+    }
+
+    public static boolean isFlutterStarted() {
+        return instance != null;
+    }
+
+    public static boolean isReadyToAcceptCallbacks() {
+        boolean result = instance != null && instance.eventChannel != null && instance.flutterDelegateRegistered;
+        if (!result) {
+            Log.d(TAG, "Not ready to accept callbacks because: "
+                    + ((instance == null) ? "[instance is null]" : "")
+                    + (instance != null && instance.eventChannel == null ? "[event channel not ready]" : "")
+                    + (instance != null && !instance.flutterDelegateRegistered ? "[delegate not registered]" : ""));
+        }
+        return result;
+    }
+
+    protected void executeCallback(FlutterCallback callback) {
+        if (eventChannel == null) {
+            Log.w(TAG, "Trying to execute callback [" + callback.method + "] when event channel not ready");
+            return;
+        }
+        eventChannel.invokeMethod(callback.method, callback.arguments);
     }
 
     @Override
@@ -70,6 +104,8 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
     }
 
     private void onAttachedToEngine(Context applicationContext, BinaryMessenger binaryMessenger) {
+        Log.d(TAG, "onAttachedToEngine");
+
         // Integrator
         WonderPush.setIntegrator("wonderpush_flutter-2.3.6");
 
@@ -77,6 +113,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         final MethodChannel channel = new MethodChannel(binaryMessenger, "wonderpush_flutter");
         eventChannel = channel;
         channel.setMethodCallHandler(this);
+        Log.d(TAG, "onAttachedToEngine method channel set up.");
 
         // Listen to notification clicks
         LocalBroadcastManager.getInstance(applicationContext).registerReceiver(new BroadcastReceiver() {
@@ -87,6 +124,15 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         }, new IntentFilter(WonderPush.INTENT_NOTIFICATION_WILL_OPEN));
     }
 
+    private Delegate getOurDelegate() {
+        WonderPushDelegate delegate = WonderPush.getDelegate();
+        if (delegate instanceof Delegate) return (Delegate)delegate;
+        return null;
+    }
+
+    /**
+     * @deprecated Use a delegate to achieve this, instead of waiting for wonderPushReceivedPushNotification on the dart side.
+     */
     private void onReceiveNotificationWillOpen(Intent intent) {
 
         // No push data
@@ -112,7 +158,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     JSONObject jsonObject = new JSONObject(jsonString);
                     notificationData.put("_wp", jsonToMap(jsonObject));
                 } catch (JSONException e) {
-
+                    Log.w(TAG, "Could not convert _wp to json", e);
                 }
                 continue;
             }
@@ -129,28 +175,23 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         }, 100);
     }
 
-    public static void setupWonderPushDelegate() {
-        WonderPush.setDelegate(new WonderPushAbstractDelegate() {
-            @Override
-            public String urlForDeepLink(DeepLinkEvent event) {
-                final DeepLinkEvent e = event;
-                new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        if (getInstance().eventChannel != null) {
-                            getInstance().eventChannel.invokeMethod("wonderPushWillOpenURL", e.getUrl());
-                        }
-                    }
-                }, 100);
-                return event.getUrl();
-            }
-        });
-    }
-
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
+        Log.d(TAG, "onMethodCall [" + call.method + "]");
         try {
             switch (call.method) {
+                case "setFlutterDelegate": {
+                    flutterDelegateRegistered = true;
+                    Delegate ourDelegate = getOurDelegate();
+                    if (ourDelegate != null) {
+                        if (!ourDelegate.canStartFlutterEngine()) {
+                            Log.i(TAG, "The delegate's onNotificationReceived will not be called when the app is not running. To start the app on the reception of a notification, configure the " + Delegate.DART_ENTRY_POINT_FUNCTION_NAME_METADATA + " meta-data in your AndroidManifest.xml with the name of the dart function to call. For example: <meta-data android:name=\"com.wonderpush.sdk.dartEntryPointFunctionName\" android:value=\"main\" />");
+                        }
+                        ourDelegate.drainPendingFlutterCallbacks();
+                    }
+                    result.success(null);
+                }
+                    break;
                 case "subscribeToNotifications":
                     boolean fallbackToSettings = (boolean) call.arguments;
                     subscribeToNotifications(fallbackToSettings);
@@ -504,7 +545,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         return userId;
     }
 
-    // Installation info	
+    // Installation info
     public String getInstallationId() {
         String installationId = WonderPush.getInstallationId();
         return installationId;
@@ -652,5 +693,6 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         }
         return array;
     }
+
 }
 

@@ -1,11 +1,51 @@
 import 'dart:async';
-
 import 'package:flutter/services.dart';
+import 'dart:convert';
+
+abstract class WonderPushDelegate {
+  void onNotificationReceived(Map<String, dynamic> notification);
+  void onNotificationOpened(Map<String, dynamic> notification, int buttonIndex);
+}
 
 /// The WonderPush SDK main class.
 class WonderPush extends Object {
-  static const MethodChannel _methodChannel =
-      const MethodChannel('wonderpush_flutter');
+
+  static void setDelegate(WonderPushDelegate delegate) async {
+    _delegate = delegate;
+    if (!_methodChannelSetup) {
+      _methodChannelSetup = true;
+      _methodChannel.setMethodCallHandler((call) async {
+        switch (call.method) {
+          case "onNotificationReceived": {
+            if (_delegate != null) {
+              String jsonString = call.arguments as String;
+              Map<String, dynamic> jsonData = jsonDecode(jsonString);
+              _delegate?.onNotificationReceived(jsonData);
+            }
+          }
+          break;
+          case "onNotificationOpened": {
+            if (_delegate != null) {
+              List<dynamic> args = call.arguments as List<dynamic>;
+              String jsonString = args[0];
+              int buttonIndex = args[1];
+              Map<String, dynamic> jsonData = jsonDecode(jsonString);
+              _delegate?.onNotificationOpened(jsonData, buttonIndex);
+            }
+          }
+          break;
+        }
+      });
+    }
+    if (delegate != null) {
+      await _methodChannel.invokeMethod('setFlutterDelegate');
+    }
+  }
+
+  static const MethodChannel _methodChannel = MethodChannel('wonderpush_flutter');
+
+  static WonderPushDelegate? _delegate = null;
+  static bool _methodChannelSetup = false;
 
   // Subscribing users
 

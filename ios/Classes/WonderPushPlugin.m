@@ -1,7 +1,30 @@
 #import "WonderPushPlugin.h"
 #import "WonderPush.h"
 
+@interface WPFlutterCallback : NSObject
+@property (nonatomic, strong) NSString *method;
+@property (nonatomic, strong) id arguments;
+- (instancetype) initWithMethod:(NSString *)method arguments:(id)arguments;
+@end
+
+
 @interface WonderPushPlugin() <WonderPushDelegate>
+@property (nonatomic, strong) NSMutableArray<WPFlutterCallback *> *pendingFlutterCallbacks;
+@property (nonatomic, assign) BOOL flutterDelegateRegistered;
+- (void) savePendingCallbackWithMethod:(NSString *)method arguments:(id)arguments;
+- (void) drainPendingFlutterCallbacks;
+@end
+
+@implementation WPFlutterCallback
+
+- (instancetype)initWithMethod:(NSString *)method arguments:(id)arguments {
+    if (self = [super init]) {
+        self.method = method;
+        self.arguments = arguments;
+    }
+    return self;
+}
+
 @end
 
 static FlutterMethodChannel *methodChannel = nil;
@@ -15,12 +38,20 @@ static WonderPushPlugin *pluginInstance = nil;
     methodChannel = [FlutterMethodChannel
                      methodChannelWithName:@"wonderpush_flutter"
                      binaryMessenger:[registrar messenger]];
+    [self setupWonderPushDelegate];
     [registrar addMethodCallDelegate:pluginInstance channel:methodChannel];
-    
+
     [[NSNotificationCenter defaultCenter] addObserverForName:WP_NOTIFICATION_OPENED_BROADCAST object:nil queue:nil usingBlock:^(NSNotification *note) {
         NSDictionary *pushNotification = note.userInfo;
+        NSError *error;
+        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:pushNotification options:0 error:&error];
+        if (error) {
+            NSLog(@"[WonderPushPlugin] could not serialize notification to JSON: %@", error);
+            return;
+        }
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         dispatch_async(dispatch_get_main_queue(), ^{
-            [methodChannel invokeMethod:@"wonderPushReceivedPushNotification" arguments:pushNotification];
+            [methodChannel invokeMethod:@"wonderPushReceivedPushNotification" arguments:jsonString];
         });
     }];
 }
@@ -29,17 +60,110 @@ static WonderPushPlugin *pluginInstance = nil;
     [WonderPush setDelegate:pluginInstance];
 }
 
-- (void) wonderPushWillOpenURL:(NSURL *)URL withCompletionHandler:(void (^)(NSURL *))completionHandler {
+
+- (instancetype)init {
+    if (self = [super init]) {
+        self.pendingFlutterCallbacks = [NSMutableArray new];
+    }
+    return self;
+}
+
+- (void)drainPendingFlutterCallbacks {
+#if DEBUG
+    NSLog(@"[WonderPushPlugin] drainPendingFlutterCallbacks");
+#endif
     dispatch_async(dispatch_get_main_queue(), ^{
-        [methodChannel invokeMethod:@"wonderPushWillOpenURL" arguments:[URL absoluteString]];
-        completionHandler(URL);
+        @synchronized (self) {
+            for (WPFlutterCallback *callback in self.pendingFlutterCallbacks) {
+                [methodChannel invokeMethod:callback.method arguments:callback.arguments];
+            }
+            [self.pendingFlutterCallbacks removeAllObjects];
+        }
     });
 }
 
+- (void)savePendingCallbackWithMethod:(NSString *)method arguments:(id)arguments {
+    WPFlutterCallback *callback = [[WPFlutterCallback alloc] initWithMethod:method arguments:arguments];
+    @synchronized (self) {
+        [self.pendingFlutterCallbacks addObject:callback];
+    }
+}
+
+- (void) onNotificationReceived:(NSDictionary *)notification {
+#if DEBUG
+    NSLog(@"[WonderPushPlugin] onNotificationReceived: %@", notification);
+#endif
+    if (!methodChannel) {
+        NSLog(@"[WonderPushPlugin] notification received before channel set up");
+        return;
+    }
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:notification options:NSJSONWritingPrettyPrinted error:&error];
+    if (jsonData) {
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSString *method = @"onNotificationReceived";
+        id arguments = jsonString;
+        if (self.flutterDelegateRegistered) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+#if DEBUG
+                NSLog(@"[WonderPushPlugin] onNotificationReceived: calling back flutter layer");
+#endif
+                [methodChannel invokeMethod:method arguments:arguments];
+            });
+        } else {
+#if DEBUG
+            NSLog(@"[WonderPushPlugin] onNotificationReceived: delegate is not ready, saving for later");
+#endif
+            [self savePendingCallbackWithMethod:method arguments:arguments];
+        }
+    } else {
+        NSLog(@"[WonderPushPlugin] Error converting dictionary to JSON: %@", error);
+    }
+}
+
+- (void) onNotificationOpened:(NSDictionary *)notification withButton:(NSInteger)buttonIndex {
+#if DEBUG
+    NSLog(@"[WonderPushPlugin] onNotificationOpened: %@", notification);
+#endif
+    if (!methodChannel) {
+        NSLog(@"[WonderPushPlugin] notification opened before channel set up");
+        return;
+    }
+    NSError *error;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:notification options:NSJSONWritingPrettyPrinted error:&error];
+    if (jsonData) {
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        NSString *method = @"onNotificationOpened";
+        id arguments = @[jsonString, @(buttonIndex)];
+        if (self.flutterDelegateRegistered) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+#if DEBUG
+                NSLog(@"[WonderPushPlugin] onNotificationOpened: calling back flutter layer");
+#endif
+                [methodChannel invokeMethod:method arguments:arguments];
+            });
+        } else {
+#if DEBUG
+            NSLog(@"[WonderPushPlugin] onNotificationOpened: delegate is not ready, saving for later");
+#endif
+            [self savePendingCallbackWithMethod:method arguments:arguments];
+        }
+    } else {
+        NSLog(@"[WonderPushPlugin] Error converting dictionary to JSON: %@", error);
+    }
+}
+
 - (void) handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
+#if DEBUG
+            NSLog(@"[WonderPushPlugin] handleMethodCall: %@", call.method);
+#endif
     @try {
         if ([@"subscribeToNotifications" isEqualToString:call.method]) {
             [self subscribeToNotifications];
+            result(nil);
+        } else if ([@"setFlutterDelegate" isEqualToString:call.method]) {
+            self.flutterDelegateRegistered = YES;
+            [self drainPendingFlutterCallbacks];
             result(nil);
         } else if ([@"unsubscribeFromNotifications" isEqualToString:call.method]) {
             [self unsubscribeFromNotifications];
@@ -378,15 +502,15 @@ static WonderPushPlugin *pluginInstance = nil;
         if (error) {
             return;
         }
-        
+
         // Upon success, present a UIActivityViewController
-        
+
         // Find the topmost view controller
         UIViewController *topController = [UIApplication sharedApplication].keyWindow.rootViewController;
         while (topController.presentedViewController) {
             topController = topController.presentedViewController;
         }
-        
+
         NSString *string = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
         UIActivityViewController *controller = [[UIActivityViewController alloc] initWithActivityItems:@[string] applicationActivities:nil];
         [topController presentViewController:controller animated:YES completion:nil];
