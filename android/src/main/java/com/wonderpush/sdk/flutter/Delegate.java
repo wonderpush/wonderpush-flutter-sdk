@@ -21,7 +21,6 @@ import io.flutter.plugin.common.MethodChannel;
 import android.util.Log;
 
 import com.wonderpush.sdk.DeepLinkEvent;
-import com.wonderpush.sdk.ContextReceiver;
 import com.wonderpush.sdk.WonderPushDelegate;
 
 import org.json.JSONObject;
@@ -30,13 +29,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
-public class Delegate implements WonderPushDelegate, ContextReceiver {
+public class Delegate implements WonderPushDelegate {
 
     private Context context;
     private String dartEntryPointFunctionName;
     private final List<WonderPushPlugin.FlutterCallback> pendingFlutterCallbacks = new ArrayList<>();
     public static final String DART_ENTRY_POINT_FUNCTION_NAME_METADATA = "com.wonderpush.sdk.dartEntryPointFunctionName";
 
+    @Override
     public void setContext(Context context) {
         Log.d(TAG, "Delegate.setContext()");
         this.context = context.getApplicationContext();
