@@ -67,7 +67,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         }
     }
 
-    public static boolean isFlutterStarted() {
+    public static boolean isWonderPushPluginInstantiated() {
         return instance != null;
     }
 
@@ -92,19 +92,9 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-
-        this.onAttachedToEngine(
-                flutterPluginBinding.getApplicationContext(),
-                flutterPluginBinding.getBinaryMessenger());
-    }
-
-    @Override
-    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-
-    }
-
-    private void onAttachedToEngine(Context applicationContext, BinaryMessenger binaryMessenger) {
         Log.d(TAG, "onAttachedToEngine");
+        Context applicationContext = flutterPluginBinding.getApplicationContext();
+        BinaryMessenger binaryMessenger = flutterPluginBinding.getBinaryMessenger();
 
         // Integrator
         WonderPush.setIntegrator("wonderpush_flutter-2.3.6");
@@ -114,6 +104,11 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         eventChannel = channel;
         channel.setMethodCallHandler(this);
         Log.d(TAG, "onAttachedToEngine method channel set up.");
+
+    }
+
+    @Override
+    public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
 
     }
 

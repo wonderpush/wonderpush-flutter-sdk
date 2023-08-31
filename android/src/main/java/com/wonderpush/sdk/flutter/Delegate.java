@@ -2,10 +2,7 @@ package com.wonderpush.sdk.flutter;
 import static com.wonderpush.sdk.flutter.WonderPushPlugin.TAG;
 
 import io.flutter.FlutterInjector;
-import io.flutter.embedding.engine.FlutterEngine;
-import io.flutter.embedding.engine.FlutterEngineCache;
 import io.flutter.embedding.engine.FlutterEngineGroup;
-import io.flutter.embedding.engine.FlutterEngineGroupCache;
 import io.flutter.embedding.engine.loader.FlutterLoader;
 
 import android.content.Context;
@@ -15,8 +12,6 @@ import android.os.Handler;
 import android.os.Looper;
 
 import io.flutter.embedding.engine.dart.DartExecutor;
-
-import io.flutter.plugin.common.MethodChannel;
 
 import android.util.Log;
 
@@ -99,6 +94,12 @@ public class Delegate implements WonderPushDelegate {
 
         Log.d(TAG, "onNotificationOpened " + notif.toString());
 
+        // Make sure flutter is started. Even for clicks this is needed as the target URL might be outside the app
+        // In which case flutter never gets started
+        if (!WonderPushPlugin.isWonderPushPluginInstantiated() && canStartFlutterEngine()) {
+            startFlutterEngine();
+        }
+
         final List<Object> arguments = new ArrayList<>();
         arguments.add(notif.toString());
         arguments.add(buttonIndex);
@@ -122,7 +123,7 @@ public class Delegate implements WonderPushDelegate {
     public void onNotificationReceived(JSONObject notif) {
 
         Log.d(TAG, "onNotificationReceived " + notif.toString());
-        if (!WonderPushPlugin.isFlutterStarted() && canStartFlutterEngine()) {
+        if (!WonderPushPlugin.isWonderPushPluginInstantiated() && canStartFlutterEngine()) {
             startFlutterEngine();
         }
 
@@ -130,12 +131,8 @@ public class Delegate implements WonderPushDelegate {
         final String arguments = notif.toString();
 
         if (!WonderPushPlugin.isReadyToAcceptCallbacks()) {
-            if (canStartFlutterEngine()) {
-                Log.d(TAG, "Notification received while plugin not ready to accept callbacks, saving for later");
-                savePendingCallback(method, arguments);
-            } else {
-                Log.d(TAG, "Notification received while plugin not ready to accept callbacks, dropping");
-            }
+            Log.d(TAG, "Notification received while plugin not ready to accept callbacks, saving for later");
+            savePendingCallback(method, arguments);
             return;
         }
 
