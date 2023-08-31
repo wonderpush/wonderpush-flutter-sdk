@@ -115,64 +115,12 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         channel.setMethodCallHandler(this);
         Log.d(TAG, "onAttachedToEngine method channel set up.");
 
-        // Listen to notification clicks
-        LocalBroadcastManager.getInstance(applicationContext).registerReceiver(new BroadcastReceiver() {
-            @Override
-            public void onReceive(Context context, Intent intent) {
-                WonderPushPlugin.this.onReceiveNotificationWillOpen(intent);
-            }
-        }, new IntentFilter(WonderPush.INTENT_NOTIFICATION_WILL_OPEN));
     }
 
     private Delegate getOurDelegate() {
         WonderPushDelegate delegate = WonderPush.getDelegate();
         if (delegate instanceof Delegate) return (Delegate)delegate;
         return null;
-    }
-
-    /**
-     * @deprecated Use a delegate to achieve this, instead of waiting for wonderPushReceivedPushNotification on the dart side.
-     */
-    private void onReceiveNotificationWillOpen(Intent intent) {
-
-        // No push data
-        if (WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_NOTIFICATION_TYPE_DATA.equals(
-                intent.getStringExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_NOTIFICATION_TYPE))) {
-            return;
-        }
-
-        // Get the push notif
-        final Intent pushNotif = intent.getParcelableExtra(WonderPush.INTENT_NOTIFICATION_WILL_OPEN_EXTRA_RECEIVED_PUSH_NOTIFICATION);
-        Bundle bundle = pushNotif.getExtras();
-        if (bundle == null) {
-            return;
-        }
-
-        // Turn the bundle into a Map
-        final Map<String, Object> notificationData = new HashMap<>();
-        Set<String> keys = bundle.keySet();
-        for (String key : keys) {
-            if (key.equals("_wp")) {
-                String jsonString = bundle.getString("_wp");
-                try {
-                    JSONObject jsonObject = new JSONObject(jsonString);
-                    notificationData.put("_wp", jsonToMap(jsonObject));
-                } catch (JSONException e) {
-                    Log.w(TAG, "Could not convert _wp to json", e);
-                }
-                continue;
-            }
-            notificationData.put(key, bundle.get(key));
-        }
-
-        new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (eventChannel != null) {
-                    eventChannel.invokeMethod("wonderPushReceivedPushNotification", notificationData);
-                }
-            }
-        }, 100);
     }
 
     @Override
