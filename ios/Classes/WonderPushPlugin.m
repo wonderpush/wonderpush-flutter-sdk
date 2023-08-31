@@ -32,34 +32,31 @@ static WonderPushPlugin *pluginInstance = nil;
 
 @implementation WonderPushPlugin
 
++ (void) prepare {
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        pluginInstance = [[WonderPushPlugin alloc] init];
+        [WonderPush setDelegate:pluginInstance];
+#if DEBUG
+        NSLog(@"[WonderPushPlugin] Delegate registered");
+#endif
+    });
+}
+
++ (void)initialize {
+    [self prepare];
+}
+
 + (void) registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
+#if DEBUG
+    NSLog(@"[WonderPushPlugin] registerWithRegistrar");
+#endif
     [WonderPush setIntegrator:@"wonderpush_flutter-2.3.6"];
-    pluginInstance = [[WonderPushPlugin alloc] init];
     methodChannel = [FlutterMethodChannel
                      methodChannelWithName:@"wonderpush_flutter"
                      binaryMessenger:[registrar messenger]];
-    [self setupWonderPushDelegate];
     [registrar addMethodCallDelegate:pluginInstance channel:methodChannel];
-
-    [[NSNotificationCenter defaultCenter] addObserverForName:WP_NOTIFICATION_OPENED_BROADCAST object:nil queue:nil usingBlock:^(NSNotification *note) {
-        NSDictionary *pushNotification = note.userInfo;
-        NSError *error;
-        NSData *jsonData = [NSJSONSerialization dataWithJSONObject:pushNotification options:0 error:&error];
-        if (error) {
-            NSLog(@"[WonderPushPlugin] could not serialize notification to JSON: %@", error);
-            return;
-        }
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [methodChannel invokeMethod:@"wonderPushReceivedPushNotification" arguments:jsonString];
-        });
-    }];
 }
-
-+(void) setupWonderPushDelegate {
-    [WonderPush setDelegate:pluginInstance];
-}
-
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -93,17 +90,13 @@ static WonderPushPlugin *pluginInstance = nil;
 #if DEBUG
     NSLog(@"[WonderPushPlugin] onNotificationReceived: %@", notification);
 #endif
-    if (!methodChannel) {
-        NSLog(@"[WonderPushPlugin] notification received before channel set up");
-        return;
-    }
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:notification options:NSJSONWritingPrettyPrinted error:&error];
     if (jsonData) {
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSString *method = @"onNotificationReceived";
         id arguments = jsonString;
-        if (self.flutterDelegateRegistered) {
+        if (self.flutterDelegateRegistered && methodChannel) {
             dispatch_async(dispatch_get_main_queue(), ^{
 #if DEBUG
                 NSLog(@"[WonderPushPlugin] onNotificationReceived: calling back flutter layer");
@@ -125,17 +118,13 @@ static WonderPushPlugin *pluginInstance = nil;
 #if DEBUG
     NSLog(@"[WonderPushPlugin] onNotificationOpened: %@", notification);
 #endif
-    if (!methodChannel) {
-        NSLog(@"[WonderPushPlugin] notification opened before channel set up");
-        return;
-    }
     NSError *error;
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:notification options:NSJSONWritingPrettyPrinted error:&error];
     if (jsonData) {
         NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
         NSString *method = @"onNotificationOpened";
         id arguments = @[jsonString, @(buttonIndex)];
-        if (self.flutterDelegateRegistered) {
+        if (self.flutterDelegateRegistered && methodChannel) {
             dispatch_async(dispatch_get_main_queue(), ^{
 #if DEBUG
                 NSLog(@"[WonderPushPlugin] onNotificationOpened: calling back flutter layer");

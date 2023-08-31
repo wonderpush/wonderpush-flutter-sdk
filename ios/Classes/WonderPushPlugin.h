@@ -3,5 +3,5 @@
 
 
 @interface WonderPushPlugin : NSObject<FlutterPlugin>
-+ (void) setupWonderPushDelegate;
++ (void) prepare;
 @end
