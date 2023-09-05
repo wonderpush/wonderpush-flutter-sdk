@@ -1,3 +1,6 @@
+## 1.0.6
+* Upgrade to WonderPush Android SDK FCM v1.0.6
+
 ## 1.0.5
 
 * Upgrade to WonderPush Android SDK FCM v1.0.5
