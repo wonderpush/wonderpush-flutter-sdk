@@ -51,7 +51,7 @@ static WonderPushPlugin *pluginInstance = nil;
 #if DEBUG
     NSLog(@"[WonderPushPlugin] registerWithRegistrar");
 #endif
-    [WonderPush setIntegrator:@"wonderpush_flutter-2.3.6"];
+    [WonderPush setIntegrator:@"wonderpush_flutter-2.3.7"];
     methodChannel = [FlutterMethodChannel
                      methodChannelWithName:@"wonderpush_flutter"
                      binaryMessenger:[registrar messenger]];

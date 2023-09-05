@@ -1,6 +1,6 @@
 name: wonderpush_flutter
 description: Mobile push notification delivery with the WonderPush service. The WonderPush Flutter SDK makes it easy to add push notifications to your iOS and Android apps.
-version: 2.3.6
+version: 2.3.7
 homepage: https://www.wonderpush.com/
 
 environment:
