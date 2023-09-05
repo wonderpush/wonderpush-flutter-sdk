@@ -1,3 +1,6 @@
+## 1.0.4
+* Using Android HCM module v1.0.3
+
 ## 1.0.3
 
 * Replace JCenter repository with Maven Central
