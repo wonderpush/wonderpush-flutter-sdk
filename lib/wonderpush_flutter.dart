@@ -37,9 +37,7 @@ class WonderPush extends Object {
         }
       });
     }
-    if (delegate != null) {
-      await _methodChannel.invokeMethod('setFlutterDelegate');
-    }
+    await _methodChannel.invokeMethod('setFlutterDelegate');
   }
 
   static const MethodChannel _methodChannel = MethodChannel('wonderpush_flutter');
