@@ -1,3 +1,6 @@
+## 1.0.5
+* Setting `namespace` in `build.gradle` to support Android Gradle Build plugin v8
+
 ## 1.0.4
 * Using Android HCM module v1.0.3
 
