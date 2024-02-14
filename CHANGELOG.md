@@ -1,3 +1,6 @@
+## 2.3.9
+* Setting `namespace` in `build.gradle` to support Android Gradle Build plugin v8
+
 ## 2.3.8
 * Upgrade to WonderPush Android SDK v4.4.1
 
