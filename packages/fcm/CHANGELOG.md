@@ -1,3 +1,6 @@
+## 1.0.8
+* Upgrade to WonderPush Android SDK FCM v1.0.7
+
 ## 1.0.7
 * Fix build.gradle
 
