@@ -1,3 +1,6 @@
+## 2.3.10
+* Upgrade to WonderPush iOS SDK v4.3.1
+
 ## 2.3.9
 * Setting `namespace` in `build.gradle` to support Android Gradle Build plugin v8
 
