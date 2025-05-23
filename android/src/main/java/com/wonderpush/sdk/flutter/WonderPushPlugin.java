@@ -313,6 +313,9 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     setLogging(enable);
                     result.success(null);
                     break;
+                case "isInitialized":
+                    result.success(isInitialized());
+                    break;
                 default:
                     result.notImplemented();
                     break;
@@ -320,6 +323,11 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         } catch (Exception e) {
             result.error("0", e.getLocalizedMessage(), null);
         }
+    }
+
+    public boolean isInitialized() {
+        boolean initialized = WonderPush.isInitialized();
+        return initialized;
     }
 
     // Subscribing users

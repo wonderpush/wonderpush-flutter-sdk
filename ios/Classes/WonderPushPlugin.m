@@ -286,6 +286,8 @@ static WonderPushPlugin *pluginInstance = nil;
             BOOL enable = [[call.arguments valueForKey:@"enable"] boolValue];
             [self setLogging:enable];
             result(nil);
+        } else if ([@"isInitialized" isEqualToString:call.method]) {
+            result([self isInitialized]);
         } else {
             result(FlutterMethodNotImplemented);
         }
@@ -295,6 +297,11 @@ static WonderPushPlugin *pluginInstance = nil;
                                    message:e.localizedDescription
                                    details:e.userInfo]);
     }
+}
+
+-(id) isInitialized {
+    BOOL initialized =  [WonderPush isInitialized];
+    return [NSNumber numberWithBool:initialized];
 }
 
 #pragma mark - Subscribing users

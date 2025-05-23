@@ -45,6 +45,12 @@ class WonderPush extends Object {
   static WonderPushDelegate? _delegate = null;
   static bool _methodChannelSetup = false;
 
+  /// Tells whether the WonderPush SDK is initalized.
+  static Future<bool> isInitialized() async {
+    final bool? result = await _methodChannel.invokeMethod('isInitialized');
+    return result ?? false;
+  }
+
   // Subscribing users
 
   /// Prompts user to subscribe to push notifications on iOS, subscribes the user directly on Android.
