@@ -1,3 +1,9 @@
+## 2.4.0
+
+* Upgrade to WonderPush Android SDK v4.5.0
+* Upgrade to WonderPush iOS SDK v4.3.2
+* Expose WonderPush.isInitialized()
+
 ## 2.3.10
 * Upgrade to WonderPush iOS SDK v4.3.1
 
