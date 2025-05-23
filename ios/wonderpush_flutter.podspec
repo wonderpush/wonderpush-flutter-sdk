@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'wonderpush_flutter'
-  s.version          = '4.3.1'
+  s.version          = '4.3.2'
   s.summary          = 'WonderPush Flutter SDK'
   s.description      = <<-DESC
 WonderPush Flutter SDK
@@ -16,8 +16,8 @@ WonderPush Flutter SDK
   s.source_files = 'Classes/**/*'
   s.public_header_files = 'Classes/**/*.h'
   s.dependency 'Flutter'
-  s.dependency 'WonderPush', '4.3.1'
-  s.platform = :ios, '9.0'
+  s.dependency 'WonderPush', '4.3.2'
+  s.platform = :ios, '12.0'
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }
