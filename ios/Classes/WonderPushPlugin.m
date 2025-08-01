@@ -286,6 +286,18 @@ static WonderPushPlugin *pluginInstance = nil;
             BOOL enable = [[call.arguments valueForKey:@"enable"] boolValue];
             [self setLogging:enable];
             result(nil);
+        } else if ([@"initialize" isEqualToString:call.method]) {
+            NSString *clientId = [call.arguments valueForKey:@"clientId"];
+            NSString *clientSecret = [call.arguments valueForKey:@"clientSecret"];
+            [self initializeClientId:clientId clientSecret:clientSecret];
+            result(nil);
+        } else if ([@"initializeAndRememberCredentials" isEqualToString:call.method]) {
+            NSString *clientId = [call.arguments valueForKey:@"clientId"];
+            NSString *clientSecret = [call.arguments valueForKey:@"clientSecret"];
+            [self initializeAndRememberClientId:clientId clientSecret:clientSecret];
+            result(nil);
+        } else if ([@"getRememberedClientId" isEqualToString:call.method]) {
+            result([self getRememberedClientId]);
         } else if ([@"isInitialized" isEqualToString:call.method]) {
             result([self isInitialized]);
         } else {
@@ -297,6 +309,19 @@ static WonderPushPlugin *pluginInstance = nil;
                                    message:e.localizedDescription
                                    details:e.userInfo]);
     }
+}
+
+-(void) initializeClientId:(nullable NSString *)clientId clientSecret:(nullable NSString *)clientSecret {
+    [WonderPush setClientId:clientId secret:clientSecret];
+}
+
+-(void) initializeAndRememberClientId:(nullable NSString *)clientId clientSecret:(nullable NSString *)clientSecret {
+    [WonderPush setAndRememberClientId:clientId secret:clientSecret];
+}
+
+-(nullable NSString *) getRememberedClientId {
+    NSString *rememberedClientId =  [WonderPush getRememberedClientId];
+    return rememberedClientId;
 }
 
 -(id) isInitialized {

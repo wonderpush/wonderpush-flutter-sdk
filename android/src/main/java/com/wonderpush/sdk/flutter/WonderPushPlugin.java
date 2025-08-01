@@ -1,6 +1,7 @@
 package com.wonderpush.sdk.flutter;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import android.content.BroadcastReceiver;
@@ -46,6 +47,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
 
     private static WonderPushPlugin instance;
+    private FlutterPluginBinding binding;
 
     public WonderPushPlugin() {
         instance = this;
@@ -92,7 +94,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-        Context applicationContext = flutterPluginBinding.getApplicationContext();
+        this.binding = flutterPluginBinding;
         BinaryMessenger binaryMessenger = flutterPluginBinding.getBinaryMessenger();
 
         // Integrator
@@ -106,7 +108,7 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
-
+        this.binding = null;
     }
 
     private Delegate getOurDelegate() {
@@ -309,6 +311,22 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
                     setLogging(enable);
                     result.success(null);
                     break;
+                case "initialize":
+                    String initializeClientId = call.argument("clientId");
+                    String initializeClientSecret = call.argument("clientSecret");
+                    initialize(initializeClientId, initializeClientSecret);
+                    result.success(null);
+                    break;
+                case "initializeAndRememberCredentials":
+                    String rememberClientId = call.argument("clientId");
+                    String rememberClientSecret = call.argument("clientSecret");
+                    initializeAndRememberCredentials(rememberClientId, rememberClientSecret);
+                    result.success(null);
+                    break;
+                case "getRememberedClientId":
+                    String clientId = getRememberedClientId();
+                    result.success(clientId);
+                    break;
                 case "isInitialized":
                     result.success(isInitialized());
                     break;
@@ -319,6 +337,21 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         } catch (Exception e) {
             result.error("0", e.getLocalizedMessage(), null);
         }
+    }
+
+    // Initialization
+
+    public void initialize(@Nullable String clientId, @Nullable String clientSecret) {
+        WonderPush.initialize(this.binding.getApplicationContext(), clientId, clientSecret);
+    }
+
+    public void initializeAndRememberCredentials(@Nullable String clientId, @Nullable String clientSecret) {
+        WonderPush.initializeAndRememberCredentials(this.binding.getApplicationContext(), clientId, clientSecret);
+    }
+
+    public @Nullable String getRememberedClientId() {
+        String rememberedClientId = WonderPush.getRememberedClientId(this.binding.getApplicationContext());
+        return rememberedClientId;
     }
 
     public boolean isInitialized() {

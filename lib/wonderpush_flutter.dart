@@ -45,6 +45,40 @@ class WonderPush extends Object {
   static WonderPushDelegate? _delegate = null;
   static bool _methodChannelSetup = false;
 
+  /// Initialize the WonderPush SDK.
+  ///
+  /// Note that it is recommended that you use native code to initialize the WonderPush SDK,
+  /// especially on Android where receiving a push notification does not start a Flutter isolate.
+  /// An alternative is to use `initialize("USE_REMEMBERED", "USE_REMEMBERED")` in your `main()` and make sure to
+  /// call `WonderPush.initializeAndRememberCredentials(…, …)` at least once in the application lifetime.
+  static Future<void> initialize(String? clientId, String? clientSecret) async {
+    await _methodChannel.invokeMethod('initialize', <String, Object?>{
+      'clientId': clientId,
+      'clientSecret': clientSecret,
+    });
+  }
+
+  /// Remembers the given Client ID and Client Secret and initializes the WonderPush SDK.
+  ///
+  /// If a value is `null`, it will be removed from storage, and the SDK won't be initialized.
+  ///
+  /// Initialization should occur at the earliest possible time, when your application starts.
+  /// A good place is the `main` method of your `lib/main.dart`.
+  static Future<void> initializeAndRememberCredentials(String? clientId, String? clientSecret) async {
+    await _methodChannel.invokeMethod('initializeAndRememberCredentials', <String, Object?>{
+      'clientId': clientId,
+      'clientSecret': clientSecret,
+    });
+  }
+
+  /// Returns the remembered Client ID given to `initializeAndRememberCredentials()`.
+  /// There is no similar getter for the Client Secret.
+  /// Returns The remembered Client ID if both a non-empty Client ID and Client Secret were last remembered, `null` otherwise.
+  static Future<String?> getRememberedClientId() async {
+    final String? result = await _methodChannel.invokeMethod('getRememberedClientId');
+    return result;
+  }
+
   /// Tells whether the WonderPush SDK is initalized.
   static Future<bool> isInitialized() async {
     final bool? result = await _methodChannel.invokeMethod('isInitialized');
