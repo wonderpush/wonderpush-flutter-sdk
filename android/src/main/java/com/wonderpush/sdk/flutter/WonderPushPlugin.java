@@ -92,7 +92,6 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     @Override
     public void onAttachedToEngine(@NonNull FlutterPluginBinding flutterPluginBinding) {
-        Log.d(TAG, "onAttachedToEngine");
         Context applicationContext = flutterPluginBinding.getApplicationContext();
         BinaryMessenger binaryMessenger = flutterPluginBinding.getBinaryMessenger();
 
@@ -103,8 +102,6 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
         final MethodChannel channel = new MethodChannel(binaryMessenger, "wonderpush_flutter");
         eventChannel = channel;
         channel.setMethodCallHandler(this);
-        Log.d(TAG, "onAttachedToEngine method channel set up.");
-
     }
 
     @Override
@@ -120,7 +117,6 @@ public class WonderPushPlugin implements FlutterPlugin, MethodCallHandler {
 
     @Override
     public void onMethodCall(@NonNull MethodCall call, @NonNull Result result) {
-        Log.d(TAG, "onMethodCall [" + call.method + "]");
         try {
             switch (call.method) {
                 case "setFlutterDelegate": {
