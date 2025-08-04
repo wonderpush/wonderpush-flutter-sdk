@@ -1,3 +1,11 @@
+## 2.5.0
+
+* Upgrade to WonderPush Android SDK v4.6.0
+* Upgrade to WonderPush iOS SDK v4.4.0
+* Expose `initialize()`
+* Expose `initializeAndRememberCredentials()`, enabling complex init scenarios
+* Expose `getRememberedClientId()`
+
 ## 2.4.0
 
 * Upgrade to WonderPush Android SDK v4.5.0
