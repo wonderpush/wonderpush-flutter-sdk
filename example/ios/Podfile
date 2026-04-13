@@ -39,5 +39,5 @@ end
 
 target 'WonderPushNotificationServiceExtension' do
   #use_frameworks!
-  pod 'WonderPushExtension', '4.4.1'
+  pod 'WonderPushExtension', '4.4.3'
 end
