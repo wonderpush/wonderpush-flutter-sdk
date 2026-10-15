@@ -6,13 +6,13 @@ import PackageDescription
 let package = Package(
     name: "wonderpush_flutter",
     platforms: [
-        .iOS("12.0"),
+        .iOS("15.0"),
     ],
     products: [
         .library(name: "wonderpush-flutter", targets: ["wonderpush_flutter"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/wonderpush/wonderpush-ios-sdk", exact: "4.4.3"),
+        .package(url: "https://github.com/wonderpush/wonderpush-ios-sdk", exact: "4.5.0"),
     ],
     targets: [
         .target(
