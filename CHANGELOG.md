@@ -1,3 +1,6 @@
+## Unreleased
+* Add Swift Package Manager support for iOS (CocoaPods is still supported)
+
 ## 2.5.2
 * Upgrade to WonderPush iOS SDK v4.4.3
 

@@ -1,5 +1,11 @@
-#import "WonderPushPlugin.h"
-#import "WonderPush.h"
+#if __has_include(<wonderpush_flutter/WonderPushPlugin.h>)
+#import <wonderpush_flutter/WonderPushPlugin.h>
+#else
+// Swift Package Manager: the header lives in the include/ directory of the target
+#import "./include/wonderpush_flutter/WonderPushPlugin.h"
+#endif
+
+#import <WonderPush/WonderPush.h>
 
 @interface WPFlutterCallback : NSObject
 @property (nonatomic, strong) NSString *method;

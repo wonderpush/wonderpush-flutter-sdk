@@ -13,8 +13,8 @@ WonderPush Flutter SDK
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'WonderPush' => 'dev@wonderpush.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
-  s.public_header_files = 'Classes/**/*.h'
+  s.source_files = 'wonderpush_flutter/Sources/wonderpush_flutter/**/*.{h,m}'
+  s.public_header_files = 'wonderpush_flutter/Sources/wonderpush_flutter/include/**/*.h'
   s.dependency 'Flutter'
   s.dependency 'WonderPush', '4.4.3'
   s.platform = :ios, '12.0'
