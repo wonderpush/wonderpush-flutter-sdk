@@ -1,6 +1,6 @@
-## Unreleased
+## 2.6.0
 * Add Swift Package Manager support for iOS (CocoaPods is still supported)
-* Upgrade to WonderPush iOS SDK v4.5.0 for Swift Package Manager (CocoaPods stays on v4.4.3 until v4.5.0 is published there)
+* Upgrade to WonderPush iOS SDK v4.5.0 for Swift Package Manager (CocoaPods stays on v4.4.3, the last version published there)
 * Upgrade to WonderPush Android SDK v4.7.0
 * Raise the minimum iOS deployment target to 15.0
 
