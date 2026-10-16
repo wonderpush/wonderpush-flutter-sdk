@@ -12,7 +12,7 @@ let package = Package(
         .library(name: "wonderpush-flutter", targets: ["wonderpush_flutter"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/wonderpush/wonderpush-ios-sdk", exact: "4.5.0"),
+        .package(url: "https://github.com/wonderpush/wonderpush-ios-sdk", exact: "4.5.1"),
     ],
     targets: [
         .target(
