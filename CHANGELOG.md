@@ -1,3 +1,7 @@
+## 2.6.2
+* Upgrade to WonderPush Android SDK v4.7.2
+* Upgrade to WonderPush iOS SDK v4.5.2 for Swift Package Manager (CocoaPods stays on v4.4.3, the last version published there)
+
 ## 2.6.1
 * Upgrade to WonderPush iOS SDK v4.5.1 for Swift Package Manager (CocoaPods stays on v4.4.3, the last version published there)
 
